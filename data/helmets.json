@@ -1,0 +1,53 @@
+[
+    {
+        "id": 108,
+        "name": "White Mask",
+        "desc": "Bloodstained, faintly grinning mask.\nWorn by war surgeons who were effectively mercy killers.\n\nThe Lord of Blood's curse enlivens the wearer when bloodletting occurs. Slightly raises attack power when there is blood loss nearby.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 2.7
+            },
+            {
+                "name": "Strike",
+                "amount": 3
+            },
+            {
+                "name": "Slash",
+                "amount": 3.3
+            },
+            {
+                "name": "Pierce",
+                "amount": 2.7
+            },
+            {
+                "name": "Magic",
+                "amount": 3.5
+            },
+            {
+                "name": "Fire",
+                "amount": 3.7
+            },
+            {
+                "name": "Ligt",
+                "amount": 3.9
+            },
+            {
+                "name": "Holy",
+                "amount": 3.7
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Poise",
+                "amount": 10
+            }
+        ],
+        "weight": 3.2,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "",
+        "banner": "22 Mohgwyn's Dynasty"
+    }
+]

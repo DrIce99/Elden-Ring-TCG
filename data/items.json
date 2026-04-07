@@ -1,0 +1,14 @@
+[
+    {
+        "id": 110,
+        "name": "Memory of Grace",
+        "desc": "Give up and return to the home. You'll lose your runes.",
+        "gamedesc": "The memory of first grace, \nwhich once guided bygone Tarnished to the Lands Between.\n\nLose all runes and return to last site of grace visited.\n\nIt is merely a cycle.\nStand before the Elden Ring. Become the Elden Lord.",
+        "img" : "https://eldenring.wiki.fextralife.com/file/Elden-Ring/memory_of_grace_elden_ring_wiki_guide_200px.png",
+        "consumable": 0,
+        "dupl": 0,
+        "find": 0,
+        "rarity": "Com",
+        "banner": "1 West Limgrave"
+    }
+]

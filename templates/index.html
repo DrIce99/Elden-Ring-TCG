@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Elden Ring Wiki ITA</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 20px; }
+        .boss-card { border: 1px solid #c9a227; margin-bottom: 20px; padding: 15px; border-radius: 8px; display: flex; gap: 20px; }
+        img { width: 200px; border-radius: 5px; }
+        h2 { color: #c9a227; }
+    </style>
+</head>
+<body>
+    <h1>Wiki dei Boss di Elden Ring</h1>
+    {% for boss in bosses %}
+    <div class="boss-card">
+        <img src="{{ boss.immagine }}" alt="{{ boss.nome }}">
+        <div>
+            <h2>{{ boss.nome }}</h2>
+            <p><strong>Posizione:</strong> {{ boss.location }}</p>
+            <p>{{ boss.descrizione }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>

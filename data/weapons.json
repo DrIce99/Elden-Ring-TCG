@@ -1,0 +1,91 @@
+[
+    {
+        "id": 118,
+        "name": "Varré's Bouquet",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/varres_bouquet_elden_ring_wiki_guide_200px.png",
+        "desc": "A steel mace resembling a charming bouquet of roses. Each petal has a sharpened edge, leaving the roses perpetually colored with blood.\n\nThis weapon reflects White Mask Varré's manner of speech rather well, enticing in its splendor, but full of deadly consequence.",
+        "attack": [
+            {
+                "name": "Phy",
+                "amount": 46
+            },
+            {
+                "name": "Mag",
+                "amount": 0
+            },
+            {
+                "name": "Fire",
+                "amount": 0
+            },
+            {
+                "name": "Ligt",
+                "amount": 0
+            },
+            {
+                "name": "Holy",
+                "amount": 0
+            },
+            {
+                "name": "Crit",
+                "amount": 100
+            }
+        ],
+        "defence": [
+            {
+                "name": "Phy",
+                "amount": 38
+            },
+            {
+                "name": "Mag",
+                "amount": 25
+            },
+            {
+                "name": "Fire",
+                "amount": 25
+            },
+            {
+                "name": "Ligt",
+                "amount": 25
+            },
+            {
+                "name": "Holy",
+                "amount": 25
+            }
+        ],
+        "scalesWith": [
+            {
+                "name": "Str",
+                "scaling": "E"
+            },
+            {
+                "name": "Dex",
+                "scaling": "D"
+            },
+            {
+                "name": "Arc",
+                "scaling": "C"
+            }
+        ],
+        "requiredAttributes": [
+            {
+                "name": "Str",
+                "amount": 8
+            },
+            {
+                "name": "Dex",
+                "amount": 16
+            },
+            {
+                "name": "Arc",
+                "amount": 24
+            }
+        ],
+        "category": "Hammer",
+        "weight": 5.5,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "",
+        "banner": "22 Mohgwyn's Dynasty"
+    }
+]

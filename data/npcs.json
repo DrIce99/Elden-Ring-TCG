@@ -1,0 +1,73 @@
+[
+    {
+        "id": 113,
+        "name": "White Mask Varré",
+        "desc": "",
+        "gamedesc": "Oh yes... Tarnished, are we? Come to the Lands Between for the Elden Ring, hmm?\nOf course you have. No shame in it.\nUnfortunately for you, however, you are maidenless.",
+        "img" : "https://eldenring.wiki.fextralife.com/file/Elden-Ring/varre-art-elden-ring-wiki-300px.jpg",
+        "bg": "https://preview.redd.it/white-mask-varre-via-v0-zrrqvovht03b1.jpg?width=640&crop=smart&auto=webp&s=fee214bd7557abb21c67086e30f5a7a07f326716",
+        "dupl": 1,
+        "find": 1,
+        "support": 0,
+        "items": [
+            {
+                "id": "118",
+                "name": "Varré's Bouquet"
+            },
+            {
+                "id": "",
+                "name": ""
+            },
+            {
+                "id": "",
+                "name": ""
+            },
+            {
+                "id": "",
+                "name": ""
+            },
+            {
+                "id": "",
+                "name": ""
+            }
+        ],
+        "loot": 500,
+        "rarity": "",
+        "banner": "1 West Limgrave"
+    },
+    {
+        "id": 213,
+        "name": "Merchant Kale",
+        "desc": "",
+        "gamedesc": "Oh yes... Tarnished, are we? Come to the Lands Between for the Elden Ring, hmm?\nOf course you have. No shame in it.\nUnfortunately for you, however, you are maidenless.",
+        "img" : "",
+        "dupl": 1,
+        "find": 1,
+        "support": 0,
+        "items": [
+            {
+                "id": "118",
+                "name": "Varré's Bouquet"
+            },
+            {
+                "id": "",
+                "name": ""
+            },
+            {
+                "id": "",
+                "name": ""
+            },
+            {
+                "id": "",
+                "name": ""
+            },
+            {
+                "id": "",
+                "name": ""
+            }
+        ],
+        "loot": 500,
+        "rarity": "",
+        "banner": "1 West Limgrave"
+    }
+]
