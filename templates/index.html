@@ -1,26 +1,138 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
-    <title>Elden Ring Wiki ITA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Gacha Database</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 20px; }
-        .boss-card { border: 1px solid #c9a227; margin-bottom: 20px; padding: 15px; border-radius: 8px; display: flex; gap: 20px; }
-        img { width: 200px; border-radius: 5px; }
-        h2 { color: #c9a227; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
+            color: #eaeaea;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .gold {
+            background: linear-gradient(135deg, #f5d06f, #c89b2f);
+            -webkit-background-clip: text;
+            background-clip: border-box;
+            -webkit-text-fill-color: black;
+        }
+
+        .card-hover {
+            transition: all 0.25s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: rgba(245, 208, 111, 0.4);
+        }
+
+        .stat-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
     </style>
 </head>
-<body>
-    <h1>Wiki dei Boss di Elden Ring</h1>
-    {% for boss in bosses %}
-    <div class="boss-card">
-        <img src="{{ boss.immagine }}" alt="{{ boss.nome }}">
-        <div>
-            <h2>{{ boss.nome }}</h2>
-            <p><strong>Posizione:</strong> {{ boss.location }}</p>
-            <p>{{ boss.descrizione }}</p>
+
+<body class="p-6">
+
+    <!-- HEADER -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <h1 class="text-5xl font-bold gold mb-3">ER GACHA DATABASE</h1>
+        <p class="text-xs uppercase tracking-[0.3em] opacity-50">Dev Tool • Area Mapping</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto">
+
+        <!-- FILTER BAR -->
+        <div class="glass p-6 rounded-2xl mb-10 shadow-xl">
+            <form method="GET" class="grid md:grid-cols-3 gap-6">
+
+                <div>
+                    <label class="text-xs uppercase opacity-60 mb-2 block">Categoria</label>
+                    <select name="category"
+                        class="w-full bg-black/40 border border-white/10 p-3 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                        <option value="">Seleziona...</option>
+                        <option value="all">TUTTO</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-xs uppercase opacity-60 mb-2 block">Area</label>
+                    <input type="text" name="area" placeholder="es. Limgrave"
+                        class="w-full bg-black/40 border border-white/10 p-3 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                </div>
+
+                <button type="submit"
+                    class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-lg px-6 py-3 hover:scale-105 transition">
+                    Filtra
+                </button>
+
+            </form>
         </div>
-    </div>
-    {% endfor %}
+
+        <div class="flex justify-end mb-6 gap-2">
+            <button onclick="setView('extended')" class="px-4 py-2 bg-white/10 rounded">Estesa</button>
+            <button onclick="setView('card')" class="px-4 py-2 bg-white/10 rounded">Carte</button>
+        </div>
+
+        <!-- 2. CONTAINER -->
+        <div id="itemsContainer" class="space-y-6">
+        </div>
+
+        <!-- 3. JS VIEW SWITCH -->
+        <script>
+        function setView(mode) {
+            const extended = document.querySelectorAll('.extended-view');
+            const cards = document.querySelectorAll('.card-view');
+            const container = document.getElementById('itemsContainer');
+
+            if (mode === 'card') {
+                container.classList.remove('space-y-6');
+                container.classList.add('grid', 'grid-cols-2', 'md:grid-cols-4', 'gap-4');
+
+                extended.forEach(el => el.classList.add('hidden'));
+                cards.forEach(el => el.classList.remove('hidden'));
+            } else {
+                container.classList.add('space-y-6');
+                container.classList.remove('grid', 'grid-cols-2', 'md:grid-cols-4', 'gap-4');
+
+                extended.forEach(el => el.classList.remove('hidden'));
+                cards.forEach(el => el.classList.add('hidden'));
+            }
+        }
+        </script>
+
+    </main>
+
 </body>
+
 </html>

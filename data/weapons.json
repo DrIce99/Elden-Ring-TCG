@@ -80,8 +80,20 @@
                 "amount": 24
             }
         ],
+        "attacks": {
+            "lightDmg": 142,
+            "heavyDmg": 210
+        },
         "category": "Hammer",
-        "weight": 5.5,
+        "atktype": "Strike",
+        "passives": [
+            {
+                "type": "Bleed",
+                "amount": 35
+            }
+        ],
+        "weight": 2.0,
+        "range": 1,
         "consumable": 0,
         "dupl": 1,
         "find": 1,

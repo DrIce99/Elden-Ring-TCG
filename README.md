@@ -58,12 +58,19 @@ Ogni giocatore dispone di:
 * Economia delle Rune: Uccidere una carta nemica conferisce "Loot" (Rune dirette al player), mentre i colpi ai danni del giocatore sottraggono le "Rune in palio".
 * Lacrime: Non possono agire da sole, devono avere una classe in campo.
 * Lacrima Riflessa: Eredita le statistiche dalla classe più forte in campo.
+* Gli attacchi leggeri e le stregonerie non hanno bisogno di cariche per attaccare
+* Gli attacchi pesanti hanno bisogno di almeno una carica per attaccare 
 
 ## Info json:
 
 * All:
     - (Binario) *dupl*: può essere un duplicato
     - (Binario) *find*: può essere trovato nei banner
+* Weapons:
+    - (Intero) *range*: è il raggio:
+        - 1 = mischia singolo
+        - 2 = mischia area
+        - 3 = lungo raggio
 * Positionable cards:
     - (Binario) *support*: è di tipo support
 * Items:

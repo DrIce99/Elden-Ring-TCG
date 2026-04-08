@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: white;
+            font-family: Inter, sans-serif;
+        }
+
+        .card {
+            width: 420px;
+            height: 680px;
+            /* padding: 16px; */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: visible;
+            --border-color: hsl(40, 65%, 80%);
+            border: 1px solid var(--border-color);
+        }
+
+        /* MIDDLE (DEFAULT INVISIBILE) */
+        .card .middle.left.hor {
+            width: 1px;
+            height: 1px;
+            position: relative;
+            top: 50%;
+            bottom: 50%;
+        }
+
+        .card .middle.right.hor {
+            width: 1px;
+            height: 1px;
+            position: relative;
+            top: 50%;
+            bottom: 50%;
+        }
+
+        /* DOPPIO (DEFAULT INVISIBILE) */
+        .card .corner.top1.left1 {
+            visibility: hidden;
+        }
+
+        .card .corner.bottom1.left1 {
+            visibility: hidden;
+        }
+
+        .card .corner.bottom1.right1 {
+            visibility: hidden;
+        }
+
+        .card .corner.top1.right1 {
+            visibility: hidden;
+        }
+
+        /* CORNER BASE */
+        .card .corner {
+            width: 15px;
+            height: 15px;
+            border: 1px solid var(--border-color);
+            position: absolute;
+        }
+
+        .card .corner::after,
+        .card .corner::before {
+            content: "";
+            position: absolute;
+            border-color: var(--border-color);
+            background-color: transparent;
+            border-width: 1px;
+        }
+
+        .card .corner.top {
+            top: -15px;
+        }
+
+        .card .corner.bottom {
+            bottom: -15px;
+        }
+
+        .card .corner.left {
+            left: -15px;
+        }
+
+        .card .corner.right {
+            right: -15px;
+        }
+
+        .card .corner.top.left::after {
+            width: 50px;
+            height: 15px;
+            top: 5px;
+            left: 20px;
+            border-bottom: transparent;
+            border-right: transparent;
+        }
+
+        .card .corner.top.right::after {
+            width: 50px;
+            height: 15px;
+            top: 5px;
+            right: 20px;
+            border-bottom: transparent;
+            border-left: transparent;
+        }
+
+        .card .corner.top.left::before {
+            width: 15px;
+            height: 50px;
+            left: 5px;
+            top: 20px;
+            border-bottom: transparent;
+            border-right: transparent;
+        }
+
+        .card .corner.top.right::before {
+            width: 15px;
+            height: 50px;
+            right: 5px;
+            top: 20px;
+            border-bottom: transparent;
+            border-left: transparent;
+        }
+
+        /* bottom */
+        .card .corner.bottom.left::after {
+            width: 50px;
+            height: 15px;
+            bottom: 5px;
+            left: 20px;
+            border-top: transparent;
+            border-right: transparent;
+        }
+
+        .card .corner.bottom.right::after {
+            width: 50px;
+            height: 15px;
+            bottom: 5px;
+            right: 20px;
+            border-top: transparent;
+            border-left: transparent;
+        }
+
+        .card .corner.bottom.left::before {
+            width: 15px;
+            height: 50px;
+            left: 5px;
+            bottom: 20px;
+            border-top: transparent;
+            border-right: transparent;
+        }
+
+        .card .corner.bottom.right::before {
+            width: 15px;
+            height: 50px;
+            right: 5px;
+            bottom: 20px;
+            border-top: transparent;
+            border-left: transparent;
+        }
+
+        /* RARO */
+
+        .card.rarity-Rar .middle.left.hor {
+            width: 1px;
+            height: 40px;
+            position: absolute;
+            top: calc(50% - 20px);
+            left: -5px;
+            background-color: var(--border-color);
+        }
+
+        .card.rarity-Rar .middle.right.hor {
+            width: 1px;
+            height: 40px;
+            position: absolute;
+            top: calc(50% - 20px);
+            right: -5px;
+            background-color: var(--border-color);
+        }
+
+        .rarity-Rar {
+            --border-color: #5bbcff;
+        }
+
+        .rarity-Rar .card {
+            box-shadow: 0 0 10px rgba(91, 188, 255, 0.3);
+        }
+
+        .rarity-Rar .corner::after,
+        .rarity-Rar .corner::before {
+            opacity: 0.9;
+        }
+
+        /* EPICO */
+
+        .card.rarity-Epi .middle.left.hor {
+            width: 1px;
+            height: 70px;
+            position: absolute;
+            top: calc(50% - 35px);
+            left: -5px;
+            background-color: var(--border-color);
+        }
+
+        .card.rarity-Epi .middle.right.hor {
+            width: 1px;
+            height: 70px;
+            position: absolute;
+            top: calc(50% - 35px);
+            right: -5px;
+            background-color: var(--border-color);
+        }
+
+        .rarity-Epi {
+            --border-color: #b26bff;
+        }
+
+        .rarity-Epi .card {
+            box-shadow: 0 0 20px rgba(178, 107, 255, 0.4);
+        }
+
+        .rarity-Epi .card::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border: 1px solid rgba(178, 107, 255, 0.3);
+            pointer-events: none;
+        }
+
+        .card.rarity-Epi .corner.top1 {
+            top: -10px;
+        }
+
+        .card.rarity-Epi .corner.bottom1 {
+            bottom: -10px;
+        }
+
+        .card.rarity-Epi .corner.left1 {
+            left: -10px;
+        }
+
+        .card.rarity-Epi .corner.right1 {
+            right: -10px;
+        }
+
+        .card.rarity-Epi .corner.top1.left1::after {
+            width: 100px;
+            height: 15px;
+            top: 5px;
+            left: 20px;
+            border-bottom: transparent;
+            border-right: transparent;
+        }
+
+        .card.rarity-Epi .corner.top1.right1::after {
+            width: 100px;
+            height: 15px;
+            top: 5px;
+            right: 20px;
+            border-bottom: transparent;
+            border-left: transparent;
+        }
+
+        .card.rarity-Epi .corner.top1.left1::before {
+            width: 15px;
+            height: 120px;
+            left: 5px;
+            top: 20px;
+            border-bottom: transparent;
+            border-right: transparent;
+        }
+
+        .card.rarity-Epi .corner.top1.right1::before {
+            width: 15px;
+            height: 120px;
+            right: 5px;
+            top: 20px;
+            border-bottom: transparent;
+            border-left: transparent;
+        }
+
+        /* bottom */
+        .card.rarity-Epi .corner.bottom1.left1::after {
+            width: 100px;
+            height: 15px;
+            bottom: 5px;
+            left: 20px;
+            border-top: transparent;
+            border-right: transparent;
+        }
+
+        .card.rarity-Epi .corner.bottom1.right1::after {
+            width: 100px;
+            height: 15px;
+            bottom: 5px;
+            right: 20px;
+            border-top: transparent;
+            border-left: transparent;
+        }
+
+        .card.rarity-Epi .corner.bottom1.left1::before {
+            width: 15px;
+            height: 120px;
+            left: 5px;
+            bottom: 20px;
+            border-top: transparent;
+            border-right: transparent;
+        }
+
+        .card.rarity-Epi .corner.bottom1.right1::before {
+            width: 15px;
+            height: 120px;
+            right: 5px;
+            bottom: 20px;
+            border-top: transparent;
+            border-left: transparent;
+        }
+
+        .rarity-Leg {
+            --border-color: #f5d36b;
+        }
+
+        .rarity-Leg .card {
+            box-shadow:
+                0 0 20px rgba(245, 211, 107, 0.5),
+                inset 0 0 10px rgba(245, 211, 107, 0.2);
+        }
+
+        .glow-legendary {
+            box-shadow: 0 0 20px rgba(255, 200, 80, 0.5);
+            border-color: gold;
+        }
+
+        .rarity-Leg .corner {
+            width: 20px;
+            height: 20px;
+        }
+
+        .rarity-Leg .corner.top.left::after {
+            width: 80px;
+        }
+
+        .rarity-Epi .corner.top.left::after {
+            width: 60px;
+        }
+
+        .stat {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .card-wrapper {
+            width: 420px;
+            height: 680px;
+            perspective: 1200px;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        .card-wrapper {
+            transform-style: preserve-3d;
+        }
+
+        /* HOVER */
+        .card-wrapper:hover {
+            transform: translateY(-10px) scale(1.35);
+            transition: transform 0.2s ease;
+        }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+        }
+
+        .front {
+            z-index: 2;
+        }
+
+        .card-wrapper.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* BACK */
+
+        .back {
+            transform: rotateY(180deg);
+        }
+
+        .back {
+            position: absolute;
+            inset: 0;
+            display: block;
+            overflow: hidden;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            border: 1px solid hsl(40, 65%, 80%);
+            /* sempre common */
+        }
+
+        .back-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 16px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body class="p-6">
+
+    <!-- TOOLBAR -->
+    <div class="flex justify-center gap-4 mb-8">
+        <a href="/card-designer?type=character">Personaggio</a>
+        <a href="/card-designer?type=weapon">Arma</a>
+    </div>
+
+    <!-- CARD CONTAINER -->
+    <div class="flex justify-center">
+        <div id="cardContainer"></div>
+    </div>
+
+    <script>
+        const ITEM = {{ item | tojson | safe }};
+        const TYPE = "{{ card_type }}";
+    </script>
+
+    <script>
+        let currentType = 'character';
+
+        class Card {
+            constructor(data) {
+                this.data = data || {};
+            }
+
+            renderWeapon() {
+                // FIX: Se l'immagine manca, usa un placeholder
+                const imageSrc = (this.data.img && this.data.img !== "")
+                    ? this.data.img
+                    : "https://placehold.co";
+
+                const typeColors = {
+                    "Phy": "border-gray-500",
+                    "Mag": "border-blue-500",
+                    "Fire": "border-red-600",
+                    "Ligt": "border-yellow-400",
+                    "Holy": "border-yellow-100"
+                };
+
+                const atk = this.data.attack || [];
+                const def = this.data.defence || [];
+
+                const getStat = (list, name) => {
+                    const item = list.find(i => i.name.toLowerCase().startsWith(name.toLowerCase()));
+                    return item ? item.amount : "0";
+                };
+
+                const statsTypes = ["Phy", "Mag", "Fire", "Ligt", "Holy"];
+
+                // 2. Logica attributi (Str, Dex, Int, Fth, Arc)
+                const attributes = ["Str", "Dex", "Int", "Fai", "Arc"];
+                const scaling = this.data.scalesWith || [];
+                const required = this.data.requiredAttributes || [];
+
+                let range = "";
+                if (this.data.range == 1) {
+                    range = "Single";
+                } else if (this.data.range == 2) {
+                    range = "Area";
+                } else {
+                    range = "Ranged";
+                }
+
+                const rarityClass = `rarity-${this.data.rarity || "common"}`;
+                console.log("rarity " + rarityClass )
+
+                const passivesHtml = (this.data.passives && this.data.passives.length > 0)
+                    ? this.data.passives.map(p => `
+        <div class="flex justify-between">
+            <span>${p.type}</span>
+            <span class="opacity-70">${p.amount}</span>
+        </div>
+    `).join("")
+                    : `<div class="opacity-40">None</div>`;
+
+                const attributeSlotsHtml = attributes.map(attr => {
+                    const s = scaling.find(i => i.name.startsWith(attr))?.scaling || "-";
+                    const r = required.find(i => i.name.startsWith(attr))?.amount || "-";
+                    return `
+        <div class="flex-1 border border-[#edd7ab]/40 rounded-lg p-1 flex flex-col items-center justify-center bg-[#1c1b1b]">
+            <div class="text-[8px] text-[#edd7ab] font-bold">${attr.toUpperCase()}</div>
+            <div class="text-[10px] text-white font-bold">${s}</div>
+            <div class="text-[7px] opacity-40">${r}</div>
+        </div>`;
+                }).join("");
+                return `
+    <div class="card-wrapper" onclick="this.classList.toggle('flipped')">
+    <div class="card-inner">
+
+        <!-- FRONT -->
+        <div class="card face front relative ${rarityClass}">
+            <div class="card-content">
+
+                <!-- CORNER -->
+                <div class="corner top left"></div>
+                <div class="corner top right"></div>
+                <div class="corner bottom left"></div>
+                <div class="corner bottom right"></div>
+
+                <div class="corner top1 left1"></div>
+                <div class="corner top1 right1"></div>
+                <div class="corner bottom1 left1"></div>
+                <div class="corner bottom1 right1"></div>
+
+                <div class="middle hor left"></div>
+                <div class="middle hor right"></div>
+        
+        <!-- HEADER: Category a SX, AtkType a DX -->
+        <div class="flex justify-between items-start mb-2">
+            <div class="bg-[#edd7ab] text-[#0a0a0a] px-2 py-0.5 rounded text-[9px] font-bold uppercase">
+                ${this.data.category || '-'}
+            </div>
+            <div class="bg-[#1c1b1b] border border-[#edd7ab] text-[#edd7ab] px-2 py-0.5 rounded text-[9px] font-bold uppercase">
+                ${this.data.atktype || '-'}
+            </div>
+        </div>
+
+        <!-- SEZIONE CENTRALE (Atk | Immagine | Def) -->
+        <div class="flex gap-2 h-64 mb-1">
+            <!-- Colonna ATK con bordi colorati -->
+            <div class="w-1/5 flex flex-col gap-1">
+                <div class="text-center text-[8px] font-bold opacity-50 uppercase">Atk</div>
+                ${statsTypes.map(t => `<div class="bg-[#1c1b1b] border-l-4 ${typeColors[t]} rounded-r h-7 flex items-center justify-center text-[10px] font-mono">${getStat(atk, t)}</div>`).join('')}
+            </div>
+
+            <!-- Immagine -->
+            <div class="flex-1 bg-[#d1d1d10a] rounded-2xl overflow-hidden border border-white/10">
+                <img src="${imageSrc}" class="w-full h-full object-contain p-4">
+            </div>
+
+            <!-- Colonna DEF con bordi colorati -->
+            <div class="w-1/5 flex flex-col gap-1">
+                <div class="text-center text-[8px] font-bold opacity-50 uppercase">Def</div>
+                ${statsTypes.map(t => `<div class="bg-[#1c1b1b] border-r-4 ${typeColors[t]} rounded-l h-7 flex items-center justify-center text-[10px] font-mono">${getStat(def, t)}</div>`).join('')}
+            </div>
+        </div>
+
+        <!-- Barra Grigia (Weight e Range) -->
+        <div class="flex gap-2 mb-4 px-1">
+            <div class="w-1/5 bg-white/10 rounded h-5 flex items-center justify-center text-[9px]">W: ${this.data.weight || '-'}</div>
+            <div class="flex-1"></div>
+            <div class="w-1/5 bg-white/10 rounded h-5 flex items-center justify-center text-[9px]">R: ${range || '-'}</div>
+        </div>
+
+        <!-- 5 Slot Attributi -->
+        <div class="flex gap-1 mb-4">
+            ${attributeSlotsHtml}
+        </div>
+
+        <!-- NOME -->
+        <div class="mb-4">
+            <div class="h-[1px] bg-[#edd7ab] w-full opacity-50"></div>
+            <h2 class="text-xl font-bold text-center py-1 uppercase tracking-widest text-[#edd7ab]">${this.data.name}</h2>
+            <div class="h-[1px] bg-[#edd7ab] w-full opacity-50"></div>
+        </div>
+
+        <!-- Game Description -->
+        <div class="flex-1 mb-4 px-2">
+            <p class="text-[10px] leading-tight italic opacity-60 text-center">${this.data.desc || '...'}</p>
+        </div>
+
+        <!-- Attacchi (Mostra Danno) -->
+        <div class="flex gap-2 mb-2">
+            <div class="flex-1 border border-[#edd7ab]/40 rounded-lg p-2 bg-[#1c1b1b]">
+                <div class="text-[7px] text-[#edd7ab] font-bold uppercase">Light Atk</div>
+                <div class="text-sm font-bold text-white">${this.data.attacks?.lightDmg || '0'}</div>
+            </div>
+            <div class="flex-1 border border-[#edd7ab]/40 rounded-lg p-2 bg-[#1c1b1b]">
+                <div class="text-[7px] text-[#edd7ab] font-bold uppercase">Heavy Atk</div>
+                <div class="text-sm font-bold text-white">${this.data.attacks?.heavyDmg || '0'}</div>
+            </div>
+        </div>
+
+        <!-- Passive Effects (Rettangolo Rosso) -->
+        <div class="border border-red-900/40 bg-red-950/20 rounded-lg p-2 mb-1">
+            <div class="text-[7px] text-red-400 font-bold uppercase">Passive Effects</div>
+            <div class="text-[10px] text-red-100/90">
+                ${passivesHtml}
+            </div>
+        </div>
+
+        <div class="flex justify-between items-end mt-4 px-1 opacity-40">
+            <div class="text-[10px]"></div>
+        <div class="text-right text-[10px]">ID: ${this.data.id}</div>
+        </div></div></div>
+        <!-- BACK -->
+        <div class="card face back">
+            <div class="corner top left"></div>
+            <div class="corner top right"></div>
+            <div class="corner bottom left"></div>
+            <div class="corner bottom right"></div>
+            <div class="corner top1 left1"></div>
+            <div class="corner top1 right1"></div>
+            <div class="corner bottom1 left1"></div>
+            <div class="corner bottom1 right1"></div>
+            <img src="/static/src/page_bg_raw.jpg" class="back-img">
+        </div>
+        </div>
+    </div>`;
+            }
+
+            renderCharacter() {
+                // Dividiamo gli oggetti per tipo: 
+                // Assumiamo che i primi 3 siano armi/item e i successivi armatura (o logica simile)
+                const imageSrc = (this.data.img && this.data.img !== "")
+                    ? this.data.img
+                    : "https://placehold.co";
+
+                const allItems = this.data.items || [];
+
+                // Filtra slot vuoti ed evita crash se items non è un array
+                const validItems = Array.isArray(allItems) ? allItems.filter(i => i.name && i.name !== "") : [];
+
+                const leftColumn = validItems.slice(0, 3);
+                const rightColumn = validItems.slice(3, 6);
+
+                // Riempie fino a 3 slot per colonna
+                const fill = (arr) => {
+                    while (arr.length < 3) arr.push({ name: "" });
+                    return arr;
+                };
+
+                const type = this.data.support == 1 ? "#89dcac" : "#edd7ab";
+
+                const finalLeft = fill(leftColumn);
+                const finalRight = fill(rightColumn);
+
+                const rarityClass = `rarity-${this.data.rarity || "common"}`;
+
+                console.log(this.data.bg);
+
+                return `
+    <div class="card-wrapper" onclick="this.classList.toggle('flipped')">
+        <div class="card-inner">
+        <div class="card face front relative ${rarityClass}">
+        <div class="card-content">
+            <div style="position:absolute; width:100%;height:100%; top:0px;left:0px; background:url('${this.data.bg}'); background-size:cover; background-position:center; mask-image:linear-gradient(to bottom, transparent 50%, #00000047);"></div>
+            <div class="corner top left"></div>
+            <div class="corner top right"></div>
+            <div class="corner bottom left"></div>
+            <div class="corner bottom right"></div>
+            <div class="corner top1 left1"></div>
+            <div class="corner top1 right1"></div>
+            <div class="corner bottom1 left1"></div>
+            <div class="corner bottom1 right1"></div>
+
+            <div class="middle hor left"></div>
+            <div class="middle hor right"></div>
+
+            <div class="middle ver left"></div>
+            <div class="middle ver right"></div>
+            
+            <!-- HEADER (HP e Slot Vuoto per Star-up) -->
+            <div class="flex justify-between items-start mb-2 px-1">
+                <div class="bg-[#1c1b1b] border border-[#edd7ab]/50 rounded-lg px-4 py-1 text-[#edd7ab] font-bold text-sm">
+                    HP ${this.data.hp || '---'}
+                </div>
+                <div class="bg-[#1c1b1b] border border-[#edd7ab]/30 rounded-lg w-16 h-8 opacity-40">
+                    <!-- Spazio per Star-up futuro -->
+                </div>
+            </div>
+
+            <!-- SEZIONE CENTRALE (3 Colonne) -->
+            <div class="flex gap-2 h-64 mb-4">
+                <!-- COLONNA SX: ARMI / ITEMS -->
+                <div class="w-1/4 bg-[#1c1b1b]/80 border border-white/10 rounded-xl p-2 flex flex-col gap-2">
+                    ${finalLeft.map(item => item.name ?
+                    `<div class="text-[9px] leading-tight opacity-80 border-b border-white/5 pb-1">${item.name}</div>` :
+                    `<div class="h-4 bg-white/5 rounded"></div>`).join('')}
+                </div>
+
+                <!-- CENTRO: IMMAGINE -->
+                <div class="flex-1 bg-[#d1d1d1] rounded-2xl overflow-hidden shadow-inner">
+                    <img src="${this.data.img}" class="w-full h-full object-cover">
+                </div>
+
+                <!-- COLONNA DX: ARMATURA -->
+                <div class="w-1/4 bg-[#1c1b1b]/80 border border-white/10 rounded-xl p-2 flex flex-col gap-2">
+                    ${finalRight.map(item => item.name ?
+                        `<div class="text-[9px] leading-tight opacity-80 border-b border-white/5 pb-1">${item.name}</div>` :
+                        `<div class="h-4 bg-white/5 rounded"></div>`).join('')}
+                </div>
+            </div>
+
+            <!-- NOME (Incastonato tra due barre) -->
+            <div class="relative mb-6">
+                <div class="h-[2px] w-full" style="background:${type}"></div>
+                <h2 class="text-2xl font-bold text-center py-1 tracking-wide uppercase">${this.data.name}</h2>
+                <div class="h-[2px] w-full" style="background:${type}"></div>
+            </div>
+
+            <!-- DESCRIZIONI -->
+            <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                <div class="text-xs text-white/90">
+                    ${this.data.desc || ''}
+                </div>
+                <div class="text-[11px] text-white/60 italic leading-relaxed">
+                    ${this.data.gamedesc || ''}
+                </div>
+            </div>
+
+            <!-- FOOTER (Loot e ID) -->
+            <div class="flex justify-between items-end mt-4 px-1 opacity-40">
+                <div class="flex content-between gap-1 align-middle">
+                    <div class="text-[10px] align-middle">Runes: ${this.data.loot || 0}</div>
+                    <div><img src="https://eldenring.wiki.fextralife.com/file/Elden-Ring/runes-currency-elden-ring-wiki-guide-18.png" class="size-3"></div>
+                </div>
+                <div class="text-[10px]">ID: ${this.data.id}</div>
+            </div>
+        </div>
+        </div>
+        
+        <div class="card face back">
+            <div class="corner top left"></div>
+            <div class="corner top right"></div>
+            <div class="corner bottom left"></div>
+            <div class="corner bottom right"></div>
+            <div class="corner top1 left1"></div>
+            <div class="corner top1 right1"></div>
+            <div class="corner bottom1 left1"></div>
+            <div class="corner bottom1 right1"></div>
+            <img src="{{ url_for('static', filename='src/page_bg_raw.jpg') }}" class="back-img">
+        </div>
+        <div>
+        </div>
+    </div>
+    `;
+            };
+        }
+
+
+        function render() {
+            const container = document.getElementById('cardContainer');
+            if (!container) {
+                console.error("Errore: cardContainer non trovato!");
+                return;
+            }
+
+            const card = new Card(ITEM);
+
+            // Debug: vediamo cosa sta cercando di renderizzare
+            console.log("Rendering type:", TYPE);
+            console.log("Item data:", ITEM);
+
+            if (TYPE === 'character') {
+                container.innerHTML = card.renderCharacter();
+            } else {
+                container.innerHTML = card.renderWeapon();
+            }
+        }
+
+        function setType(type) {
+            currentType = type;
+            render();
+        }
+
+        render();
+        console.log(typeof ITEM);
+    </script>
+
+</body>
+
+</html>

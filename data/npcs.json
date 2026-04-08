@@ -12,11 +12,27 @@
         "items": [
             {
                 "id": "118",
-                "name": "Varré's Bouquet"
+                "name": "Varré's Bouquet",
+                "lvl": 18
             },
             {
-                "id": "",
-                "name": ""
+                "id": "218",
+                "name": "Finger Seal",
+                "lvl": 4,
+                "spells": [
+                    {
+                        "id": "109",
+                        "name": "Catch Flame"
+                    }                    
+                ]
+            },
+            {
+                "id": "210",
+                "name": "Flask of Crimson Tears"
+            },
+            {
+                "id": "108",
+                "name": "White Mask"
             },
             {
                 "id": "",
@@ -31,43 +47,24 @@
                 "name": ""
             }
         ],
-        "loot": 500,
-        "rarity": "",
+        "hp": "5868",
+        "loot": 6439,
+        "rarity": "Epi",
         "banner": "1 West Limgrave"
     },
     {
         "id": 213,
         "name": "Merchant Kale",
-        "desc": "",
-        "gamedesc": "Oh yes... Tarnished, are we? Come to the Lands Between for the Elden Ring, hmm?\nOf course you have. No shame in it.\nUnfortunately for you, however, you are maidenless.",
-        "img" : "",
+        "desc": "At the start of every phase 2, choose a card to draw from your deck, then shuffle it.",
+        "gamedesc": "You are a Tarnished, I can see it. And I can also see... That you're not after my throat.\nThen why not purchase a little something?",
+        "img" : "https://static.wikia.nocookie.net/eldenring/images/c/cf/ER_NPC_Closeup_Kal%C3%A9.png/revision/latest?cb=20230712225834",
+        "bg": "",
         "dupl": 1,
         "find": 1,
-        "support": 0,
-        "items": [
-            {
-                "id": "118",
-                "name": "Varré's Bouquet"
-            },
-            {
-                "id": "",
-                "name": ""
-            },
-            {
-                "id": "",
-                "name": ""
-            },
-            {
-                "id": "",
-                "name": ""
-            },
-            {
-                "id": "",
-                "name": ""
-            }
-        ],
-        "loot": 500,
-        "rarity": "",
+        "support": 1,
+        "hp": "0",
+        "loot": 0,
+        "rarity": "Rar",
         "banner": "1 West Limgrave"
     }
 ]
