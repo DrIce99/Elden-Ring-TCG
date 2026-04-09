@@ -9,7 +9,8 @@ Il gioco si divide in due anime:
    4. La competitiva è suddivisa in arene in base al numero di coppe (non si può scendere sotto l'arena "checkpoint")
 
 ------------------------------
-## 🎮 Meccaniche di Gioco (Gameplay)## Setup della Partita
+## 🎮 Meccaniche di Gioco (Gameplay)
+## Setup della Partita
 
 * Scommessa iniziale: I giocatori mettono in palio un numero di Rune (max 75% del patrimonio del giocatore più povero). La media delle scommesse diventa l'HP del Player.
 * Lancio della Moneta: Marika o Radagon decide chi inizia.
