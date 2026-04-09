@@ -7,10 +7,12 @@
     <title>Card Designer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
         body {
             background: #0a0a0a;
             color: white;
-            font-family: Inter, sans-serif;
+            font-family: "Cinzel", serif;
         }
 
         .card {
@@ -201,6 +203,24 @@
 
         /* EPICO */
 
+        .card.rarity-Epi .middle.left.ver {
+            width: 50px;
+            height: 1px;
+            position: absolute;
+            top: calc(50% - 35px);
+            left: -5px;
+            background-color: var(--border-color);
+        }
+
+        .card.rarity-Epi .middle.right.ver {
+            width: 50px;
+            height: 1px;
+            position: absolute;
+            top: calc(50% - 35px);
+            right: -5px;
+            background-color: var(--border-color);
+        }
+
         .card.rarity-Epi .middle.left.hor {
             width: 1px;
             height: 70px;
@@ -237,18 +257,22 @@
 
         .card.rarity-Epi .corner.top1 {
             top: -10px;
+            visibility: visible;
         }
 
         .card.rarity-Epi .corner.bottom1 {
             bottom: -10px;
+            visibility: visible;
         }
 
         .card.rarity-Epi .corner.left1 {
             left: -10px;
+            visibility: visible;
         }
 
         .card.rarity-Epi .corner.right1 {
             right: -10px;
+            visibility: visible;
         }
 
         .card.rarity-Epi .corner.top1.left1::after {
@@ -411,8 +435,16 @@
             justify-content: center;
             align-items: center;
             background: #111;
-            border: 1px solid hsl(40, 65%, 80%);
+            border: 15px solid #968d77;
+            border-radius: 15px;
             /* sempre common */
+        }
+
+        .back::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 30px 30px rgba(0, 0, 0, 0.8);
         }
 
         .back-img {
@@ -428,6 +460,72 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            background-color: #0a0a0a;
+        }
+
+        .name-banner {
+            /* Dimensioni del ritaglio basate sulle coordinate fornite */
+            width: 100%;
+            /* Si adatta al contenitore della carta */
+            height: 82px;
+            /* Altezza stimata del rettangolo nero nello sprite */
+            top: -10px;
+
+            background-repeat: no-repeat;
+
+            /* 
+            Spostiamo l'immagine in alto a sinistra (0,0). 
+            background-size deve essere proporzionato alla larghezza totale 
+            dello sprite originale per mantenere le proporzioni.
+            */
+            background-image: url('static/src/misc/SB_MainMenu_02.png');
+            background-position: 0px 0px;
+            background-size: 580px 1000px;
+
+
+            /* Centratura del testo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ninepatch {
+            /* 1. Definiamo lo spessore visivo del bordo (quello che non deve stretchare) */
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+
+            /* 2. Applichiamo la "Nine-Patch" */
+            border-image-source: url('static/src/misc/NinePatchRect.png');
+            
+            /* 3. Lo 'slice': indica a che distanza dai bordi tagliare (in pixel nell'immagine originale) */
+            /* Se i tuoi angoli decorati sono grandi 40px, metti 40. 
+            Il comando 'fill' serve a mantenere visibile anche il centro del rettangolo */
+            border-image-slice: 40 fill;
+            
+            /* 4. Come gestire i segmenti centrali (gli spigoli): 
+            'repeat' o 'round' (ripete senza tagliare) invece di stretch */
+            border-image-repeat: repeat;
+            
+            /* Layout del testo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+            color: #edd7ab;
+            padding: 10px;
+        }
+        
+        .topprpr {
+            width: 100%;
+            height: 35px;
+
+            background-repeat: no-repeat;
+            background-image: url('static/src/misc/SB_Chara.png');
+            background-position: 0px 0px;
+            background-size: 100% 315px;
         }
     </style>
 </head>
@@ -497,13 +595,14 @@
                 }
 
                 const rarityClass = `rarity-${this.data.rarity || "common"}`;
-                console.log("rarity " + rarityClass )
+                
+                const cardType = "WEAPON";
 
                 const passivesHtml = (this.data.passives && this.data.passives.length > 0)
                     ? this.data.passives.map(p => `
         <div class="flex justify-between">
             <span>${p.type}</span>
-            <span class="opacity-70">${p.amount}</span>
+            <span class="opacity-70">${p.amount}%</span>
         </div>
     `).join("")
                     : `<div class="opacity-40">None</div>`;
@@ -541,11 +640,14 @@
                 <div class="middle hor right"></div>
         
         <!-- HEADER: Category a SX, AtkType a DX -->
-        <div class="flex justify-between items-start mb-2">
-            <div class="bg-[#edd7ab] text-[#0a0a0a] px-2 py-0.5 rounded text-[9px] font-bold uppercase">
+        <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
+            <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;">
                 ${this.data.category || '-'}
             </div>
-            <div class="bg-[#1c1b1b] border border-[#edd7ab] text-[#edd7ab] px-2 py-0.5 rounded text-[9px] font-bold uppercase">
+            <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
+                ${cardType}    
+            </div>
+            <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;">
                 ${this.data.atktype || '-'}
             </div>
         </div>
@@ -554,9 +656,10 @@
         <div class="flex gap-2 h-64 mb-1">
             <!-- Colonna ATK con bordi colorati -->
             <div class="w-1/5 flex flex-col gap-1">
-                <div class="text-center text-[8px] font-bold opacity-50 uppercase">Atk</div>
-                ${statsTypes.map(t => `<div class="bg-[#1c1b1b] border-l-4 ${typeColors[t]} rounded-r h-7 flex items-center justify-center text-[10px] font-mono">${getStat(atk, t)}</div>`).join('')}
-            </div>
+                <div class="text-center text-[10px] font-bold opacity-50 uppercase">Atk</div>
+                ${statsTypes.map(t => `<div class="bg-[#1c1b1b] border-l-4 ${typeColors[t]} rounded-r h-7 flex items-center justify-center text-[10px]">${getStat(atk, t)}</div>`).join('')}
+                <div class="bg-white/10 rounded h-5 flex items-center justify-center text-[9px] mt-10">W: ${this.data.weight || '-'}</div>
+                </div>
 
             <!-- Immagine -->
             <div class="flex-1 bg-[#d1d1d10a] rounded-2xl overflow-hidden border border-white/10">
@@ -565,16 +668,17 @@
 
             <!-- Colonna DEF con bordi colorati -->
             <div class="w-1/5 flex flex-col gap-1">
-                <div class="text-center text-[8px] font-bold opacity-50 uppercase">Def</div>
-                ${statsTypes.map(t => `<div class="bg-[#1c1b1b] border-r-4 ${typeColors[t]} rounded-l h-7 flex items-center justify-center text-[10px] font-mono">${getStat(def, t)}</div>`).join('')}
+                <div class="text-center text-[10px] font-bold opacity-50 uppercase">Def</div>
+                ${statsTypes.map(t => `<div class="bg-[#1c1b1b] border-r-4 ${typeColors[t]} rounded-l h-7 flex items-center justify-center text-[10px]">${getStat(def, t)}</div>`).join('')}
+                <div class="bg-white/10 rounded h-5 flex items-center justify-center text-[9px] mt-10">R: ${range || '-'}</div>
             </div>
         </div>
 
         <!-- Barra Grigia (Weight e Range) -->
-        <div class="flex gap-2 mb-4 px-1">
-            <div class="w-1/5 bg-white/10 rounded h-5 flex items-center justify-center text-[9px]">W: ${this.data.weight || '-'}</div>
+        <div class="flex gap-2 mb-4 px-1" style="top:-20px;">
+            
             <div class="flex-1"></div>
-            <div class="w-1/5 bg-white/10 rounded h-5 flex items-center justify-center text-[9px]">R: ${range || '-'}</div>
+            
         </div>
 
         <!-- 5 Slot Attributi -->
@@ -583,10 +687,10 @@
         </div>
 
         <!-- NOME -->
-        <div class="mb-4">
-            <div class="h-[1px] bg-[#edd7ab] w-full opacity-50"></div>
-            <h2 class="text-xl font-bold text-center py-1 uppercase tracking-widest text-[#edd7ab]">${this.data.name}</h2>
-            <div class="h-[1px] bg-[#edd7ab] w-full opacity-50"></div>
+        <div class="relative mb-6" style="">
+            <div class="name-banner flex items-center justify-center">
+                <h2 class="text-2xl font-bold text-center py-1 tracking-wide uppercase">${this.data.name}</h2>
+            </div>
         </div>
 
         <!-- Game Description -->
@@ -655,21 +759,37 @@
                     return arr;
                 };
 
-                const type = this.data.support == 1 ? "#89dcac" : "#edd7ab";
+                const type = this.data.support == 1 ? "filter: hue-rotate(108deg);" : "filter: hue-rotate(0deg);";
 
                 const finalLeft = fill(leftColumn);
                 const finalRight = fill(rightColumn);
 
                 const rarityClass = `rarity-${this.data.rarity || "common"}`;
 
+                let desc = "";
+                if (this.data.desc != "") {
+                    desc = `
+                    <div class="text-xs text-white/90" style="text-align: justify;text-justify:inter-word; background:transparent;">
+                        ${this.data.desc || ''}
+                    </div>
+                    `;
+                }
+
+                const gameDesc = "";
+
                 console.log(this.data.bg);
+
+                const cardType = "NPC";
+
+                // Per leggendaria:
+                // <div class="middle ver left"></div>
+                // <div class="middle ver right"></div>
 
                 return `
     <div class="card-wrapper" onclick="this.classList.toggle('flipped')">
         <div class="card-inner">
         <div class="card face front relative ${rarityClass}">
         <div class="card-content">
-            <div style="position:absolute; width:100%;height:100%; top:0px;left:0px; background:url('${this.data.bg}'); background-size:cover; background-position:center; mask-image:linear-gradient(to bottom, transparent 50%, #00000047);"></div>
             <div class="corner top left"></div>
             <div class="corner top right"></div>
             <div class="corner bottom left"></div>
@@ -681,22 +801,24 @@
 
             <div class="middle hor left"></div>
             <div class="middle hor right"></div>
-
-            <div class="middle ver left"></div>
-            <div class="middle ver right"></div>
             
             <!-- HEADER (HP e Slot Vuoto per Star-up) -->
-            <div class="flex justify-between items-start mb-2 px-1">
-                <div class="bg-[#1c1b1b] border border-[#edd7ab]/50 rounded-lg px-4 py-1 text-[#edd7ab] font-bold text-sm">
-                    HP ${this.data.hp || '---'}
+            <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
+                <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="display:flex;justify-content:space-between;box-shadow:inset 0 0 30px 30px rgba(0, 0, 0, 0, 0);">
+                    <div>HP </div> 
+                    <div>${this.data.hp || '---'}</div>
                 </div>
-                <div class="bg-[#1c1b1b] border border-[#edd7ab]/30 rounded-lg w-16 h-8 opacity-40">
-                    <!-- Spazio per Star-up futuro -->
+                <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
+                    ${cardType}    
+                </div>
+                <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align: right;  style="display:flex;justify-content:space-between;">
+                    <div>STARS: </div>
+                    <div></div>
                 </div>
             </div>
 
             <!-- SEZIONE CENTRALE (3 Colonne) -->
-            <div class="flex gap-2 h-64 mb-4">
+            <div class="flex gap-2 h-64 mb-4" style="max-height:80%;">
                 <!-- COLONNA SX: ARMI / ITEMS -->
                 <div class="w-1/4 bg-[#1c1b1b]/80 border border-white/10 rounded-xl p-2 flex flex-col gap-2">
                     ${finalLeft.map(item => item.name ?
@@ -719,25 +841,25 @@
 
             <!-- NOME (Incastonato tra due barre) -->
             <div class="relative mb-6">
-                <div class="h-[2px] w-full" style="background:${type}"></div>
+                <div class="name-banner flex items-center justify-center" style="${type}">
                 <h2 class="text-2xl font-bold text-center py-1 tracking-wide uppercase">${this.data.name}</h2>
-                <div class="h-[2px] w-full" style="background:${type}"></div>
+                </div>
             </div>
 
             <!-- DESCRIZIONI -->
-            <div class="flex-1 space-y-4 px-2 overflow-y-auto">
-                <div class="text-xs text-white/90">
-                    ${this.data.desc || ''}
-                </div>
-                <div class="text-[11px] text-white/60 italic leading-relaxed">
-                    ${this.data.gamedesc || ''}
+            <div class="ninepatch">
+                <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                    ${desc}
+                    <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
+                        ${this.data.gamedesc || ''}
+                    </div>
                 </div>
             </div>
 
             <!-- FOOTER (Loot e ID) -->
             <div class="flex justify-between items-end mt-4 px-1 opacity-40">
                 <div class="flex content-between gap-1 align-middle">
-                    <div class="text-[10px] align-middle">Runes: ${this.data.loot || 0}</div>
+                    <div class="text-[10px] align-middle" style="vertical-align:center;">Runes: ${this.data.loot || 0}</div>
                     <div><img src="https://eldenring.wiki.fextralife.com/file/Elden-Ring/runes-currency-elden-ring-wiki-guide-18.png" class="size-3"></div>
                 </div>
                 <div class="text-[10px]">ID: ${this.data.id}</div>
