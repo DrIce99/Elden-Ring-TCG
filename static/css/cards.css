@@ -1,0 +1,814 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
+body {
+    background: #0a0a0a;
+    color: white;
+    font-family: "Cinzel", serif;
+}
+
+.card {
+    width: 420px;
+    height: 680px;
+    /* padding: 16px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: visible;
+    --border-color: hsl(40, 65%, 80%);
+    border: 1px solid var(--border-color);
+    transform:
+        skewX(var(--skewX, 0deg))
+        skewY(var(--skewY, 0deg))
+        rotateX(var(--rotX, 0deg))
+        rotateY(var(--rotY, 0deg));
+}
+
+/* MIDDLE (DEFAULT INVISIBILE) */
+.card .middle.left.hor {
+    width: 1px;
+    height: 1px;
+    position: relative;
+    top: 50%;
+    bottom: 50%;
+}
+
+.card .middle.right.hor {
+    width: 1px;
+    height: 1px;
+    position: relative;
+    top: 50%;
+    bottom: 50%;
+}
+
+/* DOPPIO (DEFAULT INVISIBILE) */
+.card .corner.top1.left1 {
+    visibility: hidden;
+}
+
+.card .corner.bottom1.left1 {
+    visibility: hidden;
+}
+
+.card .corner.bottom1.right1 {
+    visibility: hidden;
+}
+
+.card .corner.top1.right1 {
+    visibility: hidden;
+}
+
+/* CORNER BASE */
+.card .corner {
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--border-color);
+    position: absolute;
+}
+
+.card .corner::after,
+.card .corner::before {
+    content: "";
+    position: absolute;
+    border-color: var(--border-color);
+    background-color: transparent;
+    border-width: 1px;
+}
+
+.card .corner.top {
+    top: -15px;
+}
+
+.card .corner.bottom {
+    bottom: -15px;
+}
+
+.card .corner.left {
+    left: -15px;
+}
+
+.card .corner.right {
+    right: -15px;
+}
+
+.card .corner.top.left::after {
+    width: 50px;
+    height: 15px;
+    top: 5px;
+    left: 20px;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.card .corner.top.right::after {
+    width: 50px;
+    height: 15px;
+    top: 5px;
+    right: 20px;
+    border-bottom: transparent;
+    border-left: transparent;
+}
+
+.card .corner.top.left::before {
+    width: 15px;
+    height: 50px;
+    left: 5px;
+    top: 20px;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.card .corner.top.right::before {
+    width: 15px;
+    height: 50px;
+    right: 5px;
+    top: 20px;
+    border-bottom: transparent;
+    border-left: transparent;
+}
+
+/* bottom */
+.card .corner.bottom.left::after {
+    width: 50px;
+    height: 15px;
+    bottom: 5px;
+    left: 20px;
+    border-top: transparent;
+    border-right: transparent;
+}
+
+.card .corner.bottom.right::after {
+    width: 50px;
+    height: 15px;
+    bottom: 5px;
+    right: 20px;
+    border-top: transparent;
+    border-left: transparent;
+}
+
+.card .corner.bottom.left::before {
+    width: 15px;
+    height: 50px;
+    left: 5px;
+    bottom: 20px;
+    border-top: transparent;
+    border-right: transparent;
+}
+
+.card .corner.bottom.right::before {
+    width: 15px;
+    height: 50px;
+    right: 5px;
+    bottom: 20px;
+    border-top: transparent;
+    border-left: transparent;
+}
+
+/* NON COMUNE */
+
+.card.rarity-Unc .middle.left.hor {
+    visibility: hidden;
+    width: 1px;
+    height: 40px;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: -5px;
+    background-color: var(--border-color);
+}
+
+.card.rarity-Unc .middle.right.hor {
+    visibility: hidden;
+    width: 1px;
+    height: 40px;
+    position: absolute;
+    top: calc(50% - 20px);
+    right: -5px;
+    background-color: var(--border-color);
+}
+
+.rarity-Unc {
+    --border-color: rgb(123, 183, 152);
+}
+
+.rarity-Unc .card {
+    box-shadow: 0 0 10px rgba(123, 183, 152, 0.3);
+}
+
+.rarity-Unc .corner::after,
+.rarity-Unc .corner::before {
+    opacity: 0.9;
+}
+
+/* RARO */
+
+.card.rarity-Rar .middle.left.hor {
+    width: 1px;
+    height: 40px;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: -5px;
+    background-color: var(--border-color);
+}
+
+.card.rarity-Rar .middle.right.hor {
+    width: 1px;
+    height: 40px;
+    position: absolute;
+    top: calc(50% - 20px);
+    right: -5px;
+    background-color: var(--border-color);
+}
+
+.rarity-Rar {
+    --border-color: #5bbcff;
+}
+
+.rarity-Rar .card {
+    box-shadow: 0 0 10px rgba(91, 188, 255, 0.3);
+}
+
+.rarity-Rar .corner::after,
+.rarity-Rar .corner::before {
+    opacity: 0.9;
+}
+
+/* EPICO */
+
+.card.rarity-Epi .middle.left.ver {
+    width: 50px;
+    height: 1px;
+    position: absolute;
+    top: calc(50% - 35px);
+    left: -5px;
+    background-color: var(--border-color);
+}
+
+.card.rarity-Epi .middle.right.ver {
+    width: 50px;
+    height: 1px;
+    position: absolute;
+    top: calc(50% - 35px);
+    right: -5px;
+    background-color: var(--border-color);
+}
+
+.card.rarity-Epi .middle.left.hor {
+    width: 1px;
+    height: 70px;
+    position: absolute;
+    top: calc(50% - 35px);
+    left: -5px;
+    background-color: var(--border-color);
+}
+
+.card.rarity-Epi .middle.right.hor {
+    width: 1px;
+    height: 70px;
+    position: absolute;
+    top: calc(50% - 35px);
+    right: -5px;
+    background-color: var(--border-color);
+}
+
+.rarity-Epi {
+    --border-color: #b26bff;
+}
+
+.rarity-Epi .card {
+    box-shadow: 0 0 20px rgba(178, 107, 255, 0.4);
+}
+
+.rarity-Epi .card::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1px solid rgba(178, 107, 255, 0.3);
+    pointer-events: none;
+}
+
+.card.rarity-Epi .corner.top1 {
+    top: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Epi .corner.bottom1 {
+    bottom: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Epi .corner.left1 {
+    left: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Epi .corner.right1 {
+    right: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Epi .corner.top1.left1::after {
+    width: 100px;
+    height: 15px;
+    top: 5px;
+    left: 20px;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Epi .corner.top1.right1::after {
+    width: 100px;
+    height: 15px;
+    top: 5px;
+    right: 20px;
+    border-bottom: transparent;
+    border-left: transparent;
+}
+
+.card.rarity-Epi .corner.top1.left1::before {
+    width: 15px;
+    height: 120px;
+    left: 5px;
+    top: 20px;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Epi .corner.top1.right1::before {
+    width: 15px;
+    height: 120px;
+    right: 5px;
+    top: 20px;
+    border-bottom: transparent;
+    border-left: transparent;
+}
+
+/* bottom */
+.card.rarity-Epi .corner.bottom1.left1::after {
+    width: 100px;
+    height: 15px;
+    bottom: 5px;
+    left: 20px;
+    border-top: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Epi .corner.bottom1.right1::after {
+    width: 100px;
+    height: 15px;
+    bottom: 5px;
+    right: 20px;
+    border-top: transparent;
+    border-left: transparent;
+}
+
+.card.rarity-Epi .corner.bottom1.left1::before {
+    width: 15px;
+    height: 120px;
+    left: 5px;
+    bottom: 20px;
+    border-top: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Epi .corner.bottom1.right1::before {
+    width: 15px;
+    height: 120px;
+    right: 5px;
+    bottom: 20px;
+    border-top: transparent;
+    border-left: transparent;
+}
+
+/* LEGGENDARIO */
+
+.rarity-Leg {
+    --border-color: #f5d36b;
+}
+
+.card.rarity-Leg .middle.left.ver {
+    width: 50px;
+    height: 1px;
+    position: absolute;
+    top: -5px;
+    left: calc(50% - 25px);
+    background-color: var(--border-color);
+}
+
+.card.rarity-Leg .middle.right.ver {
+    width: 50px;
+    height: 1px;
+    position: absolute;
+    bottom: -5px;
+    right: calc(50% - 25px);
+    background-color: var(--border-color);
+}
+
+.card.rarity-Leg .middle.left.hor {
+    width: 1px;
+    height: 100px;
+    position: absolute;
+    top: calc(50% - 50px);
+    left: -5px;
+    background-color: var(--border-color);
+}
+
+.card.rarity-Leg .middle.right.hor {
+    width: 1px;
+    height: 100px;
+    position: absolute;
+    top: calc(50% - 50px);
+    right: -5px;
+    background-color: var(--border-color);
+}
+
+.rarity-Leg .card {
+    box-shadow: 0 0 20px rgba(178, 107, 255, 0.4);
+}
+
+.rarity-Leg .card::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1px solid rgba(178, 107, 255, 0.3);
+    pointer-events: none;
+}
+
+.card.rarity-Leg .corner.top1 {
+    top: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Leg .corner.bottom1 {
+    bottom: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Leg .corner.left1 {
+    left: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Leg .corner.right1 {
+    right: -10px;
+    visibility: visible;
+}
+
+.card.rarity-Leg .corner.top1.left1::after {
+    width: 100px;
+    height: 15px;
+    top: 5px;
+    left: 20px;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Leg .corner.top1.right1::after {
+    width: 100px;
+    height: 15px;
+    top: 5px;
+    right: 20px;
+    border-bottom: transparent;
+    border-left: transparent;
+}
+
+.card.rarity-Leg .corner.top1.left1::before {
+    width: 15px;
+    height: 120px;
+    left: 5px;
+    top: 20px;
+    border-bottom: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Leg .corner.top1.right1::before {
+    width: 15px;
+    height: 120px;
+    right: 5px;
+    top: 20px;
+    border-bottom: transparent;
+    border-left: transparent;
+}
+
+/* bottom */
+.card.rarity-Leg .corner.bottom1.left1::after {
+    width: 100px;
+    height: 15px;
+    bottom: 5px;
+    left: 20px;
+    border-top: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Leg .corner.bottom1.right1::after {
+    width: 100px;
+    height: 15px;
+    bottom: 5px;
+    right: 20px;
+    border-top: transparent;
+    border-left: transparent;
+}
+
+.card.rarity-Leg .corner.bottom1.left1::before {
+    width: 15px;
+    height: 120px;
+    left: 5px;
+    bottom: 20px;
+    border-top: transparent;
+    border-right: transparent;
+}
+
+.card.rarity-Leg .corner.bottom1.right1::before {
+    width: 15px;
+    height: 120px;
+    right: 5px;
+    bottom: 20px;
+    border-top: transparent;
+    border-left: transparent;
+}
+
+.stat {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.card-wrapper {
+    width: 420px;
+    height: 680px;
+    perspective: 1200px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: visible;
+}
+
+.card-wrapper .card {
+    transition: all 0.2s ease;
+    will-change: transform;
+}
+
+.card-wrapper--hovering {
+    transition: none !important;
+}
+
+.card-wrapper--hovering .card {
+    transform-style: preserve-3d;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    will-change: transform;
+}
+
+/* HOVER */
+.card-wrapper:hover {
+    transform: translateY(-10px) scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+.face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+}
+
+.front {
+    z-index: 1;
+}
+
+.card-wrapper.flipped .card-inner {
+    transform: rotateY(180deg) !important;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);;
+}
+
+.card-wrapper.flipped .card {
+    transform: none !important; /* Blocca skew durante flip */
+}
+
+.card-wrapper:not(.flipped) .card {
+    transition: all 0.2s ease;
+    will-change: transform;
+}
+
+.card.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+}
+
+.card-wrapper.flipped .front,
+.card-wrapper.flipped .back {
+    transform: none !important;
+}
+
+/* BACK */
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.back {
+    position: absolute;
+    inset: 0;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    border: 15px solid #968d77;
+    border-radius: 15px;
+    /* sempre common */
+}
+
+.back::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 30px 30px rgba(0, 0, 0, 0.8);
+}
+
+.back-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-content {
+    padding: 16px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #0a0a0a;
+}
+
+.name-banner {
+    /* Dimensioni del ritaglio basate sulle coordinate fornite */
+    width: 100%;
+    /* Si adatta al contenitore della carta */
+    height: 45px;
+
+    background-repeat: no-repeat;
+
+    /* 
+            Spostiamo l'immagine in alto a sinistra (0,0). 
+            background-size deve essere proporzionato alla larghezza totale 
+            dello sprite originale per mantenere le proporzioni.
+            */
+    background-image: url('/static/src/misc/Name_Banner.png');
+    background-size: 100% 100%;
+
+    /* Centratura del testo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ninepatch {
+    /* 1. Definiamo lo spessore visivo del bordo (quello che non deve stretchare) */
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    /* 2. Applichiamo la "Nine-Patch" */
+    border-image-source: url('/static/src/misc/NinePatchRect.png');
+
+    /* 3. Lo 'slice': indica a che distanza dai bordi tagliare (in pixel nell'immagine originale) */
+    /* Se i tuoi angoli decorati sono grandi 40px, metti 40. 
+            Il comando 'fill' serve a mantenere visibile anche il centro del rettangolo */
+    border-image-slice: 40 fill;
+
+    /* 4. Come gestire i segmenti centrali (gli spigoli): 
+            'repeat' o 'round' (ripete senza tagliare) invece di stretch */
+    border-image-repeat: repeat;
+
+    /* Layout del testo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    color: #edd7ab;
+    padding: 10px;
+}
+
+.ninepatchshadow {
+    /* 1. Definiamo lo spessore visivo del bordo (quello che non deve stretchare) */
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    /* 2. Applichiamo la "Nine-Patch" */
+    border-image-source: url('/static/src/misc/Shadow.png');
+
+    /* 3. Lo 'slice': indica a che distanza dai bordi tagliare (in pixel nell'immagine originale) */
+    /* Se i tuoi angoli decorati sono grandi 40px, metti 40. 
+            Il comando 'fill' serve a mantenere visibile anche il centro del rettangolo */
+    border-image-slice: 40 fill;
+
+    filter: brightness(150%);
+
+    /* 4. Come gestire i segmenti centrali (gli spigoli): 
+            'repeat' o 'round' (ripete senza tagliare) invece di stretch */
+    border-image-repeat: repeat;
+
+    /* Layout del testo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    color: #edd7ab;
+    padding: 10px;
+}
+
+.topprpr {
+    width: 100%;
+    height: 35px;
+
+    background-repeat: no-repeat;
+    background-image: url('/static/src/misc/SB_Chara.png');
+    background-position: 0px 0px;
+    background-size: 100% 315px;
+}
+
+.attributes-container {
+    position: absolute;
+    left: -90px;
+    top: 0;
+    width: 80px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+
+    pointer-events: none;
+    z-index: 999;
+}
+
+.card-wrapper:hover .attributes-container {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.balatro-card {
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+    perspective: 1500px; /* Aumentato per evitare tagli */
+}
+
+.balatro-card .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+}
+
+/* Quando girata, ruota l'intero contenitore */
+.balatro-card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.balatro-card .front,
+.balatro-card .back {
+    position: absolute;
+    inset: 0; /* Copre tutto il contenitore */
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+}
+
+/* Il fronte è a Z=1 */
+.balatro-card .front {
+    z-index: 2;
+    opacity: 1;
+}
+.balatro-card.flipped .front {
+    opacity: 0; /* La nascondiamo manualmente quando girata */
+}
+
+/* Il retro è ruotato e posto a Z=-1 rispetto al centro del padre */
+/* Fondamentale: deve avere rotateY(180deg) per essere leggibile dopo il flip */
+.balatro-card .back {
+    z-index: 1;
+    transform: rotateY(180deg);
+    opacity: 0;
+}
+.balatro-card.flipped .back {
+    opacity: 1; /* La mostriamo quando girata */
+    z-index: 3;
+}
