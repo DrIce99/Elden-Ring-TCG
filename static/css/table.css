@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #0a0a0a;
+    font-family: 'Cinzel', sans-serif;
+}
+
+#game-table {
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(20%);
+    background-image: url('');
+    /* Qui caricherai quella casuale */
+    background-size: cover;
+    background-position: center;
+    justify-content: space-between;
+    padding: 50px;
+    box-sizing: border-box;
+    /* Effetto vignettatura per far risaltare il centro */
+    box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.8);
+}
+
+.player-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Battle Slots Row */
+.battlefield-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+}
+
+.battle-slots {
+    display: flex;
+    gap: 10px;
+}
+
+/* Gli Slot */
+.slot {
+    width: 140px;
+    height: 200px;
+    border: 2px dashed rgba(237, 215, 171, 0.2);
+    /* Colore #edd7ab tenue */
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.slot::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #edd7ab;
+    font-size: 20px;
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+
+.slot.graveyard::after {
+    bottom: -60px;
+}
+
+.slot.graveyard.enemy::after {
+    bottom: auto;
+    top: -60px;
+}
+
+.slot.enemy::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: auto;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #edd7ab;
+    font-size: 20px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    transform: rotate(180deg);
+}
+
+/* Zone Speciali */
+.slot.deck {
+    border-style: solid;
+    background: rgba(28, 27, 27, 0.8);
+    overflow: visible !important;
+    perspective: 1000px;
+    position: relative;
+}
+
+.slot.graveyard {
+    border-color: #8b000033;
+}
+
+.slot.support {
+    border-color: #4a90e233;
+}
+
+/* Side Slots (Mazzo/Cimitero) */
+.side-slots {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+}
+
+/* Ribaltamento per l'avversario */
+.opponent {
+    transform: rotate(0deg);
+    /* Se vuoi vederle dritte ma invertite */
+}
+
+.side-slots-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 90vh;
+    flex-grow: 1;
+}
+
+.side-slots-container2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    height: 90vh;
+    flex-grow: 1;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.player-area-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 90vh;
+    flex-grow: 1;
+}
+
+.backgrounder {
+    padding: 20px;
+    margin: 20px;
+    background-color: #050504a0;
+    width: auto;
+    height: auto;
+    border-radius: 15px;
+}
+
+.backgrounder2 {
+    padding: 20px;
+    margin: 20px;
+    width: auto;
+    height: auto;
+    border-radius: 15px;
+}
+
+.deck-card-wrapper {
+    pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.deck-card-wrapper .hand-card-wrapper {
+    width: 140px;  /* La larghezza dello slot */
+    height: 200px; /* L'altezza dello slot */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.deck-card-wrapper .card {
+    width: 100%;
+    height: 100%;
+}
+
+.deck-card-wrapper:last-child {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Contenitore generale delle mani */
+.hand-container {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    min-width: 500px;
+    height: 150px;
+    z-index: 1000;
+    pointer-events: none; /* Così non blocca i click sul tavolo se vuota */
+}
+
+/* Posizione specifica */
+.player-hand {
+    bottom: 20px;
+}
+
+.opponent-hand {
+    top: 20px;
+}
+
+/* Le carte dentro la mano */
+.hand-card-wrapper {
+    margin-left: -60px; /* Sovrapposizione per "ventaglio" */
+    transition: all 0.3s ease;
+    pointer-events: auto; /* Riattiva i click sulle singole carte */
+}
+
+.hand-card-wrapper:first-child {
+    margin-left: 0;
+}
+
+/* Rimpiccioliamo le carte della mano rispetto a quelle sul tavolo */
+.hand-card-wrapper .card-wrapper {
+    transform: scale(0.45) !important;
+}
+
+.phase-display {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px;
+    font-weight: bold;
+}

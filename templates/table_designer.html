@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/table.css">
+    <link rel="stylesheet" href="/static/css/cards.css">
+</head>
+
+<body>
+    <div id="game-table" class="game-table">
+        <div class="container">
+            <div class="side-slots-container">
+                <div class="side-slots">
+                    <div class="slot deck enemy" data-label="Mazzo"></div>
+                </div>
+                <div class="side-slots">
+                    <div id="player-deck" class="slot deck" data-label="Mazzo"></div>
+                </div>
+            </div>
+
+            <!-- AREA AVVERSARIO (Speculare) -->
+            <div class="player-area-container">
+                <div class="player-area opponent backgrounder">
+
+                    <!-- RIGA 2: Campo di Battaglia e Supporto -->
+                    <div class="battlefield-row">
+                        <div class="backgrounder2">
+                            <div class="slot support enemy" data-label="Supporto"></div>
+                        </div>
+                        <div class="battle-slots backgrounder2">
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AREA GIOCATORE -->
+                <div class="player-area player backgrounder">
+                    <!-- RIGA 1: Campo di Battaglia e Supporto -->
+                    <div class="battlefield-row">
+                        <div class="backgrounder2">
+                            <div class="slot support" data-label="Supporto"></div>
+                        </div>
+                        <div class="battle-slots backgrounder2">
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                            <div class="slot battle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-slots-container2">
+
+                <!-- RIGA 1: Deck e Cimitero -->
+                <div class="side-slots">
+                    <div class="slot graveyard enemy" data-label="Albero Madre"></div>
+                </div>
+
+                <div class="side-slots">
+                    <div class="slot graveyard" data-label="Albero Madre"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="opponent-hand" class="hand-container opponent-hand"></div>
+        <div id="player-hand" class="hand-container player-hand"></div>
+
+        <button onclick="nextPhase()" class="phase-button">Prossima Fase</button>
+
+    </div>
+    <script>
+        const DECK_DATA = {{ deck | tojson }};
+        const OPPONENT_DECK_DATA = [...DECK_DATA].reverse();
+    </script>
+    <script src="/static/js/table.js"></script>
+    <script src="/static/js/cards.js"></script>
+    <script src="/static/js/turn-manager.js"></script>
+</body>
+
+</html>

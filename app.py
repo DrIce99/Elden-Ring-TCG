@@ -78,6 +78,9 @@ def card_designer():
     
     elif card_type == "class":
         pool = db.get("classes", [])
+
+    elif card_type == "armor":
+        pool = db.get("helmets", [])
     
     else:
         pool = []
@@ -96,6 +99,32 @@ def card_designer():
         # ma se preferisci passarlo già serializzato:
         item=random_item, 
         card_type=card_type
+    )
+
+@app.route('/table-designer')
+def table_designer():
+    db = load_all_data()
+    
+    # 1. Uniamo tutte le carte in un unico pool
+    # Puoi decidere di escludere le 'classes' se non sono carte giocabili
+    all_cards_pool = (
+        db.get("weapons", []) + 
+        db.get("classes", []) + 
+        db.get("npcs", [])
+    )
+
+    # 2. Pesca 10 carte casuali dal pool
+    # Se hai meno di 10 carte nel DB, usiamo len(pool) per evitare errori
+    num_to_draw = 15
+    
+    # random.sample garantisce che non ci siano duplicati (se possibile)
+    # Se vuoi permettere duplicati usa random.choices
+    deck_items = random.choices(all_cards_pool, k=num_to_draw)
+
+    # 3. Passiamo la lista al template
+    return render_template(
+        'table_designer.html', 
+        deck=deck_items
     )
 
 if __name__ == '__main__':

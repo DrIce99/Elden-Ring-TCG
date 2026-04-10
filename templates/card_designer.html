@@ -23,11 +23,16 @@
         <div id="cardContainer"></div>
     </div>
 
+    <div>
+        <button id="downloadsvg">Salva svg</button>
+    </div>
+
     <script>
         const ITEM = {{ item | tojson | safe }};
         const TYPE = "{{ card_type }}";
     </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.js"></script>
     <script type="module" src="static/js/cards.js"></script>
 
 </body>

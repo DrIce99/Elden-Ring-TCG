@@ -22,6 +22,7 @@ body {
         skewY(var(--skewY, 0deg))
         rotateX(var(--rotX, 0deg))
         rotateY(var(--rotY, 0deg));
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.4);
 }
 
 /* MIDDLE (DEFAULT INVISIBILE) */
@@ -567,7 +568,7 @@ body {
 
 /* HOVER */
 .card-wrapper:hover {
-    transform: translateY(-10px) scale(1.05);
+    transform: translateY(-10px) scale(0.4);
     transition: transform 0.2s ease;
 }
 
@@ -649,6 +650,28 @@ body {
     flex-direction: column;
     justify-content: space-between;
     background-color: #0a0a0a;
+    background-image: url("/static/src/misc/Symbol.png");
+    background-size: 400px 500px;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.card-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-blend-mode: multiply;
+    opacity: 0.7;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.card-content > * {
+    position: relative;
+    z-index: 2;
 }
 
 .name-banner {
@@ -811,4 +834,8 @@ body {
 .balatro-card.flipped .back {
     opacity: 1; /* La mostriamo quando girata */
     z-index: 3;
+}
+
+#cardContainer {
+    padding: 30px;
 }
