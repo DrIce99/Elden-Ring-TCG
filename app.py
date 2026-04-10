@@ -74,7 +74,10 @@ def card_designer():
     elif card_type == "character":
         # Per ora carichiamo solo gli NPC come richiesto
         # NOTA: Assicurati che il file si chiami 'npcs.json' o 'npc.json'
-        pool = db.get("npcs", []) or db.get("npc", [])
+        pool = db.get("npcs", [])
+    
+    elif card_type == "class":
+        pool = db.get("classes", [])
     
     else:
         pool = []
