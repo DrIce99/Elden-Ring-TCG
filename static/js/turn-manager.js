@@ -41,19 +41,13 @@ function renderHand(target) {
     const hand = target === 'player' ? GameState.playerHand : GameState.opponentHand;
 
     hand.forEach((card, index) => {
-        const cardObj = new Card(card);
         const cardElement = document.createElement('div');
         cardElement.className = 'hand-card-wrapper';
         
-        // Se è avversario, mostra il retro. Se è player, mostra il fronte.
-        const html = (card.atk || card.attacks) ? cardObj.renderWeapon() : cardObj.renderCharacter();
+        const html = createCardImage(card, target === 'opponent');
         cardElement.innerHTML = html;
-        
-        if (target === 'opponent') {
-            cardElement.querySelector('.card-wrapper').classList.add('flipped');
-        }
 
-        // Click per schierare (Solo se fase 2 e turno player)
+        // Click per schierare
         cardElement.addEventListener('click', () => {
             if (GameState.currentPhase === 2 && GameState.turnOwner === 'player' && target === 'player') {
                 trySummon(card, index);
@@ -85,8 +79,7 @@ function trySummon(card, handIndex) {
     }
 
     // Evoca!
-    const cardObj = new Card(card);
-    targetSlot.innerHTML = cardObj.renderCharacter();
+    targetSlot.innerHTML = createCardImage(card, false);
     targetSlot.dataset.card = JSON.stringify(card);  // Salva dati per future interazioni
 
     GameState.playerHand.splice(handIndex, 1);
@@ -111,4 +104,28 @@ function nextPhase() {
     }
     updatePhaseDisplay();
     console.log(`Fase: ${GameState.phases[GameState.currentPhase - 1].name} | Turno: ${GameState.turnOwner}`);
+}
+
+function createCardImage(cardData, showBack = false) {
+    const id = cardData.id;
+
+    const front = `static/src/cards/front/${id}.png`;
+    const back = `static/src/cards/back/back.png`;
+
+    return `
+        <div class="card-wrapper balatro-card ${showBack ? 'flipped' : ''}">
+            <div class="card-inner">
+                <div class="card face front">
+                    <img src="${front}" 
+                         class="w-full h-full object-contain"
+                         onerror="this.src='https://placehold.co/300x400?text=${id}'">
+                </div>
+                <div class="card face back">
+                    <img src="${back}" 
+                         class="w-full h-full object-contain"
+                         onerror="this.src='https://placehold.co/300x400?text=BACK'">
+                </div>
+            </div>
+        </div>
+    `;
 }

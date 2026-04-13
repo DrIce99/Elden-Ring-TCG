@@ -228,15 +228,11 @@ html {
     margin-left: -60px; /* Sovrapposizione per "ventaglio" */
     transition: all 0.3s ease;
     pointer-events: auto; /* Riattiva i click sulle singole carte */
+    transform: scale(0.45);
 }
 
 .hand-card-wrapper:first-child {
     margin-left: 0;
-}
-
-/* Rimpiccioliamo le carte della mano rispetto a quelle sul tavolo */
-.hand-card-wrapper .card-wrapper {
-    transform: scale(0.45) !important;
 }
 
 .phase-display {

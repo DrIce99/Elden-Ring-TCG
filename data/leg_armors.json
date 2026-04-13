@@ -1,0 +1,55 @@
+[
+    {
+        "id": 111,
+        "name": "War Surgeon Trousers",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/war_surgeon_trousers_elden_ring_wiki_guide_200px.png",
+        "desc": "Bloodstained trousers of the war surgeons who were effectively mercy killers.\n\nOf the surgeons that were abducted by the Lord of Blood none were able to tame the accursed blood.\nNone but Varré, that is; though he was an exception.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 3.9
+            },
+            {
+                "name": "Strike",
+                "amount": 4.4
+            },
+            {
+                "name": "Slash",
+                "amount": 4.9
+            },
+            {
+                "name": "Pierce",
+                "amount": 3.9
+            },
+            {
+                "name": "Magic",
+                "amount": 5.3
+            },
+            {
+                "name": "Fire",
+                "amount": 5.7
+            },
+            {
+                "name": "Ligt",
+                "amount": 6.1
+            },
+            {
+                "name": "Holy",
+                "amount": 5.7
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Poise",
+                "amount": 8
+            }
+        ],
+        "passives": [],
+        "weight": 4.2,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "22 Mohgwyn's Dynasty"
+    }
+]

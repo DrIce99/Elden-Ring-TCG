@@ -3,7 +3,7 @@
         "id": "105",
         "name": "Hero",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/hero_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A stalwart Hero, at home with a battleaxe, descended from a badlands chieftain",
+        "desc": "A stalwart Hero, at home with a battleaxe, descended from a badlands chieftain.",
         "stats": {
             "level": "7",
             "vigor": "14",
@@ -25,7 +25,7 @@
         "id": "205",
         "name": "Warrior",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/warrior_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A twinblade wielding warrior from a nomadic tribe. An origin of exceptional technique",
+        "desc": "A twinblade wielding warrior from a nomadic tribe. An origin of exceptional technique.",
         "stats": {
             "level": "8",
             "vigor": "11",
@@ -47,7 +47,7 @@
         "id": "305",
         "name": "Astrologer",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/astrologer_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A scholar who reads fate in the stars. Heir to the school of glintstone sorcery",
+        "desc": "A scholar who reads fate in the stars. Heir to the school of glintstone sorcery.",
         "stats": {
             "level": "6",
             "vigor": "9",
@@ -69,7 +69,7 @@
         "id": "405",
         "name": "Bandit",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/bandit_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A dangerous bandit who strikes for weak points. Excels at ranged combat with bows",
+        "desc": "A dangerous bandit who strikes for weak points. Excels at ranged combat with bows.",
         "stats": {
             "level": "5",
             "vigor": "10",
@@ -135,7 +135,7 @@
         "id": "705",
         "name": "Confessor",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/confessor_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A church spy adept at covert operations. Equally adept with a sword as they are with incantations",
+        "desc": "A church spy adept at covert operations. Equally adept with a sword as they are with incantations.",
         "stats": {
             "level": "10",
             "vigor": "10",
@@ -157,7 +157,7 @@
         "id": "805",
         "name": "Wretch",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/wretch_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A poor purposeless osd naked as they day they were born. A nice club is all they have",
+        "desc": "A poor purposeless osd naked as they day they were born. A nice club is all they have.",
         "stats": {
             "level": "1",
             "vigor": "10",
@@ -179,7 +179,7 @@
         "id": "905",
         "name": "Prophet",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/prophet_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A seer ostracized for inauspicious prophecies. Well versed in healing incantations",
+        "desc": "A seer ostracized for inauspicious prophecies. Well versed in healing incantations.",
         "stats": {
             "level": "7",
             "vigor": "10",
@@ -201,7 +201,7 @@
         "id": "1005",
         "name": "Samurai",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/samurai_class_elden_ring_wiki_guide_200px.png",
-        "desc": "A capable fighter from the distant land of reeds. Handy with Katana and Longbows",
+        "desc": "A capable fighter from the distant land of reeds. Handy with Katana and Longbows.",
         "stats": {
             "level": "9",
             "vigor": "12",

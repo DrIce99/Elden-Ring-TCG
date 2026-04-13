@@ -57,13 +57,11 @@ function renderDeck(cards = [], container = null) {
     deckContainer.innerHTML = '';
     cards.forEach((cardData, i) => {
         console.log(`Carta ${i}:`, cardData.name);
-        const cardObj = new Card(cardData);
-        const html = cardData.atk ? cardObj.renderWeapon() : cardObj.renderCharacter();
+        
+        const html = createCardImage(cardData, true);
 
         const cardElement = document.createElement('div');
-        cardElement.className = 'deck-card-wrapper';
         cardElement.innerHTML = html;
-        cardElement.querySelector('.card-wrapper').classList.add('flipped');  // Sempre flipped nel deck
 
         // Effetto pila
         const offset = i * 2;
@@ -71,9 +69,38 @@ function renderDeck(cards = [], container = null) {
         cardElement.style.bottom = `${offset}px`;
         cardElement.style.right = `${offset}px`;
         cardElement.style.zIndex = i;
+        cardElement.style.transform.scale = 0.45;
 
         deckContainer.appendChild(cardElement);
     });
+}
+
+function createCardImage(cardData) {
+    const id = cardData.id;
+
+    const front = `static/src/cards/front/${id}.png`;
+    const back = `static/src/cards/back/back.png`;
+
+    return `
+        <div class="card-wrapper balatro-card flipped">
+            <div class="card-inner">
+                <div class="card face front">
+                    <div class="w-full h-full relative overflow-visible">
+                        <img src="${front}" 
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                                    max-w-none max-h-none scale-125">
+                    </div>
+                </div>
+                <div class="card face back">
+                    <div class="w-full h-full relative overflow-visible">
+                        <img src="${back}" 
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                                    max-w-none max-h-none scale-125">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 // CHIAMATA ALLA FUNZIONE

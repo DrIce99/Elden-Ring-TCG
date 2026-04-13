@@ -44,11 +44,18 @@
                 "amount": 10
             }
         ],
+        "passives": [
+            {
+                "type": "Blood Loss atk up",
+                "amount": "10",
+                "time": "2"
+            }
+        ],
         "weight": 3.2,
         "consumable": 0,
         "dupl": 1,
         "find": 1,
-        "rarity": "",
+        "rarity": "Leg",
         "banner": "22 Mohgwyn's Dynasty"
     }
 ]

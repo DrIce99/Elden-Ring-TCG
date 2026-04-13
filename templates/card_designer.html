@@ -14,8 +14,18 @@
     <!-- TOOLBAR -->
     <div class="flex justify-center gap-4 mb-8">
         <a href="/card-designer?type=character">Personaggio</a>
-        <a href="/card-designer?type=weapon">Arma</a>
         <a href="/card-designer?type=class">Classe</a>
+        <a href="/card-designer?type=weapon">Arma</a>
+        <a href="/card-designer?type=armor">Armatura</a>
+
+        <select id="searchSelect" class="px-4 py-2 bg-[#1c1b1b] text-white border border-white/20 rounded w-80">
+            <option value="">-- Seleziona carta --</option>
+            {% for item in all_items %}
+            <option value="{{ item.id }}">
+                ID: {{ item.id }} - {{ item.name }}
+            </option>
+            {% endfor %}
+        </select>
     </div>
 
     <!-- CARD CONTAINER -->
@@ -24,15 +34,16 @@
     </div>
 
     <div>
-        <button id="downloadsvg">Salva svg</button>
+        <button id="downloadpng">Salva png</button>
     </div>
 
     <script>
-        const ITEM = {{ item | tojson | safe }};
-        const TYPE = "{{ card_type }}";
+        let ITEM = {{ item | tojson | safe }};
+        let TYPE = "{{ card_type }}";
+        let ALL_ITEMS = {{ all_items | tojson | safe }};
     </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.js"></script>
     <script type="module" src="static/js/cards.js"></script>
 
 </body>

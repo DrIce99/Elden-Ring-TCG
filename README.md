@@ -72,9 +72,24 @@ Ogni giocatore dispone di:
         - 1 = mischia singolo
         - 2 = mischia area
         - 3 = lungo raggio
+* Armors (all):
+    - (Int) *time*: è il numero di turni per cui rimane attivo l'effetto
 * Positionable cards:
     - (Binario) *support*: è di tipo support
 * Items:
     - (Binario) *consumable*: è un consumabile
 * Locations:
     - (Binario) *check*: checkpoint sotto al quale non si può scendere di arena
+
+## Appunti per dev:
+
+* Roderika: 
+    - Se questa carta è presente sul campo di battaglia da più di un turno, puoi applicare il suo effetto.
+    - Manda questa carta all'Albero Madre; puoi usare questa carta come sacrificio per evocare un'ulteriore carta sul campo di battaglia.
+* Fia:
+    - Per ogni turno in cui questa carta è già presente sul campo di battaglia puoi scegliere di attivare il suo effetto:
+    - Seleziona una carta "Personaggio" (Classe/npc/creatures) dall'Albero Madre: aggiungi questa carta alla tua mano.
+
+* Tops' Barrier/Legge della Regressione:
+    - Puoi scegliere se applicare questo incantesimo ad una classe o utilizzarla dalla mano ed attivarne il suo effetto.
+    - Manda questa carta all'Albero Madre; annulla l'effetto applicato dall'avversario.

@@ -1,0 +1,55 @@
+[
+    {
+        "id": 102,
+        "name": "War Surgeon Gown",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/war_surgeon_gown_elden_ring_wiki_guide_200px.png",
+        "desc": "Bloodstained white gown of the war surgeons who were effectively mercy killers.\n\nOf the surgeons that were abducted by the Lord of Blood none were able to tame the accursed blood.\nNone but Varré, that is; though he was an exception.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 7
+            },
+            {
+                "name": "Strike",
+                "amount": 7.9
+            },
+            {
+                "name": "Slash",
+                "amount": 8.7
+            },
+            {
+                "name": "Pierce",
+                "amount": 7
+            },
+            {
+                "name": "Magic",
+                "amount": 9.4
+            },
+            {
+                "name": "Fire",
+                "amount": 10.1
+            },
+            {
+                "name": "Ligt",
+                "amount": 10.8
+            },
+            {
+                "name": "Holy",
+                "amount": 10.1
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Poise",
+                "amount": 13
+            }
+        ],
+        "passives": [],
+        "weight": 6.9,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Unc",
+        "banner": "22 Mohgwyn's Dynasty"
+    }
+]

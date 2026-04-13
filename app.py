@@ -80,10 +80,15 @@ def card_designer():
         pool = db.get("classes", [])
 
     elif card_type == "armor":
-        pool = db.get("helmets", [])
+        pool = db.get("helmets", []) + db.get("armors", []) + db.get("gloves", []) + db.get("leg_armors", [])
     
     else:
         pool = []
+    
+    all_items = []
+
+    for key in db:
+        all_items.extend(db[key])
 
     # Seleziona un item casuale o un dizionario vuoto se il pool è vuoto
     random_item = random.choice(pool) if pool else {
@@ -98,7 +103,8 @@ def card_designer():
         # Usiamo tojson nel template è più pulito, 
         # ma se preferisci passarlo già serializzato:
         item=random_item, 
-        card_type=card_type
+        card_type=card_type,
+        all_items=all_items
     )
 
 @app.route('/table-designer')

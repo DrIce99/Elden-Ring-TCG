@@ -1,0 +1,55 @@
+[
+    {
+        "id": 107,
+        "name": "War Surgeon Gloves",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/war_surgeon_gloves_elden_ring_wiki_guide_200px.png",
+        "desc": "Bloodstained white gloves of the war surgeons who were effectively mercy killers.\n\nOf the surgeons that were abducted by the Lord of Blood none were able to tame the accursed blood.\nNone but Varré, that is; though he was an exception.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 1.6
+            },
+            {
+                "name": "Strike",
+                "amount": 1.8
+            },
+            {
+                "name": "Slash",
+                "amount": 2
+            },
+            {
+                "name": "Pierce",
+                "amount": 1.6
+            },
+            {
+                "name": "Magic",
+                "amount": 2.2
+            },
+            {
+                "name": "Fire",
+                "amount": 2.4
+            },
+            {
+                "name": "Ligt",
+                "amount": 2.6
+            },
+            {
+                "name": "Holy",
+                "amount": 2.4
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Poise",
+                "amount": 3
+            }
+        ],
+        "passives": [],
+        "weight": 2.3,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "22 Mohgwyn's Dynasty"
+    }
+]

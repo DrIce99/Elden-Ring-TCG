@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
+body {
+    background: #0a0a0a;
+    color: white;
+    font-family: "Cinzel", serif;
+}
+
+.card {
+    width: 420px;
+    height: 680px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: visible;
+    transform:
+        skewX(var(--skewX, 0deg))
+        skewY(var(--skewY, 0deg))
+        rotateX(var(--rotX, 0deg))
+        rotateY(var(--rotY, 0deg));
+}
+
+.stat {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.card-wrapper {
+    width: 420px;
+    height: 680px;
+    perspective: 1200px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: visible;
+}
+
+.card-wrapper .card {
+    transition: all 0.2s ease;
+    will-change: transform;
+}
+
+.card-wrapper--hovering {
+    transition: none !important;
+}
+
+.card-wrapper--hovering .card {
+    transform-style: preserve-3d;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    will-change: transform;
+}
+
+/* HOVER */
+.card-wrapper:hover {
+    transform: translateY(-10px) scale(1.2);
+    transition: transform 0.2s ease;
+}
+
+.face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+}
+
+.front {
+    z-index: 1;
+}
+
+.card-wrapper.flipped .card-inner {
+    transform: rotateY(180deg) !important;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);;
+}
+
+.card-wrapper.flipped .card {
+    transform: none !important; /* Blocca skew durante flip */
+}
+
+.card-wrapper:not(.flipped) .card {
+    transition: all 0.2s ease;
+    will-change: transform;
+}
+
+.card.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+}
+
+.card-wrapper.flipped .front,
+.card-wrapper.flipped .back {
+    transform: none !important;
+}
+
+/* BACK */
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.back {
+    position: absolute;
+    inset: 0;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    /* sempre common */
+}
+
+.back::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.back-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-content {
+    padding: 16px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #0a0a0a;
+    background-image: url("/static/src/misc/Symbol.png");
+    background-size: 400px 500px;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.card-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-blend-mode: multiply;
+    opacity: 0.7;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.card-content > * {
+    position: relative;
+    z-index: 2;
+}
+
+.name-banner {
+    /* Dimensioni del ritaglio basate sulle coordinate fornite */
+    width: 100%;
+    /* Si adatta al contenitore della carta */
+    height: 45px;
+
+    background-repeat: no-repeat;
+
+    /* 
+            Spostiamo l'immagine in alto a sinistra (0,0). 
+            background-size deve essere proporzionato alla larghezza totale 
+            dello sprite originale per mantenere le proporzioni.
+            */
+    background-image: url('/static/src/misc/Name_Banner.png');
+    background-size: 100% 100%;
+
+    /* Centratura del testo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ninepatch {
+    /* 1. Definiamo lo spessore visivo del bordo (quello che non deve stretchare) */
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    /* 2. Applichiamo la "Nine-Patch" */
+    border-image-source: url('/static/src/misc/NinePatchRect.png');
+
+    /* 3. Lo 'slice': indica a che distanza dai bordi tagliare (in pixel nell'immagine originale) */
+    /* Se i tuoi angoli decorati sono grandi 40px, metti 40. 
+            Il comando 'fill' serve a mantenere visibile anche il centro del rettangolo */
+    border-image-slice: 40 fill;
+
+    /* 4. Come gestire i segmenti centrali (gli spigoli): 
+            'repeat' o 'round' (ripete senza tagliare) invece di stretch */
+    border-image-repeat: repeat;
+
+    /* Layout del testo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    color: #edd7ab;
+    padding: 10px;
+}
+
+.ninepatchshadow {
+    /* 1. Definiamo lo spessore visivo del bordo (quello che non deve stretchare) */
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    /* 2. Applichiamo la "Nine-Patch" */
+    border-image-source: url('/static/src/misc/Shadow.png');
+
+    /* 3. Lo 'slice': indica a che distanza dai bordi tagliare (in pixel nell'immagine originale) */
+    /* Se i tuoi angoli decorati sono grandi 40px, metti 40. 
+            Il comando 'fill' serve a mantenere visibile anche il centro del rettangolo */
+    border-image-slice: 40 fill;
+
+    filter: brightness(150%);
+
+    /* 4. Come gestire i segmenti centrali (gli spigoli): 
+            'repeat' o 'round' (ripete senza tagliare) invece di stretch */
+    border-image-repeat: repeat;
+
+    /* Layout del testo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    color: #edd7ab;
+    padding: 10px;
+}
+
+.topprpr {
+    width: 100%;
+    height: 35px;
+
+    background-repeat: no-repeat;
+    background-image: url('/static/src/misc/SB_In_Game_02.png');
+    background-position: 0px -30px;
+    background-size: 490px 135px;
+}
+
+.attributes-container {
+    position: absolute;
+    left: -90px;
+    top: 0;
+    width: 80px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+
+    pointer-events: none;
+    z-index: 999;
+}
+
+.card-wrapper:hover .attributes-container {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.balatro-card {
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+    perspective: 1500px; /* Aumentato per evitare tagli */
+}
+
+.balatro-card .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+}
+
+/* Quando girata, ruota l'intero contenitore */
+.balatro-card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.balatro-card .front,
+.balatro-card .back {
+    position: absolute;
+    inset: 0; /* Copre tutto il contenitore */
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+}
+
+/* Il fronte è a Z=1 */
+.balatro-card .front {
+    z-index: 2;
+    opacity: 1;
+}
+.balatro-card.flipped .front {
+    opacity: 0; /* La nascondiamo manualmente quando girata */
+}
+
+/* Il retro è ruotato e posto a Z=-1 rispetto al centro del padre */
+/* Fondamentale: deve avere rotateY(180deg) per essere leggibile dopo il flip */
+.balatro-card .back {
+    z-index: 1;
+    transform: rotateY(180deg);
+    opacity: 0;
+}
+.balatro-card.flipped .back {
+    opacity: 1; /* La mostriamo quando girata */
+    z-index: 3;
+}
+
+#cardContainer {
+    padding: 30px;
+}
