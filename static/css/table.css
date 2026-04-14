@@ -99,6 +99,9 @@ html {
     background: rgba(28, 27, 27, 0.8);
     overflow: visible !important;
     perspective: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
 }
 
@@ -178,6 +181,10 @@ html {
 .deck-card-wrapper {
     pointer-events: none;
     transition: transform 0.2s ease;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .deck-card-wrapper .hand-card-wrapper {
@@ -208,7 +215,7 @@ html {
     justify-content: center;
     align-items: center;
     width: auto;
-    min-width: 500px;
+    min-width: 600px;
     height: 150px;
     z-index: 1000;
     pointer-events: none; /* Così non blocca i click sul tavolo se vuota */
@@ -225,10 +232,9 @@ html {
 
 /* Le carte dentro la mano */
 .hand-card-wrapper {
-    margin-left: -60px; /* Sovrapposizione per "ventaglio" */
+    margin-left: -40px; /* Sovrapposizione per "ventaglio" */
     transition: all 0.3s ease;
     pointer-events: auto; /* Riattiva i click sulle singole carte */
-    transform: scale(0.45);
 }
 
 .hand-card-wrapper:first-child {

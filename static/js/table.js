@@ -66,42 +66,42 @@ function renderDeck(cards = [], container = null) {
         // Effetto pila
         const offset = i * 2;
         cardElement.style.position = 'absolute';
-        cardElement.style.bottom = `${offset}px`;
-        cardElement.style.right = `${offset}px`;
+        cardElement.style.left = `50%`;
+        cardElement.style.top = `50%`;
         cardElement.style.zIndex = i;
-        cardElement.style.transform.scale = 0.45;
+        cardElement.style.transform = `translate(-50%, -50%) rotate(${i * 2}deg)`;
 
         deckContainer.appendChild(cardElement);
     });
 }
 
-function createCardImage(cardData) {
-    const id = cardData.id;
+// function createCardImage(cardData) {
+//     const id = cardData.id;
 
-    const front = `static/src/cards/front/${id}.png`;
-    const back = `static/src/cards/back/back.png`;
+//     const front = `static/src/cards/front/${id}.png`;
+//     const back = `static/src/cards/back/back.png`;
 
-    return `
-        <div class="card-wrapper balatro-card flipped">
-            <div class="card-inner">
-                <div class="card face front">
-                    <div class="w-full h-full relative overflow-visible">
-                        <img src="${front}" 
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                                    max-w-none max-h-none scale-125">
-                    </div>
-                </div>
-                <div class="card face back">
-                    <div class="w-full h-full relative overflow-visible">
-                        <img src="${back}" 
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                                    max-w-none max-h-none scale-125">
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
+//     return `
+//         <div class="card-wrapper balatro-card flipped">
+//             <div class="card-inner">
+//                 <div class="card face front">
+//                     <div class="w-full h-full relative overflow-visible">
+//                         <img src="${front}" 
+//                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+//                                     max-w-none max-h-none scale-125">
+//                     </div>
+//                 </div>
+//                 <div class="card face back">
+//                     <div class="w-full h-full relative overflow-visible">
+//                         <img src="${back}" 
+//                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+//                                     max-w-none max-h-none scale-125">
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     `;
+// }
 
 // CHIAMATA ALLA FUNZIONE
 document.addEventListener('DOMContentLoaded', () => {

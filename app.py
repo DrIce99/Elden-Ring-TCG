@@ -116,7 +116,11 @@ def table_designer():
     all_cards_pool = (
         db.get("weapons", []) + 
         db.get("classes", []) + 
-        db.get("npcs", [])
+        db.get("npcs", []) +
+        db.get("helmets", []) +
+        db.get("armors", []) +
+        db.get("leg_armors", []) +
+        db.get("gloves", [])
     )
 
     # 2. Pesca 10 carte casuali dal pool
