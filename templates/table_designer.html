@@ -76,14 +76,54 @@
 
         <button onclick="nextPhase()" class="phase-button">Prossima Fase</button>
 
+        <div class="hud">
+            <div id="current-phase" class="phase-display">Pesca</div>
+        </div>
+
+        <div class="rune-counter">
+            Tue Rune: <span id="player-runes">20</span> | Avversario: <span id="opponent-runes">20</span>
+        </div>
+
+    </div>
+    <!-- Overlay Selezione Carta -->
+    <div id="card-preview" class="card-preview-overlay" style="display: none;">
+        <div class="preview-content">
+            <div class="preview-image">
+                <img id="preview-img" src="" alt="">
+            </div>
+            <div class="preview-details">
+                <h2 id="preview-name"></h2>
+                <p id="preview-desc"></p>
+                <div id="preview-stats"></div>
+            </div>
+        </div>
+        <button id="close-preview" onclick="closePreview()">✕</button>
     </div>
     <script>
         const DECK_DATA = {{ deck | tojson }};
         const OPPONENT_DECK_DATA = [...DECK_DATA].reverse();
+        const PLAYER_DECK_DATA = [...DECK_DATA];
     </script>
     <script src="/static/js/table.js"></script>
-    <script src="/static/js/cards.js"></script>
+    <!-- <script src="/static/js/cards.js"></script> -->
     <script src="/static/js/turn-manager.js"></script>
+    <script>
+        // Inizializza dopo caricamento
+        document.addEventListener('DOMContentLoaded', () => {
+            initCardSelection();
+        });
+
+        function initCardSelection() {
+            // Aggiungi dataset.card a TUTTE le carte esistenti
+            document.querySelectorAll('.card-wrapper').forEach(wrapper => {
+                const slot = wrapper.closest('.slot');
+                if (slot?.dataset.card) {
+                    wrapper.dataset.card = slot.dataset.card;
+                }
+            });
+            console.log('✅ Card selection inizializzata');
+        }
+    </script>
 </body>
 
 </html>

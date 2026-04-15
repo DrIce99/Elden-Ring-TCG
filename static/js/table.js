@@ -1,6 +1,6 @@
 const table = document.getElementById('game-table');
 
-console.log('DECK_DATA:', window.DECK_DATA);
+console.log('DECK_DATA:', DECK_DATA);
 console.log('player-deck:', document.getElementById('player-deck'));
 
 function setRandomLocation() {
@@ -31,7 +31,7 @@ function setRandomLocation() {
 
     const randomIndex = Math.floor(Math.random() * locations.length);
     const selectedBg = locations[randomIndex];
-    
+
     const table = document.getElementById('game-table');
     if (table) {
         table.style.backgroundImage = `url('static/src/locations/${selectedBg}')`;
@@ -44,7 +44,7 @@ window.onload = setRandomLocation;
 function renderDeck(cards = [], container = null) {
     const deckContainer = container || document.getElementById('player-deck');
     console.log('Rendering deck:', cards?.length || 0, 'cards in', deckContainer?.id || 'custom');
-    
+
     if (!deckContainer) {
         console.error("❌ Deck container NON trovato!");
         return;
@@ -57,11 +57,12 @@ function renderDeck(cards = [], container = null) {
     deckContainer.innerHTML = '';
     cards.forEach((cardData, i) => {
         console.log(`Carta ${i}:`, cardData.name);
-        
+
         const html = createCardImage(cardData, true);
 
         const cardElement = document.createElement('div');
         cardElement.innerHTML = html;
+        cardElement.dataset.card = JSON.stringify(cardData);
 
         // Effetto pila
         const offset = i * 2;
@@ -105,10 +106,161 @@ function renderDeck(cards = [], container = null) {
 
 // CHIAMATA ALLA FUNZIONE
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Inizializzazione gioco...');
-    renderDeck(DECK_DATA);  // Player deck
-    renderDeck(OPPONENT_DECK_DATA, document.querySelector('.slot.deck.enemy'));  // Enemy deck
-    drawCards(5, 'player');
-    drawCards(5, 'opponent');
-    updatePhaseDisplay();  // Aggiungi visuale fase
+    
+    setTimeout(() => {
+        if (window.GameState) {
+            renderDeck(DECK_DATA);  
+            renderDeck([...DECK_DATA].reverse(), document.querySelector('.slot.deck.enemy'));  
+            window.drawCards(5, 'player');
+            window.drawCards(5, 'opponent');
+            window.updatePhaseDisplay();
+            console.log('🎮 Gioco pronto - Ora nextPhase funziona!');
+        }
+    }, 100);
 });
+
+let selectedCard = null;
+let selectedCardData = null;
+
+let selected = false;
+
+// Event delegation per tutte le carte
+document.addEventListener('click', (e) => {
+    if (!selected) {
+        selected = true;
+        const cardWrapper = e.target.closest('.card-wrapper');
+        if (!cardWrapper || cardWrapper.closest('.deck-card-wrapper')) return;  // Escludi mazzo
+
+        // Seleziona nuova carta
+        const cardDataStr = cardWrapper.closest('.slot')?.dataset.card ||
+            cardWrapper.closest('.hand-card-wrapper')?.dataset.card;
+
+        if (cardDataStr) {
+            selectedCardData = JSON.parse(cardDataStr);
+            showPreview(selectedCardData, cardWrapper);
+        }
+    } else {
+        closePreview();
+        const cardWrapper = e.target.closest('.card-wrapper');
+        if (!cardWrapper || cardWrapper.closest('.deck-card-wrapper')) return;
+
+        const oldCardData = selectedCardData;
+        const cardDataStr = cardWrapper.closest('.slot')?.dataset.card ||
+            cardWrapper.closest('.hand-card-wrapper')?.dataset.card;
+
+        if (cardDataStr) {
+            if (oldCardData !== JSON.parse(cardDataStr)) {
+                selectedCardData = JSON.parse(cardDataStr);
+                showPreview(selectedCardData, cardWrapper);
+            }
+        } else {
+            selected = false;
+        }
+    }
+});
+
+
+function showPreview(cardData, cardElement) {
+    // Rimuovi selected da precedente
+    document.querySelectorAll('.card-wrapper.selected').forEach(el =>
+        el.classList.remove('selected'));
+
+    // Aggiungi selected
+    cardElement.classList.add('selected');
+    selectedCard = cardElement;
+
+    // Popola preview
+    document.getElementById('preview-img').src = `static/src/cards/front/${cardData.id}.png`;
+    document.getElementById('preview-name').textContent = cardData.name || 'Sconosciuta';
+    document.getElementById('preview-desc').textContent = cardData.description || '';
+
+    const statsDiv = document.getElementById('preview-stats');
+    statsDiv.innerHTML = '';
+
+    // Stats dinamiche dal JSON
+    ['hp', 'atk', 'def', 'speed', 'cost'].forEach(stat => {
+        if (cardData[stat]) {
+            const badge = document.createElement('div');
+            badge.className = 'stat-badge';
+            badge.innerHTML = `<strong>${stat.toUpperCase()}:</strong> ${cardData[stat]}`;
+            statsDiv.appendChild(badge);
+        }
+    });
+
+    document.getElementById('card-preview').style.display = 'flex';
+}
+
+function closePreview() {
+    document.getElementById('card-preview').style.display = 'none';
+    if (selectedCard) {
+        selectedCard.classList.remove('selected');
+        selectedCard = null;
+        selectedCardData = null;
+    }
+}
+
+// Renderizzazione della mano
+function renderHand(target) {
+    const containerId = target === 'player' ? 'player-hand' : 'opponent-hand';
+    let container = document.getElementById(containerId);
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = '';
+    const hand = target === 'player' ? GameState.playerHand : GameState.opponentHand;
+
+    hand.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'hand-card-wrapper';
+        cardElement.draggable = true;
+        cardElement.dataset.card = JSON.stringify(card);
+
+        cardElement.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+                card,
+                index
+            }));
+        });
+
+        if (card.category?.includes('weapon') || card.category?.includes('armor')) {
+            // Drag solo su slot con Classi
+            const validSlots = [...document.querySelectorAll('.slot.battle')]
+                .filter(slot => {
+                    if (!slot.dataset.card) return false;
+                    const data = JSON.parse(slot.dataset.card);
+                    return data.type === 'class';
+                });
+        }
+
+        const html = createCardImage(card, target === 'opponent');
+        cardElement.innerHTML = html;
+
+
+        // Click per schierare
+        cardElement.addEventListener('click', () => {
+            if (GameState.currentPhase === 2 && GameState.turnOwner === 'player' && target === 'player') {
+                trySummon(card, index);
+            }
+        });
+
+        container.appendChild(cardElement);
+    });
+}
+
+document.querySelectorAll('.slot.battle, .slot.support').forEach(slot => {
+    slot.addEventListener('dragover', e => e.preventDefault());
+    slot.addEventListener('drop', e => {
+        if (GameState.currentPhase !== 2 || GameState.turnOwner !== 'player') return;
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        trySummon(data.card, data.index);
+    });
+});
+
+// Chiudi con ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePreview();
+});
+
+window.renderHand = renderHand;

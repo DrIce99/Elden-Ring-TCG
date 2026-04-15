@@ -9,7 +9,7 @@ Il gioco si divide in due anime:
    4. La competitiva è suddivisa in arene in base al numero di coppe (non si può scendere sotto l'arena "checkpoint")
 
 ------------------------------
-## 🎮 Meccaniche di Gioco (Gameplay)
+## 🎮 Meccaniche di Gioco (Gameplay) (obsoleto)
 ## Setup della Partita
 
 * Scommessa iniziale: I giocatori mettono in palio un numero di Rune (max 75% del patrimonio del giocatore più povero). La media delle scommesse diventa l'HP del Player.
@@ -28,11 +28,313 @@ Ogni giocatore dispone di:
 
    1. Fase 1 (Pesca): Si pescano 2 carte.
    2. Fase 2 (Schieramento): Si può evocare max 1 combattente per turno (max 1 Boss in campo) e gestire gli equipaggiamenti (Armi, Armature, Talismani, Incantesimi).
-   3. Fase 3 (Pianificazione): Si selezionano le azioni per ogni unità (Movimento, Schivata, Attacchi Leggeri/Pesanti, Magie, Riposo, Recupero HP/MP). Le azioni non vengono eseguite subito.
+   3. Fase 3 (Pianificazione): Si selezionano le azioni per ogni unità (Movimento, Schivata, Attacchi Leggeri/Pesanti, Magie, Carica, Recupero HP/MP). Le azioni non vengono eseguite subito.
    4. Fase 4 (Turno Avversario): L'avversario esegue le sue fasi 1-3.
    5. Fase 5 (Resa dei Conti): Tutte le azioni si attivano simultaneamente.
 
+---
+
+## RULEBOOK
+
+---
+
+# 🧭 1. Obiettivo del Gioco
+
+L’obiettivo è **ridurre a 0 le Rune in palio dell’avversario**.
+
+Un giocatore perde immediatamente se:
+
+* Le sue Rune in palio raggiungono 0
+* Non possiede più carte né nel **Mazzo** né nella **Mano** (in questo caso cede tutte le Rune all’avversario)
+
+---
+
+# 🧩 2. Struttura del Campo
+
+Ogni giocatore dispone di:
+
+* **5 Slot Campo di Battaglia** (disposti in linea orizzontale)
+* **1 Slot Supporto**
+* **1 Mazzo**
+* **1 Albero Madre (Cimitero)**
+
+👉 Il campo totale è composto da **2 file da 5 slot**, una per ogni giocatore.
+
+---
+
+# 🃏 3. Tipologie di Carte
+
+## ⚔️ Unità
+
+Possono essere posizionate nel Campo di Battaglia:
+
+* **Classi**
+* **NPC (non supporto)**
+* **Creature**
+* **Boss**
+* **Lacrime**
+
+---
+
+## 💧 Lacrime
+
+* Possono stare nel campo
+* Non possono agire senza almeno una **Classe alleata** posizionata sul proprio campo
+* **Lacrima Riflessa**:
+
+  * Copia le statistiche e gli oggetti della Classe più forte in campo
+
+---
+
+## 👑 Boss
+
+* Possono essere evocati solo tramite **Tributi specifici**
+* I tributi devono essere del **tipo richiesto dal Boss**
+
+  * (esempio: Malenia richiede Cavalieri Marcescenti)
+* È consentito **1 solo Boss per campo**
+
+---
+
+## 🛡️ Equipaggiamenti
+
+Tipologie:
+
+* Armi
+* Armature (Elmo, Torso, Gambe, Guanti)
+* Talismani
+* Oggetti
+
+Regole:
+
+* Possono essere equipaggiati **solo alle Classi**
+* Se si equipaggia un oggetto dello stesso tipo:
+
+  * L’equipaggiamento precedente viene **sostituito**
+  * Viene mandato all’**Albero Madre**
+* L’equipaggiamento:
+
+  * È **gratuito**
+  * È **immediato**
+  * Può essere effettuato **più volte per turno**
+  * Può essere eseguito **solo nel proprio turno** (salvo effetti)
+
+---
+
+## 🧙 Supporto (NPC)
+
+* Posizionati nello **Slot Supporto**
+* Effetti **passivi permanenti**
+* Non combattono
+* Possono essere distrutti solo da:
+
+  * Effetti di carte
+  * Effetti propri (durata)
+
+---
+
+# 🔄 4. Inizio della Partita
+
+* Ogni giocatore pesca **5 carte iniziali**
+* Non esiste limite massimo di carte in mano
+
+---
+
+# 🔁 5. Struttura del Turno
+
+Ogni turno è composto da:
+
+---
+
+## Fase 1 — Pesca
+
+* Pesca **2 carte**
+
+---
+
+## Fase 2 — Schieramento
+
+Il giocatore può:
+
+* Evocare massimo:
+
+  * **1 Combattente per turno**
+* Gestire equipaggiamenti
+
+⚠️ Eccezioni:
+
+* Effetti di carte possono modificare questi limiti
+
+---
+
+## Fase 3 — Pianificazione
+
+Ogni unità può selezionare **una sola azione**:
+
+* Movimento
+* Schivata
+* Attacco leggero
+* Attacco pesante
+* Magia
+* Carica
+* Utilizzo di oggetti
+
+👉 Le azioni vengono **registrate ma non eseguite**
+
+---
+
+## Fase 4 — Turno Avversario
+
+L’avversario esegue le stesse fasi (1–3)
+
+👉 Alcuni effetti possono attivarsi fuori turno
+
+---
+
+## Fase 5 — Resa dei Conti
+
+* Tutte le azioni vengono eseguite **simultaneamente**
+
+---
+
+# ⚔️ 6. Sistema di Combattimento
+
+## Attacchi Melee
+
+* Possono colpire solo le **3 caselle frontali**
+* Tipologie:
+
+  * **Bersaglio singolo (selezione manuale)**
+  * **Area (tutte le 3 caselle)**
+
+---
+
+## Tipi di Attacco
+
+### Attacco Leggero / Magia
+
+* Non richiedono cariche
+
+---
+
+### Attacco Pesante
+
+* Richiede almeno **1 Carica**
+
+---
+
+## Attacchi Diretti
+
+* Un’unità **non può attaccare direttamente il giocatore**
+  se esistono bersagli validi sul campo avversario
+
+---
+
+## Risoluzione Simultanea
+
+* Se due unità si eliminano nello stesso momento:
+  👉 **vengono distrutte entrambe**
+
+---
+
+# 🌀 7. Movimento
+
+* Le unità possono muoversi:
+
+  * Solo in **slot liberi** adiacenti
+* Non è possibile:
+
+  * Muoversi in slot occupati
+
+---
+
+# 💨 8. Schivata
+
+* Evita **completamente il danno**
+* Non è un movimento
+* Limitazioni:
+
+  * Non può essere usata per **2 turni consecutivi dalla stessa unità**
+
+---
+
+# ⚡ 9. Cariche
+
+* Sono un’azione selezionabile
+* Servono per:
+
+  * Attacchi pesanti
+
+Regole delle cariche:
+
+* Non si accumulano
+* Si consumano quando utilizzate
+* Si perdono se:
+
+  * L’unità esegue **qualsiasi altra azione**
+* NON si perdono se:
+
+  * L’unità non esegue azioni
+
+---
+
+# 💰 10. Sistema delle Rune
+
+## Rune in Palio
+
+* Rappresentano la “vita” del giocatore
+* Danni diretti le riducono
+
+---
+
+## Trasferimento Rune
+
+* Ogni Runa persa da un giocatore:
+  👉 viene **guadagnata dall’avversario**
+
+---
+
+## Loot
+
+* Eliminare unità nemiche:
+
+  * Conferisce Rune aggiuntive (Loot)
+
+---
+
+# ☠️ 11. Albero Madre (Cimitero)
+
+Vengono mandati qui:
+
+* Unità sconfitte
+* Equipaggiamenti sostituiti
+* Carte utilizzate
+
+---
+
+# 🎯 12. Effetti e Probabilità
+
+* Gli effetti (es. *Blood Loss*) hanno:
+
+  * Una probabilità di attivazione
+* In caso di attacchi ad area:
+
+  * La probabilità viene calcolata **per ogni bersaglio**
+* Se colpisce direttamente il giocatore:
+
+  * L’effetto può essere applicato anche al giocatore
+
+---
+
+# 🚫 13. Restrizioni Generali
+
+* Solo le **Classi** possono equipaggiare oggetti
+* Solo unità possono essere schierate nel campo
+* Le unità possono eseguire **una sola azione per turno**
+* Le Lacrime non possono agire senza Classi
+
 ------------------------------
+
 ## 🛠️ Roadmap di Sviluppo
 
 ## To Do List (Core Engine)
@@ -42,6 +344,10 @@ Ogni giocatore dispone di:
 * Rarity System: Assegnazione rarità a ogni elemento (Comune ➡️ Leggendario).
 * Move-set Engine: Implementazione tipi di attacco, percentuali di successo e raggio d'azione (Singolo/Area).
 * Role Separation: Dividere NPC Combattenti da NPC Support.
+* Setup del deck: 
+  * Selezione delle carte presenti nel deck (niente carte boss uguali, massimo tre carte identiche)
+  * Selezione delle mosse dei boss (hanno più attacchi leggeri/pesanti, bisogna selezionarne uno e uno)
+* Miglioramento armi/classi/lacrime (tramite pietre da forgiatura/rune/convallarie, rimangono migliorate per sempre)
 
 ## Versioni e Milestone
 
@@ -60,7 +366,7 @@ Ogni giocatore dispone di:
 * Lacrime: Non possono agire da sole, devono avere una classe in campo.
 * Lacrima Riflessa: Eredita le statistiche dalla classe più forte in campo.
 * Gli attacchi leggeri e le stregonerie non hanno bisogno di cariche per attaccare
-* Gli attacchi pesanti hanno bisogno di almeno una carica per attaccare 
+* Gli attacchi pesanti hanno bisogno di almeno una carica per attaccare. In base al calcolo del poise si vede se interrompono l'attacco se attaccati o no
 
 ## Info json:
 

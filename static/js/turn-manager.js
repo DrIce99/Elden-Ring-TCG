@@ -1,131 +1,126 @@
-const GameState = {
-    currentPhase: 1, // 1: Pesca, 2: Schieramento, 3: Pianificazione...
-    turnOwner: 'player', // 'player' o 'opponent'
-    hasSummonedThisTurn: false,
-    playerHand: [],
-    opponentHand: [],
-    
-    // Configurazione fasi
+// Stub per funzioni mancanti
+function checkTribute(card) { return true; }  // Da implementare
+function updateBattlefield() { return Array(5).fill(null); }  // Stub
+function saveAction(slot, action) { console.log('Azione:', action); }  // Stub
+
+// Rendi GameState globale
+window.GameState = {
+    currentPhase: 0, turnOwner: 'player', hasSummonedThisTurn: false,
+    playerHand: [], opponentHand: [], playerRunes: 20, opponentRunes: 20,
+    playerBattlefield: Array(5).fill(null), playerSupport: null,
+    opponentBattlefield: Array(5).fill(null), opponentSupport: null,
     phases: [
-        { id: 1, name: "Pesca" },
-        { id: 2, name: "Schieramento" },
-        { id: 3, name: "Pianificazione" },
-        { id: 4, name: "Turno Avversario" },
+        { id: 1, name: "Pesca (2 carte)" }, { id: 2, name: "Schieramento" },
+        { id: 3, name: "Pianificazione" }, { id: 4, name: "Turno Avversario" },
         { id: 5, name: "Resa dei Conti" }
-    ]
+    ],
+    checkWinCondition() {
+        const playerLost = this.playerRunes <= 0 || (this.playerHand.length === 0 && window.DECK_DATA?.length === 0);
+        const opponentLost = this.opponentRunes <= 0 || (this.opponentHand.length === 0 && window.OPPONENT_DECK_DATA?.length === 0);
+        if (playerLost) return alert("Hai perso! Rune finite.");
+        if (opponentLost) return alert("Hai vinto!");
+        return false;
+    }
 };
 
-// Funzione per pescare (Sposta dal mazzo alla mano)
+// Funzione drawCards corretta (usa window.DECK_DATA)
 function drawCards(count, target = 'player') {
-    for (let i = 0; i < count; i++) {
-        const cardData = (target === 'player') ? DECK_DATA.pop() : OPPONENT_DECK_DATA.pop();
-        if (!cardData) break;
-
-        if (target === 'player') GameState.playerHand.push(cardData);
-        else GameState.opponentHand.push(cardData);
-
-        renderHand(target);
-    }
-}
-
-// Renderizzazione della mano
-function renderHand(target) {
-    const containerId = target === 'player' ? 'player-hand' : 'opponent-hand';
-    let container = document.getElementById(containerId);
+    const deck = target === 'player' ? PLAYER_DECK_DATA : OPPONENT_DECK_DATA;
+    const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
     
-    if (!container) {
+    if (!deck || !Array.isArray(deck)) {
+        console.error('❌ DECK non valido:', deck);
         return;
     }
-
-    container.innerHTML = '';
-    const hand = target === 'player' ? GameState.playerHand : GameState.opponentHand;
-
-    hand.forEach((card, index) => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'hand-card-wrapper';
-        
-        const html = createCardImage(card, target === 'opponent');
-        cardElement.innerHTML = html;
-
-        // Click per schierare
-        cardElement.addEventListener('click', () => {
-            if (GameState.currentPhase === 2 && GameState.turnOwner === 'player' && target === 'player') {
-                trySummon(card, index);
-            }
-        });
-
-        container.appendChild(cardElement);
-    });
+    
+    const hand = window.GameState[handKey];
+    for (let i = 0; i < count; i++) {
+        if (deck.length === 0) break;
+        const cardData = deck.pop();
+        hand.push(cardData);
+    }
+    window.renderHand(target);
+    console.log(`✅ Pescate ${count} carte per ${target} - Mano: ${hand.length}`);
 }
 
-// Logica di Schieramento
+function getCardTypeFromId(cardId) {
+    const idNum = String(cardId).slice(-2);  // Ultime 2 cifre
+    const typeMap = {
+        '01': 'ammos', '02': 'armors', '03': 'ashes', '04': 'bosses',
+        '05': 'classes', '06': 'creatures', '07': 'gloves', '08': 'helmets',
+        '09': 'incantations', '10': 'items', '11': 'leg_armors', '12': 'locations',
+        '13': 'npcs', '14': 'shields', '15': 'sorceries', '16': 'spirits',
+        '17': 'talismans', '18': 'weapons'
+    };
+    return typeMap[idNum] || 'unknown';
+}
+
 function trySummon(card, handIndex) {
-    if (GameState.hasSummonedThisTurn) {
-        alert("Puoi evocare solo un combattente per turno!");
-        return;
-    }
-    if (card.atk || card.category?.toLowerCase().includes('weapon')) {
-        alert("Le armi devono essere equipaggiate!");
-        return;
-    }
-
-    const isSupport = card.type === 'support' || card.category === 'NPC';
-    const slotSelector = `.player-area.player ${isSupport ? '.slot.support' : '.slot.battle'}:empty`;
+    if (window.GameState.hasSummonedThisTurn) return alert("1 combattente/turno!");
+    const cardType = getCardTypeFromId(card.id);
+    const validTypes = ['classes', 'npcs', 'creatures', 'bosses'];
+    console.log(card.type);
+    if (!validTypes.includes(cardType)) return alert("Solo unità! (classes/npcs/creatures/bosses)");
+    if (card.type === 'boss' && !checkTribute(card)) return alert("Tributo richiesto!");
+    
+    const isSupport = card.type === 'support' || card.category === 'npc';
+    const slotSelector = `.player-area.player ${isSupport ? '.slot.support:empty' : '.slot.battle:empty'}`;
     const targetSlot = document.querySelector(slotSelector);
-
-    if (!targetSlot) {
-        alert(`Nessuno slot ${isSupport ? 'supporto' : 'battaglia'} libero!`);
-        return;
-    }
-
-    // Evoca!
+    if (!targetSlot) return alert("Slot pieno!");
+    
     targetSlot.innerHTML = createCardImage(card, false);
-    targetSlot.dataset.card = JSON.stringify(card);  // Salva dati per future interazioni
-
-    GameState.playerHand.splice(handIndex, 1);
-    GameState.hasSummonedThisTurn = true;
+    targetSlot.dataset.card = JSON.stringify(card);
+    window.GameState.playerHand.splice(handIndex, 1);
+    window.GameState.hasSummonedThisTurn = true;
     renderHand('player');
-    console.log('Evocato:', card.name);
 }
 
 function updatePhaseDisplay() {
-    const phaseName = GameState.phases[GameState.currentPhase - 1]?.name || 'Sconosciuta';
-    document.getElementById('current-phase').textContent = phaseName;
-    document.querySelector('.phase-button').textContent = 
-        GameState.currentPhase > 4 ? 'Nuovo Turno' : 'Prossima Fase';
+    const phaseName = window.GameState.phases[window.GameState.currentPhase - 1]?.name || 'Sconosciuta';
+    const phaseEl = document.getElementById('current-phase');
+    if (phaseEl) phaseEl.textContent = phaseName;
+    document.getElementById('player-runes').textContent = window.GameState.playerRunes;
+    document.getElementById('opponent-runes').textContent = window.GameState.opponentRunes;
+    document.body.classList.toggle('player-turn', window.GameState.turnOwner === 'player');
 }
 
 function nextPhase() {
-    GameState.currentPhase++;
-    if (GameState.currentPhase > 5) {
-        GameState.currentPhase = 1;
-        GameState.hasSummonedThisTurn = false;
-        GameState.turnOwner = GameState.turnOwner === 'player' ? 'opponent' : 'player';
+    window.GameState.currentPhase++;
+    if (window.GameState.currentPhase > 5) {
+        window.GameState.currentPhase = 1;
+        window.GameState.hasSummonedThisTurn = false;
+        window.GameState.turnOwner = window.GameState.turnOwner === 'player' ? 'opponent' : 'player';
+        
+        // Pesca SEMPRE 2 carte per player all'inizio del suo turno
+        if (window.GameState.turnOwner === 'player') {
+            drawCards(2, 'player');
+        }
+    } else if (window.GameState.currentPhase === 1 && window.GameState.turnOwner === 'player') {
+        // Pesca extra solo se phase=1 E player turn (primo ciclo)
+        drawCards(2, 'player');
     }
     updatePhaseDisplay();
-    console.log(`Fase: ${GameState.phases[GameState.currentPhase - 1].name} | Turno: ${GameState.turnOwner}`);
+    window.GameState.checkWinCondition();
 }
 
 function createCardImage(cardData, showBack = false) {
     const id = cardData.id;
-
     const front = `static/src/cards/front/${id}.png`;
     const back = `static/src/cards/back/back.png`;
-
     return `
         <div class="card-wrapper balatro-card ${showBack ? 'flipped' : ''}">
             <div class="card-inner">
                 <div class="card face front">
-                    <img src="${front}" 
-                         class="w-full h-full object-contain"
-                         onerror="this.src='https://placehold.co/300x400?text=${id}'">
+                    <img src="${front}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/300x400?text=${id}'">
                 </div>
                 <div class="card face back">
-                    <img src="${back}" 
-                         class="w-full h-full object-contain"
-                         onerror="this.src='https://placehold.co/300x400?text=BACK'">
+                    <img src="${back}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/300x400?text=BACK'">
                 </div>
             </div>
-        </div>
-    `;
+        </div>`;
 }
+
+// Inizializza al caricamento
+document.addEventListener('DOMContentLoaded', () => {
+    updatePhaseDisplay();
+});

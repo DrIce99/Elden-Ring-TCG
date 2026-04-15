@@ -246,3 +246,137 @@ html {
     background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px;
     font-weight: bold;
 }
+
+.card-preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-content {
+    display: flex;
+    gap: 30px;
+    max-width: 90%;
+    background: rgba(20,20,20,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid #edd7ab;
+}
+
+.preview-image img {
+    width: 300px;
+    height: 450px;
+    object-fit: contain;
+}
+
+.preview-details {
+    color: white;
+    flex: 1;
+}
+
+.preview-details h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #edd7ab;
+}
+
+#preview-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-badge {
+    background: rgba(237,215,171,0.2);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid #edd7ab;
+}
+
+#close-preview {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: #edd7ab;
+    color: black;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+/* Stato selezionato (hover persistente) */
+.card-wrapper.selected {
+    transform: translateY(-12px) scale(1.05) !important;
+    z-index: 999 !important;
+    box-shadow: 0 20px 40px rgba(237,215,171,0.5);
+}
+
+/* Aggiungi alla fine di table.css */
+#card-preview {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0,0,0,0.9) !important;
+    z-index: 10000 !important;
+    display: none !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.card-preview-overlay.show { display: flex !important; }
+
+.preview-content {
+    display: flex !important;
+    gap: 30px !important;
+    max-width: 90% !important;
+    background: rgba(20,20,20,0.95) !important;
+    padding: 30px !important;
+    border-radius: 20px !important;
+    border: 2px solid #edd7ab !important;
+    color: white !important;
+}
+
+.preview-image img {
+    width: 300px !important;
+    height: 450px !important;
+    object-fit: contain !important;
+}
+
+.card-wrapper.selected {
+    transform: translateY(-15px) scale(1.1) !important;
+    z-index: 9999 !important;
+    box-shadow: 0 25px 50px rgba(237,215,171,0.6) !important;
+}
+
+.hud {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 40px;
+    z-index: 100;
+}
+.rune-counter {
+    background: rgba(0,0,0,0.8);
+    padding: 15px 25px;
+    border-radius: 20px;
+    border: 2px solid #edd7ab;
+    font-size: 1.3em;
+    bottom: 50px;
+    font-weight: bold;
+    position: absolute;
+}
