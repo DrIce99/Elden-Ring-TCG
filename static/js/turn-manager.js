@@ -1,50 +1,269 @@
-// Stub per funzioni mancanti
-function checkTribute(card) { return true; }  // Da implementare
-function updateBattlefield() { return Array(5).fill(null); }  // Stub
-function saveAction(slot, action) { console.log('Azione:', action); }  // Stub
+// ========================================
+// TURN MANAGER — Gestione fasi e pesca
+// ========================================
 
-// Rendi GameState globale
+// Stub per funzioni mancanti
+function checkTribute(card) { return true; }
+function saveAction(slot, action) { console.log('Azione:', action); }
+
+// ----------------------------------------
+// GAME STATE
+// ----------------------------------------
 window.GameState = {
-    currentPhase: 0, turnOwner: 'player', hasSummonedThisTurn: false,
-    playerHand: [], opponentHand: [], playerRunes: 20, opponentRunes: 20,
-    playerBattlefield: Array(5).fill(null), playerSupport: null,
-    opponentBattlefield: Array(5).fill(null), opponentSupport: null,
+    currentPhase: 0,
+    turnOwner: 'player',
+    hasSummonedThisTurn: false,
+    playerHand: [],
+    opponentHand: [],
+    playerRunes: 20,
+    opponentRunes: 20,
+    playerBattlefield: Array(5).fill(null),
+    playerSupport: null,
+    opponentBattlefield: Array(5).fill(null),
+    opponentSupport: null,
     phases: [
-        { id: 1, name: "Pesca (2 carte)" }, { id: 2, name: "Schieramento" },
-        { id: 3, name: "Pianificazione" }, { id: 4, name: "Turno Avversario" },
-        { id: 5, name: "Resa dei Conti" }
+        { id: 1, name: "📖 Pesca (clicca il mazzo)" },
+        { id: 2, name: "⚔️ Schieramento" },
+        { id: 3, name: "🧠 Pianificazione" },
+        { id: 4, name: "🤖 Turno Avversario" },
+        { id: 5, name: "⚖️ Resa dei Conti" }
     ],
     checkWinCondition() {
-        const playerLost = this.playerRunes <= 0 || (this.playerHand.length === 0 && window.DECK_DATA?.length === 0);
-        const opponentLost = this.opponentRunes <= 0 || (this.opponentHand.length === 0 && window.OPPONENT_DECK_DATA?.length === 0);
-        if (playerLost) return alert("Hai perso! Rune finite.");
-        if (opponentLost) return alert("Hai vinto!");
+        const playerLost = this.playerRunes <= 0 ||
+            (this.playerHand.length === 0 && window.playerDeck?.length === 0);
+        const opponentLost = this.opponentRunes <= 0 ||
+            (this.opponentHand.length === 0 && window.opponentDeck?.length === 0);
+        if (playerLost) { alert("💀 Rune finite — HAI PERSO!"); return true; }
+        if (opponentLost) { alert("🏆 HAI VINTO!"); return true; }
         return false;
     }
 };
 
-// Funzione drawCards corretta (usa window.DECK_DATA)
-function drawCards(count, target = 'player') {
-    const deck = target === 'player' ? PLAYER_DECK_DATA : OPPONENT_DECK_DATA;
-    const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
-    
-    if (!deck || !Array.isArray(deck)) {
-        console.error('❌ DECK non valido:', deck);
+// ----------------------------------------
+// DRAW — variabili di stato
+// ----------------------------------------
+const DRAW_PER_TURN = 2;
+window.drawnThisTurn = 0;
+window.isDrawing = false; // lock anti-doppio click
+
+// ----------------------------------------
+// PESCA SINGOLA CON ANIMAZIONE
+// ----------------------------------------
+window.drawOneCard = function (target = 'player') {
+    if (window.isDrawing) return; // previeni click rapidi
+
+    const deck = target === 'player' ? window.playerDeck : window.opponentDeck;
+    if (!deck || deck.length === 0) {
+        window.GameState.checkWinCondition();
         return;
     }
-    
-    const hand = window.GameState[handKey];
-    for (let i = 0; i < count; i++) {
-        if (deck.length === 0) break;
-        const cardData = deck.pop();
-        hand.push(cardData);
+
+    window.isDrawing = true;
+
+    const cardData = deck.pop(); // top card (ultima)
+
+    // Aggiorna visuale mazzo SUBITO (prima dell'animazione)
+    renderDeck(
+        deck,
+        target === 'player' ? '#player-deck' : '.slot.deck.enemy'
+    );
+
+    // Avvia animazione, poi aggiungi alla mano
+    animateCardToHand(cardData, target, () => {
+        const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
+        window.GameState[handKey].push(cardData);
+        window.renderHand(target);
+        window.isDrawing = false;
+
+        if (target === 'player') {
+            window.drawnThisTurn++;
+            updatePhaseDisplay(); // aggiorna label
+
+            if (window.drawnThisTurn >= DRAW_PER_TURN) {
+                // Tutte le carte pescate → avanza automaticamente
+                setTimeout(() => advanceToNextPhase(), 400);
+            }
+        }
+    });
+};
+
+// ----------------------------------------
+// ANIMAZIONE: carta vola dal mazzo alla mano
+// ----------------------------------------
+function animateCardToHand(cardData, target, onComplete) {
+    const deckSelector = target === 'player' ? '#player-deck' : '.slot.deck.enemy';
+    const handSelector = target === 'player' ? '#player-hand' : '#opponent-hand';
+
+    const deckEl = document.querySelector(deckSelector);
+    const handEl = document.querySelector(handSelector);
+
+    if (!deckEl || !handEl) {
+        onComplete();
+        return;
     }
-    window.renderHand(target);
-    console.log(`✅ Pescate ${count} carte per ${target} - Mano: ${hand.length}`);
+
+    const deckRect = deckEl.getBoundingClientRect();
+    const handRect = handEl.getBoundingClientRect();
+
+    // Crea la carta animata
+    const flyCard = document.createElement('div');
+    flyCard.className = 'card-wrapper balatro-card fly-card';
+    flyCard.innerHTML = `
+        <div class="card-inner">
+            <div class="card face back">
+                <img src="static/src/cards/back/back.png"
+                     style="width:100%;height:100%;object-fit:contain"
+                     onerror="this.src='https://placehold.co/140x200?text=BACK'">
+            </div>
+        </div>`;
+
+    // Partenza: centro dello slot mazzo
+    const startX = deckRect.left + deckRect.width / 2 - 70;
+    const startY = deckRect.top + deckRect.height / 2 - 100;
+
+    // Arrivo: centro della zona mano
+    const endX = handRect.left + handRect.width / 2 - 70;
+    const endY = target === 'player'
+        ? handRect.top + 10
+        : handRect.bottom - 210;
+
+    flyCard.style.cssText = `
+        position: fixed;
+        width: 140px;
+        height: 200px;
+        left: ${startX}px;
+        top: ${startY}px;
+        z-index: 9999;
+        pointer-events: none;
+        transition: left 0.55s cubic-bezier(0.22,1,0.36,1),
+                    top  0.55s cubic-bezier(0.22,1,0.36,1),
+                    transform 0.55s ease;
+        transform: scale(1.1) rotate(${Math.random() * 10 - 5}deg);
+    `;
+
+    document.body.appendChild(flyCard);
+
+    // Forza reflow poi anima
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            flyCard.style.left = `${endX}px`;
+            flyCard.style.top = `${endY}px`;
+            flyCard.style.transform = 'scale(0.85) rotate(0deg)';
+        });
+    });
+
+    setTimeout(() => {
+        flyCard.remove();
+        onComplete();
+        window.isDrawing = false;
+    }, 600);
 }
 
+// ----------------------------------------
+// PESCA INIZIALE (5 carte senza animazione, per velocità)
+// ----------------------------------------
+window.initHands = function () {
+    const drawSilent = (target, count) => {
+        const deck = target === 'player' ? window.playerDeck : window.opponentDeck;
+        const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
+        for (let i = 0; i < count && deck.length > 0; i++) {
+            window.GameState[handKey].push(deck.pop());
+        }
+        window.renderHand(target);
+        renderDeck(deck, target === 'player' ? '#player-deck' : '.slot.deck.enemy');
+    };
+    drawSilent('player', 5);
+    drawSilent('opponent', 5);
+    console.log('🎮 Mani iniziali distribuite (5 carte ciascuno)');
+};
+
+// ----------------------------------------
+// GESTIONE FASI
+// ----------------------------------------
+window.advanceToNextPhase = function () {
+    const gs = window.GameState;
+
+    gs.currentPhase++;
+
+    if (gs.currentPhase > 5) {
+        // Nuovo turno
+        gs.currentPhase = 1;
+        gs.hasSummonedThisTurn = false;
+        gs.turnOwner = gs.turnOwner === 'player' ? 'opponent' : 'player';
+        window.drawnThisTurn = 0;
+    }
+
+    updatePhaseDisplay();
+    gs.checkWinCondition();
+
+    const phaseBtn = document.querySelector('.phase-button');
+
+    if (gs.currentPhase === 1) {
+        // Fase pesca: nascondi bottone, aspetta click sul mazzo
+        if (phaseBtn) phaseBtn.classList.add('hidden');
+        if (gs.turnOwner === 'opponent') {
+            setTimeout(() => {
+                window.isDrawing = false;
+                window.drawOneCard('opponent');
+                setTimeout(() => window.drawOneCard('opponent'), 700);
+                setTimeout(() => advanceToNextPhase(), 1400);
+            }, 300);
+        }
+    } else {
+        // Altre fasi: mostra bottone
+        if (phaseBtn) phaseBtn.classList.remove('hidden');
+    }
+
+    console.log(`📍 Fase ${gs.currentPhase} — ${gs.phases[gs.currentPhase - 1]?.name}`);
+};
+
+// Alias per compatibilità col bottone HTML
+window.nextPhaseAuto = window.advanceToNextPhase;
+
+// ----------------------------------------
+// HUD
+// ----------------------------------------
+window.updatePhaseDisplay = function () {
+    const gs = window.GameState;
+    const phaseName = gs.phases[gs.currentPhase - 1]?.name || '—';
+
+    let label = phaseName;
+    if (gs.currentPhase === 1 && gs.turnOwner === 'player') {
+        const remaining = DRAW_PER_TURN - window.drawnThisTurn;
+        label += ` — ancora ${remaining}`;
+    }
+
+    const phaseEl = document.getElementById('current-phase');
+    if (phaseEl) phaseEl.textContent = label;
+
+    const playerRunes = document.getElementById('player-runes');
+    const opponentRunes = document.getElementById('opponent-runes');
+    if (playerRunes) playerRunes.textContent = gs.playerRunes;
+    if (opponentRunes) opponentRunes.textContent = gs.opponentRunes;
+
+    document.body.classList.toggle('player-turn', gs.turnOwner === 'player');
+};
+
+// ----------------------------------------
+// CLICK SUL MAZZO (fase pesca)
+// ----------------------------------------
+document.addEventListener('click', (e) => {
+    const deckSlot = e.target.closest('#player-deck');
+    if (!deckSlot) return;
+
+    const gs = window.GameState;
+    if (gs.currentPhase !== 1 || gs.turnOwner !== 'player') return;
+    if (window.drawnThisTurn >= DRAW_PER_TURN) return;
+    if (window.isDrawing) return;
+
+    window.drawOneCard('player');
+});
+
+// ----------------------------------------
+// TYPE UTILS (duplicati qui per autonomia)
+// ----------------------------------------
 function getCardTypeFromId(cardId) {
-    const idNum = String(cardId).slice(-2);  // Ultime 2 cifre
+    const idNum = String(cardId).slice(-2);
     const typeMap = {
         '01': 'ammos', '02': 'armors', '03': 'ashes', '04': 'bosses',
         '05': 'classes', '06': 'creatures', '07': 'gloves', '08': 'helmets',
@@ -55,55 +274,10 @@ function getCardTypeFromId(cardId) {
     return typeMap[idNum] || 'unknown';
 }
 
-function trySummon(card, handIndex) {
-    if (window.GameState.hasSummonedThisTurn) return alert("1 combattente/turno!");
-    const cardType = getCardTypeFromId(card.id);
-    const validTypes = ['classes', 'npcs', 'creatures', 'bosses'];
-    console.log(card.type);
-    if (!validTypes.includes(cardType)) return alert("Solo unità! (classes/npcs/creatures/bosses)");
-    if (card.type === 'boss' && !checkTribute(card)) return alert("Tributo richiesto!");
-    
-    const isSupport = card.type === 'support' || card.category === 'npc';
-    const slotSelector = `.player-area.player ${isSupport ? '.slot.support:empty' : '.slot.battle:empty'}`;
-    const targetSlot = document.querySelector(slotSelector);
-    if (!targetSlot) return alert("Slot pieno!");
-    
-    targetSlot.innerHTML = createCardImage(card, false);
-    targetSlot.dataset.card = JSON.stringify(card);
-    window.GameState.playerHand.splice(handIndex, 1);
-    window.GameState.hasSummonedThisTurn = true;
-    renderHand('player');
-}
-
-function updatePhaseDisplay() {
-    const phaseName = window.GameState.phases[window.GameState.currentPhase - 1]?.name || 'Sconosciuta';
-    const phaseEl = document.getElementById('current-phase');
-    if (phaseEl) phaseEl.textContent = phaseName;
-    document.getElementById('player-runes').textContent = window.GameState.playerRunes;
-    document.getElementById('opponent-runes').textContent = window.GameState.opponentRunes;
-    document.body.classList.toggle('player-turn', window.GameState.turnOwner === 'player');
-}
-
-function nextPhase() {
-    window.GameState.currentPhase++;
-    if (window.GameState.currentPhase > 5) {
-        window.GameState.currentPhase = 1;
-        window.GameState.hasSummonedThisTurn = false;
-        window.GameState.turnOwner = window.GameState.turnOwner === 'player' ? 'opponent' : 'player';
-        
-        // Pesca SEMPRE 2 carte per player all'inizio del suo turno
-        if (window.GameState.turnOwner === 'player') {
-            drawCards(2, 'player');
-        }
-    } else if (window.GameState.currentPhase === 1 && window.GameState.turnOwner === 'player') {
-        // Pesca extra solo se phase=1 E player turn (primo ciclo)
-        drawCards(2, 'player');
-    }
-    updatePhaseDisplay();
-    window.GameState.checkWinCondition();
-}
-
-function createCardImage(cardData, showBack = false) {
+// ----------------------------------------
+// CARD IMAGE HELPER
+// ----------------------------------------
+window.createCardImage = function (cardData, showBack = false) {
     const id = cardData.id;
     const front = `static/src/cards/front/${id}.png`;
     const back = `static/src/cards/back/back.png`;
@@ -111,16 +285,20 @@ function createCardImage(cardData, showBack = false) {
         <div class="card-wrapper balatro-card ${showBack ? 'flipped' : ''}">
             <div class="card-inner">
                 <div class="card face front">
-                    <img src="${front}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/300x400?text=${id}'">
+                    <img src="${front}" class="w-full h-full object-contain"
+                         onerror="this.src='https://placehold.co/300x400?text=${id}'">
                 </div>
                 <div class="card face back">
-                    <img src="${back}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/300x400?text=BACK'">
+                    <img src="${back}" class="w-full h-full object-contain"
+                         onerror="this.src='https://placehold.co/300x400?text=BACK'">
                 </div>
             </div>
         </div>`;
-}
+};
 
-// Inizializza al caricamento
+// ----------------------------------------
+// INIT
+// ----------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
     updatePhaseDisplay();
 });

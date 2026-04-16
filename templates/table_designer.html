@@ -74,7 +74,7 @@
         <div id="opponent-hand" class="hand-container opponent-hand"></div>
         <div id="player-hand" class="hand-container player-hand"></div>
 
-        <button onclick="nextPhase()" class="phase-button">Prossima Fase</button>
+        <button onclick="nextPhaseAuto()" class="phase-button">Prossima Fase</button>
 
         <div class="hud">
             <div id="current-phase" class="phase-display">Pesca</div>
@@ -103,10 +103,14 @@
         const DECK_DATA = {{ deck | tojson }};
         const OPPONENT_DECK_DATA = [...DECK_DATA].reverse();
         const PLAYER_DECK_DATA = [...DECK_DATA];
+
+        window.playerDeck = [...PLAYER_DECK_DATA];
+        window.opponentDeck = [...OPPONENT_DECK_DATA];
     </script>
-    <script src="/static/js/table.js"></script>
     <!-- <script src="/static/js/cards.js"></script> -->
     <script src="/static/js/turn-manager.js"></script>
+    <script src="/static/js/game_rules.js"></script>
+    <script src="/static/js/table.js"></script>
     <script>
         // Inizializza dopo caricamento
         document.addEventListener('DOMContentLoaded', () => {

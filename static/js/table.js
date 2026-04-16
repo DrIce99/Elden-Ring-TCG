@@ -1,185 +1,234 @@
-const table = document.getElementById('game-table');
+// ========================================
+// TABLE.JS — Rendering, UI, Preview, Init
+// ========================================
 
-console.log('DECK_DATA:', DECK_DATA);
-console.log('player-deck:', document.getElementById('player-deck'));
-
+// ----------------------------------------
+// BACKGROUND CASUALE
+// ----------------------------------------
 function setRandomLocation() {
-    const locations = [
-        '1.png',
-        '2.png',
-        '3.png',
-        '4.png',
-        '5.png',
-        '6.png',
-        '7.png',
-        '8.png',
-        '9.png',
-        '10.png',
-        '11.png',
-        '12.png',
-        '13.png',
-        '14.png',
-        '15.png',
-        '16.png',
-        '17.png',
-        '18.png',
-        '19.png',
-        '20.png',
-        '21.png',
-        '22.png'
-    ];
-
-    const randomIndex = Math.floor(Math.random() * locations.length);
-    const selectedBg = locations[randomIndex];
-
+    const count = 22;
+    const randomIndex = Math.floor(Math.random() * count) + 1;
     const table = document.getElementById('game-table');
     if (table) {
-        table.style.backgroundImage = `url('static/src/locations/${selectedBg}')`;
+        table.style.backgroundImage = `url('static/src/locations/${randomIndex}.png')`;
     }
 }
-
-// Esegui al caricamento
 window.onload = setRandomLocation;
 
-function renderDeck(cards = [], container = null) {
-    const deckContainer = container || document.getElementById('player-deck');
-    console.log('Rendering deck:', cards?.length || 0, 'cards in', deckContainer?.id || 'custom');
+// ----------------------------------------
+// RENDER MAZZO (pile visuale)
+// ----------------------------------------
+window.renderDeck = function (cards = [], containerSelector = null) {
+    let deckContainer;
+    if (typeof containerSelector === 'string') {
+        deckContainer = document.querySelector(containerSelector);
+    } else {
+        deckContainer = containerSelector;
+    }
 
     if (!deckContainer) {
-        console.error("❌ Deck container NON trovato!");
-        return;
-    }
-    if (!cards || cards.length === 0) {
-        deckContainer.innerHTML = '<div class="text-white text-xl">Mazzo Vuoto</div>';
+        console.error('❌ Deck container non trovato:', containerSelector);
         return;
     }
 
     deckContainer.innerHTML = '';
-    cards.forEach((cardData, i) => {
-        console.log(`Carta ${i}:`, cardData.name);
 
-        const html = createCardImage(cardData, true);
-
-        const cardElement = document.createElement('div');
-        cardElement.innerHTML = html;
-        cardElement.dataset.card = JSON.stringify(cardData);
-
-        // Effetto pila
-        const offset = i * 2;
-        cardElement.style.position = 'absolute';
-        cardElement.style.left = `50%`;
-        cardElement.style.top = `50%`;
-        cardElement.style.zIndex = i;
-        cardElement.style.transform = `translate(-50%, -50%) rotate(${i * 2}deg)`;
-
-        deckContainer.appendChild(cardElement);
-    });
-}
-
-// function createCardImage(cardData) {
-//     const id = cardData.id;
-
-//     const front = `static/src/cards/front/${id}.png`;
-//     const back = `static/src/cards/back/back.png`;
-
-//     return `
-//         <div class="card-wrapper balatro-card flipped">
-//             <div class="card-inner">
-//                 <div class="card face front">
-//                     <div class="w-full h-full relative overflow-visible">
-//                         <img src="${front}" 
-//                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-//                                     max-w-none max-h-none scale-125">
-//                     </div>
-//                 </div>
-//                 <div class="card face back">
-//                     <div class="w-full h-full relative overflow-visible">
-//                         <img src="${back}" 
-//                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-//                                     max-w-none max-h-none scale-125">
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     `;
-// }
-
-// CHIAMATA ALLA FUNZIONE
-document.addEventListener('DOMContentLoaded', () => {
-    
-    setTimeout(() => {
-        if (window.GameState) {
-            renderDeck(DECK_DATA);  
-            renderDeck([...DECK_DATA].reverse(), document.querySelector('.slot.deck.enemy'));  
-            window.drawCards(5, 'player');
-            window.drawCards(5, 'opponent');
-            window.updatePhaseDisplay();
-            console.log('🎮 Gioco pronto - Ora nextPhase funziona!');
-        }
-    }, 100);
-});
-
-let selectedCard = null;
-let selectedCardData = null;
-
-let selected = false;
-
-// Event delegation per tutte le carte
-document.addEventListener('click', (e) => {
-    if (!selected) {
-        selected = true;
-        const cardWrapper = e.target.closest('.card-wrapper');
-        if (!cardWrapper || cardWrapper.closest('.deck-card-wrapper')) return;  // Escludi mazzo
-
-        // Seleziona nuova carta
-        const cardDataStr = cardWrapper.closest('.slot')?.dataset.card ||
-            cardWrapper.closest('.hand-card-wrapper')?.dataset.card;
-
-        if (cardDataStr) {
-            selectedCardData = JSON.parse(cardDataStr);
-            showPreview(selectedCardData, cardWrapper);
-        }
-    } else {
-        closePreview();
-        const cardWrapper = e.target.closest('.card-wrapper');
-        if (!cardWrapper || cardWrapper.closest('.deck-card-wrapper')) return;
-
-        const oldCardData = selectedCardData;
-        const cardDataStr = cardWrapper.closest('.slot')?.dataset.card ||
-            cardWrapper.closest('.hand-card-wrapper')?.dataset.card;
-
-        if (cardDataStr) {
-            if (oldCardData !== JSON.parse(cardDataStr)) {
-                selectedCardData = JSON.parse(cardDataStr);
-                showPreview(selectedCardData, cardWrapper);
-            }
-        } else {
-            selected = false;
-        }
+    if (!cards || cards.length === 0) {
+        deckContainer.innerHTML = '<div style="color:#edd7ab;font-size:0.8em;text-align:center;padding-top:80px;">Vuoto</div>';
+        return;
     }
-});
 
+    // Mostra MAX 8 carte per performance (effetto pila)
+    const visible = cards.slice(-Math.min(cards.length, 8));
+
+    visible.forEach((cardData, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'deck-card-wrapper';
+        wrapper.dataset.card = JSON.stringify(cardData);
+
+        wrapper.innerHTML = window.createCardImage
+            ? window.createCardImage(cardData, true)
+            : `<div class="card-wrapper balatro-card flipped"><div class="card-inner">
+                   <div class="card face back"><img src="static/src/cards/back/back.png"
+                   style="width:100%;height:100%;object-fit:contain"></div>
+               </div></div>`;
+
+        // Offset per effetto pila
+        const rotation = (i - visible.length / 2) * 1.5;
+        const offsetX = (i - visible.length / 2) * 1;
+        const offsetY = -(i * 1.5);
+
+        wrapper.style.cssText = `
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))
+                       rotate(${rotation}deg);
+            z-index: ${i};
+            width: 140px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        `;
+
+        // Solo l'ultima carta (top) è cliccabile
+        if (i === visible.length - 1) {
+            wrapper.style.cursor = 'pointer';
+            wrapper.style.pointerEvents = 'auto';
+            wrapper.title = `${cards.length} carte nel mazzo — clicca per pescare`;
+        } else {
+            wrapper.style.pointerEvents = 'none';
+        }
+
+        deckContainer.appendChild(wrapper);
+    });
+
+    // Badge contatore
+    let badge = deckContainer.querySelector('.deck-count-badge');
+    if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'deck-count-badge';
+        badge.style.cssText = `
+            position: absolute; bottom: -30px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #edd7ab;
+            font-size: 0.75em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid #edd7ab55;
+            pointer-events: none;
+            white-space: nowrap;
+        `;
+        deckContainer.appendChild(badge);
+    }
+    badge.textContent = `${cards.length} carte`;
+};
+
+// ----------------------------------------
+// RENDER MANO
+// ----------------------------------------
+window.renderHand = function (target) {
+    const containerId = target === 'player' ? 'player-hand' : 'opponent-hand';
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const hand = target === 'player'
+        ? window.GameState.playerHand
+        : window.GameState.opponentHand;
+
+    const totalCards = hand.length;
+
+    hand.forEach((card, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'hand-card-wrapper';
+        wrapper.draggable = true;
+        wrapper.dataset.card = JSON.stringify(card);
+
+        // Ventaglio: ruota le carte
+        let fanAngle = totalCards > 1
+            ? ((index / (totalCards - 1)) - 0.5) * Math.min(totalCards * 5, 30)
+            : 0;
+
+        if (target === 'opponent') {
+            fanAngle *= -1;
+        }
+        const fanY = Math.abs(fanAngle) * 1.2;
+
+        wrapper.style.cssText = `
+            transform: rotate(${fanAngle}deg) translateY(${fanY}px);
+            transform-origin: bottom center;
+            margin-left: ${index === 0 ? '0' : '-30px'};
+            transition: transform 0.2s ease, margin 0.2s ease;
+            z-index: ${index};
+        `;
+
+        wrapper.addEventListener('mouseenter', () => {
+            wrapper.style.transform = `rotate(${fanAngle}deg) translateY(-20px) scale(1.08)`;
+            wrapper.style.zIndex = 500;
+        });
+        wrapper.addEventListener('mouseleave', () => {
+            wrapper.style.transform = `rotate(${fanAngle}deg) translateY(${fanY}px)`;
+            wrapper.style.zIndex = index;
+        });
+
+        // Drag & drop
+        wrapper.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', JSON.stringify({ card, index }));
+        });
+
+        // Render carta (avversario: coperta)
+        wrapper.innerHTML = window.createCardImage
+            ? window.createCardImage(card, target === 'opponent')
+            : `<div class="card-wrapper balatro-card"><div class="card-inner"><div class="card face front">
+                   <img src="static/src/cards/front/${card.id}.png"
+                        style="width:100%;height:100%;object-fit:contain">
+               </div></div></div>`;
+
+        if (target === 'opponent') {
+            const inner = wrapper.querySelector('.card-inner');
+            if (inner) {
+                inner.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Click: schiera in fase 2
+        wrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.GameState.currentPhase === 2 &&
+                window.GameState.turnOwner === 'player' &&
+                target === 'player') {
+                window.trySummon(card, index);
+            }
+        });
+
+        container.appendChild(wrapper);
+
+        wrapper.addEventListener('mouseenter', () => {
+            if (window.placementState) return;
+
+            showPreview(card, wrapper);
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if (!previewOpen) return;
+            window.closePreview();
+        });
+    });
+};
+
+// ----------------------------------------
+// PREVIEW CARTA
+// ----------------------------------------
+let selectedCardEl = null;
+let selectedCardData = null;
+let previewOpen = false;
 
 function showPreview(cardData, cardElement) {
-    // Rimuovi selected da precedente
-    document.querySelectorAll('.card-wrapper.selected').forEach(el =>
-        el.classList.remove('selected'));
+    document.querySelectorAll('.card-wrapper.selected')
+        .forEach(el => el.classList.remove('selected'));
 
-    // Aggiungi selected
     cardElement.classList.add('selected');
-    selectedCard = cardElement;
+    selectedCardEl = cardElement;
+    selectedCardData = cardData;
+    previewOpen = true;
 
-    // Popola preview
-    document.getElementById('preview-img').src = `static/src/cards/front/${cardData.id}.png`;
+    const previewEl = document.getElementById('card-preview');
+    if (!previewEl) return;
+
+    document.getElementById('preview-img').src =
+        `static/src/cards/front/${cardData.id}.png`;
     document.getElementById('preview-name').textContent = cardData.name || 'Sconosciuta';
     document.getElementById('preview-desc').textContent = cardData.description || '';
 
     const statsDiv = document.getElementById('preview-stats');
     statsDiv.innerHTML = '';
 
-    // Stats dinamiche dal JSON
-    ['hp', 'atk', 'def', 'speed', 'cost'].forEach(stat => {
-        if (cardData[stat]) {
+    ['hp', 'atk', 'def', 'speed', 'cost', 'fp'].forEach(stat => {
+        if (cardData[stat] !== undefined && cardData[stat] !== null) {
             const badge = document.createElement('div');
             badge.className = 'stat-badge';
             badge.innerHTML = `<strong>${stat.toUpperCase()}:</strong> ${cardData[stat]}`;
@@ -187,80 +236,103 @@ function showPreview(cardData, cardElement) {
         }
     });
 
-    document.getElementById('card-preview').style.display = 'flex';
+    previewEl.style.display = 'flex';
 }
 
-function closePreview() {
-    document.getElementById('card-preview').style.display = 'none';
-    if (selectedCard) {
-        selectedCard.classList.remove('selected');
-        selectedCard = null;
+window.closePreview = function () {
+    const previewEl = document.getElementById('card-preview');
+    if (previewEl) previewEl.style.display = 'none';
+
+    if (selectedCardEl) {
+        selectedCardEl.classList.remove('selected');
+        selectedCardEl = null;
         selectedCardData = null;
     }
-}
+    previewOpen = false;
+};
 
-// Renderizzazione della mano
-function renderHand(target) {
-    const containerId = target === 'player' ? 'player-hand' : 'opponent-hand';
-    let container = document.getElementById(containerId);
+// Click su carta per preview (delegato)
+document.addEventListener('click', (e) => {
+    // Ignora se siamo in placement mode
+    if (window.placementState) return;  // nota: placementState è privato in game_rules, va esposto
+    if (e.target.closest('.slot')) return;
+    // Ignora se click su bottone fase o hint
+    if (e.target.closest('.phase-button, #placement-hint, #card-preview')) return;
 
-    if (!container) {
+    const cardWrapper = e.target.closest('.card-wrapper');
+
+    // Click fuori da qualsiasi carta → chiudi preview
+    if (!cardWrapper) {
+        if (previewOpen) window.closePreview();
         return;
     }
 
-    container.innerHTML = '';
-    const hand = target === 'player' ? GameState.playerHand : GameState.opponentHand;
+    // Escludi carte nel mazzo
+    if (cardWrapper.closest('.deck-card-wrapper')) return;
 
-    hand.forEach((card, index) => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'hand-card-wrapper';
-        cardElement.draggable = true;
-        cardElement.dataset.card = JSON.stringify(card);
+    // Cerca il dato della carta
+    const source = cardWrapper.closest('.slot') ||
+        cardWrapper.closest('.hand-card-wrapper');
+    const cardDataStr = source?.dataset.card;
 
-        cardElement.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', JSON.stringify({
-                card,
-                index
-            }));
-        });
+    if (!cardDataStr) return;
 
-        if (card.category?.includes('weapon') || card.category?.includes('armor')) {
-            // Drag solo su slot con Classi
-            const validSlots = [...document.querySelectorAll('.slot.battle')]
-                .filter(slot => {
-                    if (!slot.dataset.card) return false;
-                    const data = JSON.parse(slot.dataset.card);
-                    return data.type === 'class';
-                });
+    try {
+        const cardData = JSON.parse(cardDataStr);
+
+        if (previewOpen && selectedCardData?.id === cardData.id) {
+            // Stessa carta → chiudi
+            window.closePreview();
+        } else {
+            if (previewOpen) window.closePreview();
+            showPreview(cardData, cardWrapper);
+        }
+    } catch (err) {
+        console.error('Preview error:', err);
+    }
+});
+
+// ESC chiude preview
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        window.closePreview();
+    }
+});
+
+// ----------------------------------------
+// INIT — Avvia il gioco
+// ----------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🎮 table.js caricato, avvio inizializzazione...');
+
+    // Aspetta che tutti gli script siano caricati
+    const tryInit = () => {
+        if (!window.GameState || !window.playerDeck || !window.opponentDeck) {
+            setTimeout(tryInit, 100);
+            return;
         }
 
-        const html = createCardImage(card, target === 'opponent');
-        cardElement.innerHTML = html;
+        // Render mazzi
+        window.renderDeck(window.playerDeck, '#player-deck');
+        window.renderDeck(window.opponentDeck, '.slot.deck.enemy');
 
+        // Distribuisci mani iniziali
+        window.initHands();
 
-        // Click per schierare
-        cardElement.addEventListener('click', () => {
-            if (GameState.currentPhase === 2 && GameState.turnOwner === 'player' && target === 'player') {
-                trySummon(card, index);
-            }
-        });
+        // Inizia fase 1
+        window.GameState.currentPhase = 1;
+        window.drawnThisTurn = 0;
+        window.updatePhaseDisplay();
 
-        container.appendChild(cardElement);
-    });
-}
+        // Nascondi bottone fase (fase 1 = pesca manuale)
+        const phaseBtn = document.querySelector('.phase-button');
+        if (phaseBtn) phaseBtn.classList.add('hidden');
 
-document.querySelectorAll('.slot.battle, .slot.support').forEach(slot => {
-    slot.addEventListener('dragover', e => e.preventDefault());
-    slot.addEventListener('drop', e => {
-        if (GameState.currentPhase !== 2 || GameState.turnOwner !== 'player') return;
-        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-        trySummon(data.card, data.index);
-    });
+        console.log('✅ Gioco inizializzato — clicca il mazzo per pescare!');
+    };
+
+    setTimeout(tryInit, 200);
 });
 
-// Chiudi con ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closePreview();
-});
-
-window.renderHand = renderHand;
+// Esponi renderHand globalmente
+window.renderHand = window.renderHand || function () { };
