@@ -97,7 +97,96 @@
         "consumable": 0,
         "dupl": 1,
         "find": 1,
-        "rarity": "Unc",
+        "rarity": "Com",
         "banner": "22 Mohgwyn's Dynasty"
+    },
+    {
+        "id": 218,
+        "name": "Battle Axe",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/battle_axe_weapon_elden_ring_wiki_guide_200px.png",
+        "desc": "A thick, heavy blade attached to a handle. A versatile, standard weapon\n\nCapable of powerful attacks thanks to the weighty blade, these weapons are also regarded for their powerful charge attacks.",
+        "attack": [
+            {
+                "name": "Phy",
+                "amount": 128
+            },
+            {
+                "name": "Mag",
+                "amount": 0
+            },
+            {
+                "name": "Fire",
+                "amount": 0
+            },
+            {
+                "name": "Ligt",
+                "amount": 0
+            },
+            {
+                "name": "Holy",
+                "amount": 0
+            },
+            {
+                "name": "Crit",
+                "amount": 100
+            }
+        ],
+        "defence": [
+            {
+                "name": "Phy",
+                "amount": 47
+            },
+            {
+                "name": "Mag",
+                "amount": 31
+            },
+            {
+                "name": "Fire",
+                "amount": 31
+            },
+            {
+                "name": "Ligt",
+                "amount": 31
+            },
+            {
+                "name": "Holy",
+                "amount": 31
+            }
+        ],
+        "scalesWith": [
+            {
+                "name": "Str",
+                "scaling": "D"
+            },
+            {
+                "name": "Dex",
+                "scaling": "D"
+            }
+        ],
+        "requiredAttributes": [
+            {
+                "name": "Str",
+                "amount": 12
+            },
+            {
+                "name": "Dex",
+                "amount": 8
+            }
+        ],
+        "attacks": {
+            "lightDmg": 142,
+            "heavyDmg": 210
+        },
+        "category": "Axe",
+        "atktype": "Standard",
+        "passives": [
+        ],
+        "weight": 4.5,
+        "range": 1,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "0 Base Classes"
     }
 ]

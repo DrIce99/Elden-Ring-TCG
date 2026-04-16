@@ -1,0 +1,83 @@
+[
+    {
+        "id": 114,
+        "name": "Large Leather Shield",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/large_leather_shield_elden_ring_wiki_guide_200px.png",
+        "desc": "A round shield covered in leather. One of the larger categories of medium-sized shield.\n\nThough its damage negation may be lacking compared to a metal shield, it can handle wider range of attack affinities.",
+        "attack": [
+            {
+                "name": "Phy",
+                "amount": 75
+            },
+            {
+                "name": "Mag",
+                "amount": 0
+            },
+            {
+                "name": "Fire",
+                "amount": 0
+            },
+            {
+                "name": "Ligt",
+                "amount": 0
+            },
+            {
+                "name": "Holy",
+                "amount": 0
+            },
+            {
+                "name": "Crit",
+                "amount": 100
+            }
+        ],
+        "defence": [
+            {
+                "name": "Phy",
+                "amount": 91
+            },
+            {
+                "name": "Mag",
+                "amount": 49
+            },
+            {
+                "name": "Fire",
+                "amount": 36
+            },
+            {
+                "name": "Ligt",
+                "amount": 45
+            },
+            {
+                "name": "Holy",
+                "amount": 45
+            }
+        ],
+        "scalesWith": [
+            {
+                "name": "Str",
+                "scaling": "D"
+            }
+        ],
+        "requiredAttributes": [
+            {
+                "name": "Str",
+                "amount": 8
+            }
+        ],
+        "attacks": {
+            "lightDmg": 142,
+            "heavyDmg": 210
+        },
+        "category": "Medium Shield",
+        "atktype": "Strike",
+        "passives": [
+        ],
+        "weight": 3.0,
+        "range": 1,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "1 West Limgrave"
+    }
+]

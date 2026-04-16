@@ -57,5 +57,59 @@
         "find": 1,
         "rarity": "Leg",
         "banner": "22 Mohgwyn's Dynasty"
+    },
+    {
+        "id": 208,
+        "name": "Champion Headband",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/champion_headband_elden_ring_wiki_guide_200px.png",
+        "desc": "Headband reserved for the badlands' bravest.\nProof that the wearer has slaughtered countless foes.\nFollowing the example of their chieftain Hoarah Loux, the brave warriors of the badlands shun excess adornment.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 2.3
+            },
+            {
+                "name": "Strike",
+                "amount": 3.1
+            },
+            {
+                "name": "Slash",
+                "amount": 2.5
+            },
+            {
+                "name": "Pierce",
+                "amount": 2.8
+            },
+            {
+                "name": "Magic",
+                "amount": 2.8
+            },
+            {
+                "name": "Fire",
+                "amount": 3.4
+            },
+            {
+                "name": "Ligt",
+                "amount": 3.6
+            },
+            {
+                "name": "Holy",
+                "amount": 3.4
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Poise",
+                "amount": 5
+            }
+        ],
+        "passives": [
+        ],
+        "weight": 2.7,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "12 Caelid South"
     }
 ]

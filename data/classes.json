@@ -15,6 +15,12 @@
             "faith": "8",
             "arcane": "11"
         },
+        "items": [
+            {
+                "id": "218",
+                "name": "Battle Axe"
+            }
+        ],
         "dupl": 1,
         "find": 1,
         "loot": 0,
