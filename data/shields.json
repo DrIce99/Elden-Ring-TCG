@@ -68,7 +68,7 @@
             "lightDmg": 142,
             "heavyDmg": 210
         },
-        "category": "Medium Shield",
+        "category": "Medium",
         "atktype": "Strike",
         "passives": [
         ],

@@ -38,12 +38,6 @@
                 "amount": 5.7
             }
         ],
-        "resistance": [
-            {
-                "name": "Poise",
-                "amount": 8
-            }
-        ],
         "passives": [],
         "weight": 4.2,
         "consumable": 0,

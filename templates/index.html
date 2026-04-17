@@ -5,18 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ER Gacha Database</title>
-
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Cinzel', sans-serif;
             background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
             color: #eaeaea;
         }
@@ -36,8 +34,8 @@
         .gold {
             background: linear-gradient(135deg, #f5d06f, #c89b2f);
             -webkit-background-clip: text;
-            background-clip: border-box;
-            -webkit-text-fill-color: black;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .card-hover {
@@ -60,19 +58,16 @@
 </head>
 
 <body class="p-6">
-
     <!-- HEADER -->
     <header class="max-w-6xl mx-auto mb-12 text-center">
-        <h1 class="text-5xl font-bold gold mb-3">ER GACHA DATABASE</h1>
-        <p class="text-xs uppercase tracking-[0.3em] opacity-50">Dev Tool • Area Mapping</p>
+        <h1 class="text-5xl font-bold gold mb-3">Elden Ring TCG</h1>
+        <p class="text-xs uppercase tracking-[0.3em] opacity-50">Lista delle carte</p>
     </header>
 
     <main class="max-w-6xl mx-auto">
-
         <!-- FILTER BAR -->
         <div class="glass p-6 rounded-2xl mb-10 shadow-xl">
             <form method="GET" class="grid md:grid-cols-3 gap-6">
-
                 <div>
                     <label class="text-xs uppercase opacity-60 mb-2 block">Categoria</label>
                     <select name="category"
@@ -80,59 +75,189 @@
                         <option value="">Seleziona...</option>
                         <option value="all">TUTTO</option>
                         {% for cat in categories %}
-                        <option value="{{ cat }}">{{ cat }}</option>
+                        <option value="{{ cat }}" {% if sel_cat==cat %}selected{% endif %}>{{ cat }}</option>
                         {% endfor %}
                     </select>
                 </div>
-
                 <div>
                     <label class="text-xs uppercase opacity-60 mb-2 block">Area</label>
-                    <input type="text" name="area" placeholder="es. Limgrave"
+                    <input type="text" name="area" value="{{ request.args.get('area', '') }}" placeholder="es. Limgrave"
                         class="w-full bg-black/40 border border-white/10 p-3 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
                 </div>
-
                 <button type="submit"
                     class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-lg px-6 py-3 hover:scale-105 transition">
-                    Filtra
+                    🔍 Filtra
                 </button>
-
             </form>
         </div>
 
-        <div class="flex justify-end mb-6 gap-2">
-            <button onclick="setView('extended')" class="px-4 py-2 bg-white/10 rounded">Estesa</button>
-            <button onclick="setView('card')" class="px-4 py-2 bg-white/10 rounded">Carte</button>
+        <div class="flex justify-end mb-6">
+            <select onchange="changeSort(this.value)" class="bg-black/40 border border-white/10 p-2 rounded-lg">
+                <option value="id_asc">ID ↑</option>
+                <option value="id_desc">ID ↓</option>
+                <option value="rarity">Rarità ↑</option>
+                <option value="rarity_desc">Rarità ↓</option>
+                <option value="category">Categoria</option>
+            </select>
         </div>
 
-        <!-- 2. CONTAINER -->
+        <!-- ITEMS CONTAINER -->
         <div id="itemsContainer" class="space-y-6">
+            <!-- Contenuto generato da JS -->
         </div>
-
-        <!-- 3. JS VIEW SWITCH -->
-        <script>
-        function setView(mode) {
-            const extended = document.querySelectorAll('.extended-view');
-            const cards = document.querySelectorAll('.card-view');
-            const container = document.getElementById('itemsContainer');
-
-            if (mode === 'card') {
-                container.classList.remove('space-y-6');
-                container.classList.add('grid', 'grid-cols-2', 'md:grid-cols-4', 'gap-4');
-
-                extended.forEach(el => el.classList.add('hidden'));
-                cards.forEach(el => el.classList.remove('hidden'));
-            } else {
-                container.classList.add('space-y-6');
-                container.classList.remove('grid', 'grid-cols-2', 'md:grid-cols-4', 'gap-4');
-
-                extended.forEach(el => el.classList.remove('hidden'));
-                cards.forEach(el => el.classList.add('hidden'));
-            }
-        }
-        </script>
-
     </main>
 
+    <script>
+        // Dati iniziali dal backend
+        let allItems = {{ items | tojson | safe }};
+
+        let currentSort = "id_asc";
+
+        const rarityOrder = {
+            "Com": 0,
+            "Unc": 1,
+            "Rar": 2,
+            "Epi": 3,
+            "Leg": 4
+        };
+
+        function sortItems(items) {
+            const sorted = [...items];
+
+            switch (currentSort) {
+                case "id_asc":
+                    sorted.sort((a, b) => Number(a.id) - Number(b.id));
+                    break;
+
+                case "id_desc":
+                    sorted.sort((a, b) => Number(b.id) - Number(a.id));
+                    break;
+
+                case "rarity":
+                    sorted.sort((a, b) => {
+                        return (rarityOrder[a.rarity] ?? 0) - (rarityOrder[b.rarity] ?? 0);
+                    });
+                    break;
+                case "rarity_desc":
+                    sorted.sort((a, b) => {
+                        return (rarityOrder[b.rarity] ?? 0) - (rarityOrder[a.rarity] ?? 0);
+                    });
+                    break;
+
+                case "category":
+                    sorted.sort((a, b) => {
+                        return (a.category || "").localeCompare(b.category || "");
+                    });
+                    break;
+            }
+
+            return sorted;
+        }
+
+        function changeSort(sortType) {
+            currentSort = sortType;
+            renderItems(allItems);
+        }
+
+        document.querySelector("form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const params = new URLSearchParams(formData);
+
+            const res = await fetch(`/api/all?${params.toString()}`);
+            const data = await res.json();
+
+            allItems = data.items;
+            renderItems(allItems);
+        });
+
+        function renderItems(items = allItems) {
+            const container = document.getElementById('itemsContainer');
+
+            const sortedItems = sortItems(items);
+
+            if (!items || items.length === 0) {
+                container.innerHTML = `
+                    <div class="glass p-8 text-center rounded-2xl col-span-full">
+                        <div class="text-4xl opacity-30 mb-4">🎴</div>
+                        <p class="text-lg opacity-60 mb-2">Nessuna carta trovata</p>
+                        <p class="text-sm opacity-40">Prova a modificare i filtri</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = sortedItems.map(item => `
+    <a href="/card/${item.id}?category=${item.category || ''}"
+       class="block group relative overflow-hidden">
+        <div style="text-align:center;">${item.id}</div>
+
+        <img src="/static/src/cards/front/${item.id}.png"
+             class="w-full h-128 object-cover transition-transform duration-300 group-hover:scale-105"
+             alt="${item.name || 'Carta'}"
+             onerror="this.src='https://placehold.co/300x400'">
+
+    </a>
+`).join('');
+        }
+
+        // View switcher
+        function setView(mode) {
+            const container = document.getElementById('itemsContainer');
+
+            container.classList.remove('space-y-6');
+            container.classList.add('grid', 'grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-6');
+        }
+
+        // Dettaglio carta
+        function openCardDetail(cardId, category) {
+            window.location.href = `/card/${cardId}?category=${category}`;
+        }
+
+        // Fetch completo
+        async function fetchAllData() {
+            try {
+                const btns = document.querySelectorAll('button');
+                btns.forEach(btn => btn.disabled = true);
+
+                const response = await fetch('/api/all');
+                const data = await response.json();
+                allItems = data.items;
+                renderItems(allItems);
+
+                // Toast di successo
+                showToast('✅ Database aggiornato!');
+            } catch (error) {
+                console.error('Errore:', error);
+                showToast('❌ Errore nel caricamento');
+            } finally {
+                document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+            }
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 glass p-4 rounded-xl shadow-2xl z-50 animate-slide-in';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', async () => {
+            const res = await fetch('/api/all');
+            const data = await res.json();
+
+            allItems = data.items;
+            renderItems(allItems);
+            setView('card');
+        });
+    </script>
 </body>
 
 </html>

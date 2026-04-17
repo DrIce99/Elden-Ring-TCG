@@ -38,12 +38,6 @@
                 "amount": 2.4
             }
         ],
-        "resistance": [
-            {
-                "name": "Poise",
-                "amount": 3
-            }
-        ],
         "passives": [],
         "weight": 2.3,
         "consumable": 0,
@@ -51,5 +45,52 @@
         "find": 1,
         "rarity": "Com",
         "banner": "22 Mohgwyn's Dynasty"
+    },
+    {
+        "id": 207,
+        "name": "Champion Bracers",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/champion_bracers_elden_ring_wiki_guide_200px.png",
+        "desc": "Bracers reserved for the bandlands' bravest. \nProof that the wearer has slaughtered countless foes. \n\nFollowing the example of their chieftain Hoarah Loux, the brave warriors of the badlands shun excess adornment. ",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 1.6
+            },
+            {
+                "name": "Strike",
+                "amount": 2.1
+            },
+            {
+                "name": "Slash",
+                "amount": 1.7
+            },
+            {
+                "name": "Pierce",
+                "amount": 1.9
+            },
+            {
+                "name": "Magic",
+                "amount": 1.9
+            },
+            {
+                "name": "Fire",
+                "amount": 2.3
+            },
+            {
+                "name": "Ligt",
+                "amount": 2.5
+            },
+            {
+                "name": "Holy",
+                "amount": 2.3
+            }
+        ],
+        "passives": [],
+        "weight": 2.1,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "12 Caelid South"
     }
 ]

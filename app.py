@@ -45,6 +45,8 @@ def index():
         
     elif sel_cat in db:
         filtered_data = db[sel_cat]
+        for item in filtered_data:
+            item['category'] = sel_cat
     
     # Filtro per area (valido sia per "all" che per categoria singola)
     if sel_area:
@@ -136,6 +138,66 @@ def table_designer():
         'table_designer.html', 
         deck=deck_items
     )
+
+@app.route('/api/all')
+def api_all():
+    db = load_all_data()
+
+    category = request.args.get('category')
+    area = request.args.get('area')
+
+    all_items = []
+
+    for cat, items in db.items():
+        for item in items:
+            item['category'] = cat
+
+            # filtro categoria
+            if category and category != "all" and cat != category:
+                continue
+
+            # filtro area
+            if area and area.lower() not in item.get('banner', '').lower():
+                continue
+
+            all_items.append(item)
+
+    all_items.sort(key=lambda x: int(x.get('id', 0)))
+
+    return jsonify({'items': all_items})
+
+@app.route('/card/<card_id>')
+def card_detail(card_id):
+    """Pagina dettaglio singola carta"""
+    db = load_all_data()
+    card = None
+    category = request.args.get('category', '')
+    
+    # Cerca la carta nei vari file
+    search_categories = [category] if category else list(db.keys())
+    
+    for cat in search_categories:
+        for item in db.get(cat, []):
+            if str(item.get('id')) == str(card_id):
+                card = item.copy()
+                card['category'] = cat
+                break
+        if card:
+            break
+    
+    if not card:
+        return "Carta non trovata", 404
+    
+    card_type = "character"
+
+    if 'attack' in card:
+        card_type = "weapon"
+    elif 'dmgNegation' in card:
+        card_type = "armor"
+    elif 'stats' in card:
+        card_type = "class"
+    
+    return render_template('card_detail.html', card=card, card_type=card_type)
 
 if __name__ == '__main__':
     app.run(debug=True)

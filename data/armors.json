@@ -38,12 +38,6 @@
                 "amount": 10.1
             }
         ],
-        "resistance": [
-            {
-                "name": "Poise",
-                "amount": 13
-            }
-        ],
         "passives": [],
         "weight": 6.9,
         "consumable": 0,
@@ -51,5 +45,52 @@
         "find": 1,
         "rarity": "Unc",
         "banner": "22 Mohgwyn's Dynasty"
+    },
+    {
+        "id": 202,
+        "name": "Champion Pauldron",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/champion_pauldron_elden_ring_wiki_guide_200px.png",
+        "desc": "Pauldron reserved for the badlands' bravest.\nProof that the wearer has slaughtered countless foes.\nFollowing the example of their chieftain Hoarah Loux, the brave warriors of the badlands shun excess adornment.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 6.1
+            },
+            {
+                "name": "Strike",
+                "amount": 8
+            },
+            {
+                "name": "Slash",
+                "amount": 6.7
+            },
+            {
+                "name": "Pierce",
+                "amount": 7.1
+            },
+            {
+                "name": "Magic",
+                "amount": 7.1
+            },
+            {
+                "name": "Fire",
+                "amount": 8.8
+            },
+            {
+                "name": "Ligt",
+                "amount": 9.5
+            },
+            {
+                "name": "Holy",
+                "amount": 8.8
+            }
+        ],
+        "passives": [],
+        "weight": 5.1,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "12 Caelid South"
     }
 ]

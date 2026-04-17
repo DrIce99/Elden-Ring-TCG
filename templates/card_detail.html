@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/cards.css">
+</head>
+
+<body class="p-6">
+    <!-- CARD CONTAINER -->
+    <div class="flex justify-center">
+        <div id="cardContainer"></div>
+    </div>
+
+    <script>
+        let ITEM = {{ card | tojson | safe }};
+        let TYPE = {{ card_type | tojson | safe }};
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.js"></script>
+    <script type="module" src="/static/js/card_detail.js"></script>
+
+</body>
+
+</html>

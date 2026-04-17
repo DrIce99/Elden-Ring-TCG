@@ -38,12 +38,6 @@
                 "amount": 3.7
             }
         ],
-        "resistance": [
-            {
-                "name": "Poise",
-                "amount": 10
-            }
-        ],
         "passives": [
             {
                 "type": "Blood Loss atk up",
@@ -95,12 +89,6 @@
             {
                 "name": "Holy",
                 "amount": 3.4
-            }
-        ],
-        "resistance": [
-            {
-                "name": "Poise",
-                "amount": 5
             }
         ],
         "passives": [
