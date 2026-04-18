@@ -485,8 +485,15 @@ class Card {
         // Filtra slot vuoti ed evita crash se items non è un array
         const validItems = Array.isArray(allItems) ? allItems.filter(i => i.name && i.name !== "") : [];
 
-        const leftColumn = validItems.slice(0, 3);
-        const rightColumn = validItems.slice(3, 6);
+        const leftColumn = [];
+        const rightColumn = [];
+        for (let i = 0; i < validItems.length; i++) {
+            if (validItems[i].id % 100 == 2 || validItems[i].id % 100 == 7 || validItems[i].id % 100 == 8 || validItems[i].id % 100 == 11) {
+                rightColumn.push(validItems[i]);
+            } else {
+                leftColumn.push(validItems[i]);
+            }
+        }
 
         // Riempie fino a 3 slot per colonna
         const fill = (arr) => {
@@ -509,8 +516,6 @@ class Card {
                 </div>
                 `;
         }
-
-        const gameDesc = "";
 
         const cardType = "Class";
 

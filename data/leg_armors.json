@@ -45,5 +45,52 @@
         "find": 1,
         "rarity": "Com",
         "banner": "22 Mohgwyn's Dynasty"
+    },
+    {
+        "id": 211,
+        "name": "Champion Gaiters",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/champion_gaiters_elden_ring_wiki_guide_200px.png",
+        "desc": "Gaiters formed only with leather straps.\nCommon wear in the badlands.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 3.8
+            },
+            {
+                "name": "Strike",
+                "amount": 5
+            },
+            {
+                "name": "Slash",
+                "amount": 4
+            },
+            {
+                "name": "Pierce",
+                "amount": 4.5
+            },
+            {
+                "name": "Magic",
+                "amount": 4.5
+            },
+            {
+                "name": "Fire",
+                "amount": 5.4
+            },
+            {
+                "name": "Ligt",
+                "amount": 5.8
+            },
+            {
+                "name": "Holy",
+                "amount": 5.4
+            }
+        ],
+        "passives": [],
+        "weight": 3.9,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "12 Caelid South"
     }
 ]

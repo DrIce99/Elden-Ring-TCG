@@ -27,6 +27,14 @@
             {
                 "id": "207",
                 "name": "Champion Bracers"
+            },
+            {
+                "id": "202",
+                "name": "Champion Pauldron"
+            },
+            {
+                "id": "211",
+                "name": "Champion Gaiters"
             }
         ],
         "dupl": 1,
