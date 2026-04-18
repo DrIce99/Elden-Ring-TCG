@@ -149,10 +149,22 @@ class Card {
                     </div>
 
                     <!-- Game Description -->
-                    <div class="ninepatch">
-                        <div class="flex-1 space-y-4 px-2 overflow-y-auto">
-                            <p class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">${this.data.desc || '...'}</p>
+                    <div class="ninepatch-grid">
+                        <div class="tl"></div>
+                        <div class="top"></div>
+                        <div class="tr"></div>
+
+                        <div class="left"></div>
+                        <div class="center">
+                            <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                                <p class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">${this.data.desc || '...'}</p>
+                            </div>
                         </div>
+                        <div class="right"></div>
+
+                        <div class="bl"></div>
+                        <div class="bottom"></div>
+                        <div class="br"></div>
                     </div>
 
                     <!-- Attacchi (Mostra Danno) -->
@@ -306,10 +318,22 @@ class Card {
                     </div>
 
                     <!-- Game Description -->
-                    <div class="ninepatch">
-                        <div class="flex-1 space-y-4 px-2 overflow-y-auto">
-                            <p class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">${this.data.desc || '...'}</p>
+                    <div class="ninepatch-grid">
+                        <div class="tl"></div>
+                        <div class="top"></div>
+                        <div class="tr"></div>
+
+                        <div class="left"></div>
+                        <div class="center">
+                            <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                                <p class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">${this.data.desc || '...'}</p>
+                            </div>
                         </div>
+                        <div class="right"></div>
+
+                        <div class="bl"></div>
+                        <div class="bottom"></div>
+                        <div class="br"></div>
                     </div>
 
                     <!-- Passive Effects (Rettangolo Rosso) -->
@@ -444,13 +468,25 @@ class Card {
             </div>
 
             <!-- DESCRIZIONI -->
-            <div class="ninepatch">
-                <div class="flex-1 space-y-4 px-2 overflow-y-auto">
-                    ${desc}
-                    <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
-                        ${this.data.gamedesc || ''}
+            <div class="ninepatch-grid">
+                <div class="tl"></div>
+                <div class="top"></div>
+                <div class="tr"></div>
+
+                <div class="left"></div>
+                <div class="center">
+                    <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                        ${desc}
+                        <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
+                            ${this.data.gamedesc || ''}
+                        </div>
                     </div>
                 </div>
+                <div class="right"></div>
+
+                <div class="bl"></div>
+                <div class="bottom"></div>
+                <div class="br"></div>
             </div>
 
             <!-- FOOTER (Loot e ID) -->
@@ -549,6 +585,15 @@ class Card {
         // <div class="middle ver left"></div>
         // <div class="middle ver right"></div>
 
+        // <div class="ninepatch">
+        //         <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+        //             ${desc}
+        //             <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
+        //                 ${this.data.gamedesc || ''}
+        //             </div>
+        //         </div>
+        //     </div>
+
         return `
     <div class="card-wrapper balatro-card">
         <div class="card-inner">
@@ -615,13 +660,25 @@ class Card {
             </div>
 
             <!-- DESCRIZIONI -->
-            <div class="ninepatch">
-                <div class="flex-1 space-y-4 px-2 overflow-y-auto">
-                    ${desc}
-                    <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
-                        ${this.data.gamedesc || ''}
+            <div class="ninepatch-grid">
+                <div class="tl"></div>
+                <div class="top"></div>
+                <div class="tr"></div>
+
+                <div class="left"></div>
+                <div class="center">
+                    <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                        ${desc}
+                        <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
+                            ${this.data.gamedesc || ''}
+                        </div>
                     </div>
                 </div>
+                <div class="right"></div>
+
+                <div class="bl"></div>
+                <div class="bottom"></div>
+                <div class="br"></div>
             </div>
 
             <!-- FOOTER (Loot e ID) -->
@@ -643,6 +700,157 @@ class Card {
     </div>
     `;
     };
+
+    renderItem() {
+        // Dividiamo gli oggetti per tipo: 
+        // Assumiamo che i primi 3 siano armi/item e i successivi armatura (o logica simile)
+        const imageSrc = (this.data.img && this.data.img !== "")
+            ? this.data.img
+            : "https://placehold.co";
+
+        const allItems = this.data.items || [];
+
+        // Filtra slot vuoti ed evita crash se items non è un array
+        const validItems = Array.isArray(allItems) ? allItems.filter(i => i.name && i.name !== "") : [];
+
+        const leftColumn = [];
+        const rightColumn = [];
+        for (let i = 0; i < validItems.length; i++) {
+            if (validItems[i].id % 100 == 2 || validItems[i].id % 100 == 7 || validItems[i].id % 100 == 8 || validItems[i].id % 100 == 11) {
+                rightColumn.push(validItems[i]);
+            } else {
+                leftColumn.push(validItems[i]);
+            }
+        }
+
+        // Riempie fino a 3 slot per colonna
+        const fill = (arr) => {
+            while (arr.length < 3) arr.push({ name: "" });
+            return arr;
+        };
+
+        const type = this.data.support == 1 ? "filter: hue-rotate(108deg);" : "filter: hue-rotate(0deg);";
+
+        const finalLeft = fill(leftColumn);
+        const finalRight = fill(rightColumn);
+
+        const rarityClass = `rarity-${this.data.rarity || "common"}`;
+
+        let desc = "";
+        if (this.data.desc != "") {
+            desc = `
+                    <div class="text-xs text-white/90" style="text-align: justify;text-justify:inter-word; background:transparent;">
+                        ${this.data.desc || ''}
+                    </div>
+                    `;
+        }
+
+        const gameDesc = "";
+
+        const cardType = "Item";
+
+        // Per leggendaria:
+        // <div class="middle ver left"></div>
+        // <div class="middle ver right"></div>
+
+        return `
+    <div class="card-wrapper balatro-card">
+        <div class="card-inner">
+        <div class="card face front relative ${rarityClass}">
+        <div class="card-content">
+            <div class="corner top left"></div>
+            <div class="corner top right"></div>
+            <div class="corner bottom left"></div>
+            <div class="corner bottom right"></div>
+            <div class="corner top1 left1"></div>
+            <div class="corner top1 right1"></div>
+            <div class="corner bottom1 left1"></div>
+            <div class="corner bottom1 right1"></div>
+
+            <div class="middle hor left"></div>
+            <div class="middle hor right"></div>
+            
+            <!-- HEADER (HP e Slot Vuoto per Star-up) -->
+            <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
+                <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="display:flex;justify-content:space-between;box-shadow:inset 0 0 30px 30px rgba(0, 0, 0, 0, 0);">
+                </div>
+                <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
+                    ${cardType}    
+                </div>
+                <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align: right; display:flex;justify-content:space-between;">
+                </div>
+            </div>
+
+            <!-- SEZIONE CENTRALE (3 Colonne) -->
+            <div class="flex gap-2 h-64 mb-4" style="max-height:80%;">
+                <!-- COLONNA SX: ARMI / ITEMS -->
+                <div class="w-1/4 p-2 flex flex-col gap-2 ninepatchshadow">
+                    ${finalLeft.map(item => item.name ?
+            `<div class="text-[9px] leading-tight opacity-80 border-b border-white/5 pb-1" style="text-align:center;">${item.name}</div>` :
+            `<div class="h-4 bg-white/5 rounded"></div>`).join('')}
+                </div>
+
+                <!-- CENTRO: IMMAGINE -->
+                <div class="flex-1 bg-[#d1d1d109] rounded-2xl overflow-hidden shadow-inner border border-white/10">
+                    <img src="${this.data.img}" class="w-full h-full object-cover">
+                </div>
+
+                <!-- COLONNA DX: ARMATURA -->
+                <div class="w-1/4 p-2 flex flex-col gap-2 ninepatchshadow">
+                    ${finalRight.map(item => item.name ?
+                `<div class="text-[9px] leading-tight opacity-80 border-b border-white/5 pb-1" style="text-align:center;">${item.name}</div>` :
+                `<div class="h-4 bg-white/5 rounded"></div>`).join('')}
+                </div>
+            </div>
+
+            <!-- NOME (Incastonato tra due barre) -->
+            <div class="relative">
+                <div class="name-banner flex items-center justify-center" style="${type}">
+                <h2 class="text-2xl font-bold text-center py-1 tracking-wide uppercase">${this.data.name}</h2>
+                </div>
+            </div>
+
+            <!-- DESCRIZIONI -->
+            <div class="ninepatch-grid">
+                <div class="tl"></div>
+                <div class="top"></div>
+                <div class="tr"></div>
+
+                <div class="left"></div>
+                <div class="center">
+                    <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                        ${desc}
+                        <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
+                            ${this.data.gamedesc || ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="right"></div>
+
+                <div class="bl"></div>
+                <div class="bottom"></div>
+                <div class="br"></div>
+            </div>
+
+            <!-- FOOTER (Loot e ID) -->
+            <div class="flex justify-between items-end mt-4 px-1 opacity-40">
+                <div class="flex content-between gap-1 align-middle">
+                    <div class="text-[10px] align-middle" style="vertical-align:center;">Runes: ${this.data.loot || 0}</div>
+                    <div><img src="https://eldenring.wiki.fextralife.com/file/Elden-Ring/runes-currency-elden-ring-wiki-guide-18.png" class="size-3"></div>
+                </div>
+                <div class="text-[10px]">ID: ${this.data.id}</div>
+            </div>
+        </div>
+        </div>
+        
+        <div class="card face back">
+            <img src="/static/src/page_bg_raw.jpg" class="back-img">
+        </div>
+        <div>
+        </div>
+    </div>
+    `;
+    };
 }
 
 
@@ -656,6 +864,7 @@ function render() {
     else if (TYPE === 'weapon') container.innerHTML = cardObj.renderWeapon();
     else if (TYPE === 'class') container.innerHTML = cardObj.renderClass();
     else if (TYPE === 'armor') container.innerHTML = cardObj.renderArmor();
+    else if (TYPE === 'item') container.innerHTML = cardObj.renderItem();
 
     document.querySelectorAll('.balatro-card').forEach((wrapper) => {
         const inner = wrapper.querySelector('.card-inner');
@@ -708,6 +917,7 @@ function saveCardAsPng(elementId) {
     htmlToImage.toPng(node, {
         cacheBust: true, // Evita problemi di cache del browser
         skipFonts: false,
+        pixelRatio: 1
     })
         .then(function (dataUrl) {
             const link = document.createElement('a');
@@ -732,7 +942,8 @@ document.getElementById("searchSelect").addEventListener("change", (e) => {
         if (found.attack) TYPE = "weapon";
         else if (found.dmgNegation) TYPE = "armor";
         else if (found.stats) TYPE = "class";
-        else TYPE = "character";
+        else if (found.stats) TYPE = "character";
+        else TYPE = "item";
         render();
     }
 });
