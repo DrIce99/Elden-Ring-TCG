@@ -80,10 +80,6 @@
                 "amount": 24
             }
         ],
-        "attacks": {
-            "lightDmg": 142,
-            "heavyDmg": 210
-        },
         "category": "Hammer",
         "atktype": "Strike",
         "passives": [
@@ -173,10 +169,6 @@
                 "amount": 8
             }
         ],
-        "attacks": {
-            "lightDmg": 142,
-            "heavyDmg": 210
-        },
         "category": "Axe",
         "atktype": "Standard",
         "passives": [
@@ -187,6 +179,91 @@
         "dupl": 1,
         "find": 1,
         "rarity": "Com",
+        "banner": "0 Base Classes"
+    },
+    {
+        "id": 318,
+        "name": "Scimitar",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/scimitar_curved_sword_weapon_elden_ring_wiki_guide_200px.png",
+        "desc": "A curved sword with a single-sided blade.\nDelivers slashing attacks with its sharp blade, but is ineffective against armor and hides covered in tough scales.\nSmaller in size than most curved swords, it carves into enemies with quick, sharp cuts.",
+        "attack": [
+            {
+                "name": "Phy",
+                "amount": 106
+            },
+            {
+                "name": "Mag",
+                "amount": 0
+            },
+            {
+                "name": "Fire",
+                "amount": 0
+            },
+            {
+                "name": "Ligt",
+                "amount": 0
+            },
+            {
+                "name": "Holy",
+                "amount": 0
+            },
+            {
+                "name": "Crit",
+                "amount": 100
+            }
+        ],
+        "defence": [
+            {
+                "name": "Phy",
+                "amount": 40
+            },
+            {
+                "name": "Mag",
+                "amount": 30
+            },
+            {
+                "name": "Fire",
+                "amount": 30
+            },
+            {
+                "name": "Ligt",
+                "amount": 30
+            },
+            {
+                "name": "Holy",
+                "amount": 30
+            }
+        ],
+        "scalesWith": [
+            {
+                "name": "Str",
+                "scaling": "D"
+            },
+            {
+                "name": "Dex",
+                "scaling": "D"
+            }
+        ],
+        "requiredAttributes": [
+            {
+                "name": "Str",
+                "amount": 7
+            },
+            {
+                "name": "Dex",
+                "amount": 13
+            }
+        ],
+        "category": "Curved Sword",
+        "atktype": "Slash",
+        "passives": [
+        ],
+        "weight": 3.0,
+        "range": 2,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Unc",
         "banner": "0 Base Classes"
     }
 ]

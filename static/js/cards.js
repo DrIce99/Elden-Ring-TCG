@@ -101,7 +101,7 @@ class Card {
         
                     <!-- HEADER: Category a SX, AtkType a DX -->
                     <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
-                        <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;">
+                        <div class="bg-[#1c1b1b] px-2 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;font-size: clamp(7px, 13px, 20px);inline-size: 100%;overflow-wrap: break-word;white-space: nowrap;overflow: hidden;">
                             ${this.data.category || '-'}
                         </div>
                         <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
@@ -165,18 +165,6 @@ class Card {
                         <div class="bl"></div>
                         <div class="bottom"></div>
                         <div class="br"></div>
-                    </div>
-
-                    <!-- Attacchi (Mostra Danno) -->
-                    <div class="flex gap-2 mb-2">
-                        <div class="flex-1 border border-[#edd7ab]/40 rounded-lg p-2 bg-[#1c1b1b]">
-                            <div class="text-[7px] text-[#edd7ab] font-bold uppercase">Light Atk</div>
-                            <div class="text-sm font-bold text-white">${this.data.attacks?.lightDmg || '0'}</div>
-                        </div>
-                        <div class="flex-1 border border-[#edd7ab]/40 rounded-lg p-2 bg-[#1c1b1b]">
-                            <div class="text-[7px] text-[#edd7ab] font-bold uppercase">Heavy Atk</div>
-                            <div class="text-sm font-bold text-white">${this.data.attacks?.heavyDmg || '0'}</div>
-                        </div>
                     </div>
 
                     <!-- Passive Effects (Rettangolo Rosso) -->
