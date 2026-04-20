@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
+* {
+    font-family: 'Cinzel', sans-serif;
+}
+
+body {
+    background-color: #0a0a0a;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body::before {
+    content: "";
+    background-image: url("../src/page_bg_raw.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    opacity: 0.4; 
+
+    z-index: -1; 
+}
+
+.title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* padding-top: 60px;     */
+    /* padding-bottom: 40px;     */
+    position: relative;
+}
+
+.title img {
+    max-width: 600px;        /* Regola questa misura per la grandezza del logo */
+    width: 80%;              /* Lo rende responsive su schermi piccoli */
+    height: auto;
+    display: block;
+    margin: 0;
+    /* Opzionale: aggiunge un leggero bagliore dorato dietro il logo */
+    filter: drop-shadow(0 10px rgba(0, 0, 0, 0.4)) !important;
+}
+
+.tcg {
+    position: absolute;
+    max-width: 450px !important; 
+    width: 100%;
+    
+    top: 75px;
+    
+    z-index: 2; /* Sta sopra la prima immagine */
+    filter: drop-shadow(0 10px rgba(0, 0, 0, 0.4)) !important;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 100px;
+    position: relative;
+    flex-grow: 1;
+    justify-content: center;
+    top: -50px;
+}
+
+.sep {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.btn-menu {
+    text-decoration: none;
+    color: rgba(255, 230, 180, 0.6); /* Oro spento */
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+    transition: all 0.4s ease; /* Transizione fluida */
+    width: fit-content; /* Il bordo/effetto si adatta alla lunghezza del testo */
+    position: relative;
+    padding: 10px 0;
+}
+
+/* Effetto al passaggio del mouse (Hover) */
+.btn-menu:hover {
+    color: hsl(40, 65%, 85%); /* Oro brillante */
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.2);
+    transform: translateX(15px); /* Si sposta leggermente a destra */
+}
+
+/* Linea decorativa che appare sotto il testo */
+.btn-menu::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    transition: width 0.4s ease;
+    background: linear-gradient(90deg, rgb(206, 147, 84, 0.8), transparent);
+}
+
+.btn-menu:hover::after {
+    width: 100%; /* La linea si allunga quando passi sopra */
+}
+
+.logout {
+    color: rgba(255, 187, 156, 0.6); /* Oro spento */
+    text-shadow: 0 0 15px rgba(255, 136, 0, 0.5), 0 0 30px rgba(255, 123, 0, 0.2);
+}
+
+.logout::after {
+    background: linear-gradient(90deg, rgba(206, 110, 84, 0.8), transparent);
+}
+
+.logout:hover {
+    color: hsl(8, 66%, 85%); 
+    text-shadow: 0 0 15px rgba(255, 64, 0, 0.5), 0 0 30px rgba(255, 77, 0, 0.2);
+    transform: translateX(15px); /* Si sposta leggermente a destra */
+}
+
+.play {
+    color: rgba(156, 253, 255, 0.6);
+    text-shadow: 0 0 15px rgba(0, 213, 255, 0.5), 0 0 30px rgba(0, 110, 255, 0.2);
+}
+
+.play::after {
+    background: linear-gradient(90deg, rgba(84, 169, 206, 0.8), transparent);
+}
+
+.play:hover {
+    color: hsl(176, 66%, 85%); 
+    text-shadow: 0 0 15px rgba(0, 255, 247, 0.5), 0 0 30px rgba(0, 128, 255, 0.2);
+    transform: translateX(15px);
+}

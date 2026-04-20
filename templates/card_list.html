@@ -6,87 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ER Gacha Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/card_list.css">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
-
-        body {
-            font-family: 'Cinzel', sans-serif;
-            background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
-            color: #eaeaea;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .gold {
-            background: linear-gradient(135deg, #f5d06f, #c89b2f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card-hover {
-            transition: all 0.25s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-4px) scale(1.01);
-            border-color: rgba(245, 208, 111, 0.4);
-        }
-
-        .stat-pill {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-        }
-    </style>
+    
 </head>
 
 <body class="p-6">
     <!-- HEADER -->
-    <header class="max-w-6xl mx-auto mb-12 text-center">
-        <h1 class="text-5xl font-bold gold mb-3">Elden Ring TCG</h1>
-        <p class="text-xs uppercase tracking-[0.3em] opacity-50">Lista delle carte</p>
+    <header class="title-container">
+        <img src="../static/src/misc/Elden-Ring-Logo-PNG-File.png" alt="Elden Ring">
+        <img src="../static/src/misc/ChatGPT_Image_20_apr_2026__09_53_16-removebg-preview.png" alt="TCG" class="tcg-logo">
     </header>
 
-    <main class="max-w-6xl mx-auto">
+    <!-- <main class="max-w-6xl mx-auto"> -->
         <!-- FILTER BAR -->
-        <div class="glass p-6 rounded-2xl mb-10 shadow-xl">
+        <!-- <div class="glass p-6 rounded-2xl mb-10 shadow-xl">
             <form method="GET" class="grid md:grid-cols-3 gap-6">
                 <div>
-                    <label class="text-xs uppercase opacity-60 mb-2 block">Categoria</label>
+                    <label class="text-xs uppercase opacity-60 mb-2 block">Category</label>
                     <select name="category"
-                        class="w-full bg-black/40 border border-white/10 p-3 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
-                        <option value="">Seleziona...</option>
-                        <option value="all">TUTTO</option>
+                        class="w-full bg-#0a0a0a border border-white/10 p-3 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none categorysel">
+                        <option value="">Select...</option>
+                        <option value="all">All</option>
                         {% for cat in categories %}
                         <option value="{{ cat }}" {% if sel_cat==cat %}selected{% endif %}>{{ cat }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div>
-                    <label class="text-xs uppercase opacity-60 mb-2 block">Area</label>
-                    <input type="text" name="area" value="{{ request.args.get('area', '') }}" placeholder="es. Limgrave"
+                    <label class="text-xs uppercase opacity-60 mb-2 block">Location</label>
+                    <input type="text" name="area" value="{{ request.args.get('area', '') }}" placeholder="ex. Limgrave"
                         class="w-full bg-black/40 border border-white/10 p-3 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
                 </div>
                 <button type="submit"
                     class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-lg px-6 py-3 hover:scale-105 transition">
-                    🔍 Filtra
+                    Apply filter
                 </button>
             </form>
         </div>
@@ -95,15 +49,58 @@
             <select onchange="changeSort(this.value)" class="bg-black/40 border border-white/10 p-2 rounded-lg">
                 <option value="id_asc">ID ↑</option>
                 <option value="id_desc">ID ↓</option>
-                <option value="rarity">Rarità ↑</option>
-                <option value="rarity_desc">Rarità ↓</option>
-                <option value="category">Categoria</option>
+                <option value="rarity">Rarity ↑</option>
+                <option value="rarity_desc">Rarity ↓</option>
+                <option value="category">Category</option>
             </select>
+        </div> -->
+
+        <!-- ITEMS CONTAINER -->
+        <!-- <div id="itemsContainer" class="space-y-6"> -->
+            <!-- Contenuto generato da JS -->
+        <!-- </div>
+    </main> -->
+
+    <main class="max-w-6xl mx-auto">
+        <!-- FILTER BAR STILE ELDEN -->
+        <div class="glass p-8 rounded-lg mb-10">
+            <form method="GET" class="grid md:grid-cols-3 gap-8 items-end">
+                <div>
+                    <label class="text-[10px] uppercase tracking-widest text-yellow-600/80 mb-3 block">Category</label>
+                    <select name="category" class="w-full p-3 rounded-md outline-none">
+                        <option value="all">All</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat }}" {% if sel_cat==cat %}selected{% endif %}>{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] uppercase tracking-widest text-yellow-600/80 mb-3 block">Location</label>
+                    <input type="text" name="area" value="{{ request.args.get('area', '') }}" placeholder="ex. Limgrave"
+                        class="w-full p-3 rounded-md outline-none placeholder:opacity-30">
+                </div>
+                <button type="submit" class="btn-filter rounded-md px-6 py-3 uppercase text-sm">
+                    Apply filter
+                </button>
+            </form>
+        </div>
+
+        <!-- Ordinamento -->
+        <div class="flex justify-end mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] uppercase opacity-40">Order by:</span>
+                <select onchange="changeSort(this.value)" class="text-xs p-2 rounded-md">
+                    <option value="id_asc">ID Asc</option>
+                    <option value="id_desc">ID Desc</option>
+                    <option value="rarity">Rarity Asc</option>
+                    <option value="rarity_desc">Rarity Desc</option>
+                </select>
+            </div>
         </div>
 
         <!-- ITEMS CONTAINER -->
         <div id="itemsContainer" class="space-y-6">
-            <!-- Contenuto generato da JS -->
+            <!-- Qui verranno caricate le righe delle carte -->
         </div>
     </main>
 

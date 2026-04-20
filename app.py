@@ -25,8 +25,15 @@ def load_all_data():
                 
     return database
 
+# --- NUOVA HOME ---
 @app.route('/')
-def index():
+def home():
+    # Carica semplicemente il menu principale
+    return render_template('home.html')
+
+# --- VECCHIA HOME SPOSTATA ---
+@app.route('/card-list')
+def card_list():
     db = load_all_data()
     categories = list(db.keys())
     
@@ -36,11 +43,8 @@ def index():
     filtered_data = []
     
     if sel_cat == "all":
-        # Unisce tutti gli elementi di tutte le categorie
         for cat in db:
             filtered_data.extend(db[cat])
-        
-        # Ordina per ID (convertendo in int per evitare 1, 10, 2)
         filtered_data.sort(key=lambda x: int(x.get('id', 0)))
         
     elif sel_cat in db:
@@ -48,11 +52,10 @@ def index():
         for item in filtered_data:
             item['category'] = sel_cat
     
-    # Filtro per area (valido sia per "all" che per categoria singola)
     if sel_area:
         filtered_data = [i for i in filtered_data if sel_area.lower() in i.get('banner', '').lower()]
             
-    return render_template('index.html', 
+    return render_template('card_list.html', 
                            categories=categories, 
                            items=json.dumps(filtered_data),
                            sel_cat=sel_cat)

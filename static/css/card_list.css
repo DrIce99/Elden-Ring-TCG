@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Cinzel', sans-serif;
+}
+
+body {
+    background-color: #0a0a0a;
+    margin: 0;
+    padding: 20px;
+    position: relative;
+    min-height: 100vh;
+    color: #eaeaea;
+}
+
+/* Background coerente con la Home */
+body::before {
+    content: "";
+    background-image: url("../src/page_bg_raw.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.25;
+    /* Più bassa per leggere meglio i dati della lista */
+    z-index: -1;
+}
+
+/* Header con Logo Sovrapposto */
+.title-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 40px;
+    top: -50px;
+}
+
+.title-container img:first-child {
+    max-width: 400px;
+    /* Più piccolo rispetto alla home */
+    width: 60%;
+    height: auto;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8));
+}
+
+.main {
+    top: -50px;
+}
+
+.tcg-logo {
+    position: absolute;
+    max-width: 300px !important;
+    width: 50%;
+    top: 45px;
+    /* Regola in base alla dimensione ridotta */
+    z-index: 2;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.8)) !important;
+}
+
+/* Elementi UI */
+.glass {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 230, 180, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+input,
+select {
+    background: rgba(20, 20, 20, 0.8) !important;
+    border: 1px solid rgba(255, 230, 180, 0.3) !important;
+    color: #f5d06f !important;
+    transition: all 0.3s;
+}
+
+input:focus,
+select:focus {
+    border-color: rgb(255, 230, 180)f !important;
+    box-shadow: 0 0 10px rgba(245, 208, 111, 0.2) !important;
+}
+
+.btn-filter {
+    background: linear-gradient(135deg, rgb(255, 230, 180), #c89b2f, #8a6d25);
+    color: black;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-filter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(200, 155, 47, 0.4);
+    filter: brightness(1.2);
+}
+
+/* .categorysel {
+    scrollbar-color: rgba(255, 230, 180) #0a0a0a;
+    scrollbar-width: thin;
+} */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(255, 230, 180);
+  border-radius: 5px;
+}
