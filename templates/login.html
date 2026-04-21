@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elden Ring TCG - Login</title>
+    <link rel="stylesheet" href="/static/css/home.css">
+</head>
+
+<body>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <div class="title">
+        <img src="../static/src/misc/Elden-Ring-Logo-PNG-File.png" alt="">
+        <img src="../static/src/misc/ChatGPT_Image_20_apr_2026__09_53_16-removebg-preview.png" alt="" class="tcg">
+    </div>
+
+    <div class="login-container">
+        <div class="login-box">
+            <h2 class="login-title">Welcome back, Tarnished</h2>
+            <p class="login-subtitle">Commence thy inscription, and forge a deck worthy of the Elden Throne.</p>
+
+            <div id="buttonDiv"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importa i moduli Firebase necessari
+        // Assicurati di usare la versione più recente disponibile per firebase-app.js e firebase-auth.js
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithCredential } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+        // La configurazione Firebase del tuo progetto
+        const firebaseConfig = {
+            apiKey: "AIzaSyC38YDt6QZ4SRhnNHYXArwjcf0fmYimS3w",
+            authDomain: "elden-ring-tcg.firebaseapp.com",
+            projectId: "elden-ring-tcg",
+            storageBucket: "elden-ring-tcg.firebasestorage.app",
+            messagingSenderId: "925141470682",
+            appId: "1:925141470682:web:c03092fb312cb2abb184e3",
+            measurementId: "G-YLB3QX3G8B"
+        };
+
+        // Inizializza Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Rendi 'auth' disponibile globalmente se 'handleCredentialResponse' non è in un modulo importato
+        // o sposta 'handleCredentialResponse' all'interno di questo blocco di script type="module"
+        window.firebaseAuthInstance = auth;
+        window.GoogleAuthProvider = GoogleAuthProvider;
+        window.signInWithCredential = signInWithCredential;
+    </script>
+
+    <!-- Questo è il tuo script originale per Google Identity Services, con una modifica -->
+    <script>
+        function handleCredentialResponse(response) {
+            // Ottieni il token ID di Google dal responso di GSI
+            const idTokenFromGoogle = response.credential;
+
+            // Crea una credenziale di autenticazione Firebase usando il token ID di Google
+            const credential = window.GoogleAuthProvider.credential(idTokenFromGoogle);
+
+            // Usa questa credenziale per accedere a Firebase
+            window.signInWithCredential(window.firebaseAuthInstance, credential)
+                .then((result) => {
+                    // Accesso a Firebase riuscito.
+                    const user = result.user;
+                    user.getIdToken().then(firebaseIdToken => {
+                        console.log("Utente Firebase autenticato. Token ID Firebase:", firebaseIdToken);
+
+                        // Invia il token ID Firebase al tuo server Flask per la verifica
+                        fetch('/api/login', { // Assicurati che questo endpoint sia pronto nel tuo Flask backend
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ idToken: firebaseIdToken }) // Ora invii il token ID di Firebase
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === "success") {
+                                console.log("Token Firebase inviato e verificato dal backend.");
+                                window.location.reload(); // Ricarica la pagina o reindirizza
+                            } else {
+                                console.error("Errore dal backend Flask:", data.message);
+                                alert('Errore di accesso: ' + (data.message || 'Controlla i log.'));
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Errore durante l'invio del token Firebase al backend:", error);
+                            alert('Si è verificato un errore di rete.');
+                        });
+                    });
+                })
+                .catch((error) => {
+                    console.error("Errore durante l'accesso a Firebase con credenziale Google:", error);
+                    alert('Errore durante l\'accesso. Controlla i log del browser.');
+                });
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                // ATTENZIONE: Questo client_id deve essere l'OAuth Client ID della tua app web,
+                // registrato anche come "ID client" nelle impostazioni del provider Google in Firebase Auth.
+                // Il valore che avevi ("103648083002471340877.apps.googleusercontent.com") è diverso
+                // da quello che mi hai fornito nelle informazioni del progetto Firebase Auth:
+                // "925141470682-tdmuei1fno6mm1c7jdcsjl8ivg0gvtpj.apps.googleusercontent.com".
+                // Assicurati che il client_id qui corrisponda all'ID client del provider Google in Firebase.
+                client_id: "925141470682-tdmuei1fno6mm1c7jdcsjl8ivg0gvtpj.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "large" }
+            );
+        }
+    </script>
+</body>
+
+</html>

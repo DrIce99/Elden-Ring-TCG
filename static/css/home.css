@@ -141,3 +141,46 @@ body::before {
     text-shadow: 0 0 15px rgba(0, 255, 247, 0.5), 0 0 30px rgba(0, 128, 255, 0.2);
     transform: translateX(15px);
 }
+
+/* Posizionamento del contenitore Login */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    margin-top: -50px; /* Bilancia la posizione rispetto al logo */
+    position: relative;
+}
+
+/* La cornice del login */
+.login-box {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 40px 60px;
+    border: 1px solid rgba(206, 147, 84, 0.2);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+    text-align: center;
+    border-radius: 2px;
+}
+
+.login-title {
+    color: #f5d06f;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.login-subtitle {
+    color: rgba(255, 230, 180, 0.5);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+}
+
+/* Centrare il pulsante Google */
+#buttonDiv {
+    display: flex;
+    justify-content: center;
+}

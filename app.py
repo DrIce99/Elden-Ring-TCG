@@ -1,11 +1,72 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 import os
 import random
+import firebase_admin
+from firebase_admin import credentials, firestore, auth
+from functools import wraps
 
 app = Flask(__name__)
+app.secret_key = "FiHShavv#keeer#@r1304nvn3v"
+
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+db_firestore = firestore.client()
 
 DATA_FOLDER = 'data'
+
+# --- HELPER PER IL DATABASE UTENTE ---
+def get_user_data(user_id):
+    """Recupera i dati salvati su Firestore per uno specifico utente"""
+    user_ref = db_firestore.collection('users').document(user_id)
+    doc = user_ref.get()
+    if doc.exists:
+        return doc.to_dict()
+    return {"inventory": [], "decks": []} # Dati di default
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            # Se l'utente non è loggato, lo manda alla pagina di login
+            return redirect(url_for('login_page'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/login')
+def login_page():
+    if 'user_id' in session:
+        return redirect(url_for('home'))
+    return render_template('login.html')
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    """Riceve il token da Google (lato frontend) e crea la sessione"""
+    id_token = request.json.get('idToken')
+    try:
+        # Verifica il token inviato dal frontend
+        decoded_token = auth.verify_id_token(id_token)
+        user_id = decoded_token['uid']
+        session['user_id'] = user_id
+        session['user_name'] = decoded_token.get('name')
+        
+        # Inizializza il documento su Firestore se non esiste
+        user_ref = db_firestore.collection('users').document(user_id)
+        if not user_ref.get().exists:
+            user_ref.set({
+                "name": session['user_name'],
+                "inventory": [],
+                "created_at": firestore.SERVER_TIMESTAMP
+            })
+            
+        return jsonify({"status": "success", "user": session['user_name']})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 401
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 def load_all_data():
     database = {}
@@ -25,14 +86,23 @@ def load_all_data():
                 
     return database
 
+@app.before_request
+def check_user():
+    # Escludi la pagina di login e le API di login dal controllo, 
+    # altrimenti crei un loop infinito!
+    if 'user_id' not in session and request.endpoint not in ['login_page', 'login', 'static']:
+        return redirect(url_for('login_page'))
+
 # --- NUOVA HOME ---
 @app.route('/')
+@login_required
 def home():
-    # Carica semplicemente il menu principale
-    return render_template('home.html')
+    user = session.get('user_name')
+    return render_template('home.html', user=user)
 
 # --- VECCHIA HOME SPOSTATA ---
 @app.route('/card-list')
+@login_required
 def card_list():
     db = load_all_data()
     categories = list(db.keys())
@@ -203,4 +273,4 @@ def card_detail(card_id):
     return render_template('card_detail.html', card=card, card_type=card_type)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='localhost')
