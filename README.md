@@ -8,6 +8,26 @@ Il gioco si divide in due anime:
    3. Ladder/Casual: si può giocare online in partite casuali/amichevoli (non si perde o guadagna rune) o ladder/competitive (ogni vittoria conferisce tot. coppe e ogni sconfitta sottrae tot coppe.)
    4. La competitiva è suddivisa in arene in base al numero di coppe (non si può scendere sotto l'arena "checkpoint")
 
+## Sistema di ottenimento (Gacha)
+L'unico modo per ottenere le carte è nel negozio. Tuttavia, si possono vendere delle carte per ottenere delle rune.
+Sistema di vendita:
+* Item: hanno una sellvalue
+* Armature: 100
+* Boss: Drop in rune
+* Classi: non vendibili
+* Creature: Drop in rune
+* Incantesimi e stregonerie: 100
+* NPC: Drop in rune
+* Spirits: 200
+* Armi e scudi: 100
+
+Il valore di queste (eccetto npc e boss) viene moltiplicato per un molt. basato sulla rarità.  
+
+## Sistema del negozio:
+* Il negozio è suddiviso in banner che girano a rotazione e rimangono per x giorni.
+* Sono presenti due banner: quello temporaneo e quello standard.
+* In ogni banner è possibile trovare le carte relative al banner + quelle del banner standard.
+
 ------------------------------
 ## 🎮 Meccaniche di Gioco (Gameplay) (obsoleto)
 ## Setup della Partita
@@ -72,11 +92,11 @@ Possono essere posizionate nel Campo di Battaglia:
 * **NPC (non supporto)**
 * **Creature**
 * **Boss**
-* **Lacrime**
+* **Spiriti**
 
 ---
 
-## 💧 Lacrime
+## 💧 Spiriti
 
 * Possono stare nel campo
 * Non possono agire senza almeno una **Classe alleata** posizionata sul proprio campo
@@ -101,6 +121,7 @@ Possono essere posizionate nel Campo di Battaglia:
 Tipologie:
 
 * Armi
+* (Scudi)
 * Armature (Elmo, Torso, Gambe, Guanti)
 * Talismani
 * Oggetti

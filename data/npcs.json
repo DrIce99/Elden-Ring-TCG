@@ -50,7 +50,8 @@
         "hp": "5868",
         "loot": 6439,
         "rarity": "Epi",
-        "banner": "1 West Limgrave"
+        "banner": "1 West Limgrave",
+        "sellvalue": 6439
     },
     {
         "id": 213,
@@ -65,6 +66,7 @@
         "hp": "0",
         "loot": 0,
         "rarity": "Rar",
-        "banner": "1 West Limgrave"
+        "banner": "1 West Limgrave",
+        "sellvalue": 500
     }
 ]

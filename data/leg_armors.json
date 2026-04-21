@@ -92,5 +92,52 @@
         "find": 1,
         "rarity": "Com",
         "banner": "12 Caelid South"
+    },
+    {
+        "id": 311,
+        "name": "Warrior Greaves",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/warrior_greaves_elden_ring_wiki_guide_200px.png",
+        "desc": "Greaves of a nomadic warrior.\nCrafted from sturdy leather.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 5.4
+            },
+            {
+                "name": "Strike",
+                "amount": 5.4
+            },
+            {
+                "name": "Slash",
+                "amount": 4.5
+            },
+            {
+                "name": "Pierce",
+                "amount": 4.5
+            },
+            {
+                "name": "Magic",
+                "amount": 5.8
+            },
+            {
+                "name": "Fire",
+                "amount": 6.2
+            },
+            {
+                "name": "Ligt",
+                "amount": 6.8
+            },
+            {
+                "name": "Holy",
+                "amount": 5.4
+            }
+        ],
+        "passives": [],
+        "weight": 4.8,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Unc",
+        "banner": "7 Raya Lucaria Academy"
     }
 ]

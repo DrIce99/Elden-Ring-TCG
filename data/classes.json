@@ -59,6 +59,32 @@
             "faith": "8",
             "arcane": "9"
         },
+        "items": [
+            {
+                "id": "318",
+                "name": "Scimitar"
+            },
+            {
+                "id": "318",
+                "name": "Scimitar"
+            },
+            {
+                "id": "308",
+                "name": "Blue Cloth Cowl"
+            },
+            {
+                "id": "307",
+                "name": "Warrior Gauntlets"
+            },
+            {
+                "id": "302",
+                "name": "Blue Cloth Vest"
+            },
+            {
+                "id": "311",
+                "name": "Warrior Greaves"
+            }
+        ],
         "dupl": 1,
         "find": 1,
         "loot": 0,

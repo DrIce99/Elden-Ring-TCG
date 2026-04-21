@@ -77,7 +77,88 @@
         "consumable": 0,
         "dupl": 1,
         "find": 1,
-        "rarity": "Com",
+        "rarity": "Unc",
         "banner": "1 West Limgrave"
+    },
+    {
+        "id": 214,
+        "name": "Riveted Wooden Shield",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/riveted_wooden_shield_elden_ring_wiki_guide_200px.png",
+        "desc": "Small wooden roundshield that has been reinforced with metal.\nIt is light and easy to handle, but cannot offer the damage negation of a true metal shield.\nThe design riveted to the center represents both sword and tree.",
+        "attack": [
+            {
+                "name": "Phy",
+                "amount": 72
+            },
+            {
+                "name": "Mag",
+                "amount": 0
+            },
+            {
+                "name": "Fire",
+                "amount": 0
+            },
+            {
+                "name": "Ligt",
+                "amount": 0
+            },
+            {
+                "name": "Holy",
+                "amount": 0
+            },
+            {
+                "name": "Crit",
+                "amount": 100
+            }
+        ],
+        "defence": [
+            {
+                "name": "Phy",
+                "amount": 86
+            },
+            {
+                "name": "Mag",
+                "amount": 43
+            },
+            {
+                "name": "Fire",
+                "amount": 31
+            },
+            {
+                "name": "Ligt",
+                "amount": 24
+            },
+            {
+                "name": "Holy",
+                "amount": 45
+            }
+        ],
+        "scalesWith": [
+            {
+                "name": "Str",
+                "scaling": "E"
+            }
+        ],
+        "requiredAttributes": [
+            {
+                "name": "Str",
+                "amount": 8
+            }
+        ],
+        "attacks": {
+            "lightDmg": 142,
+            "heavyDmg": 210
+        },
+        "category": "Medium",
+        "atktype": "Strike",
+        "passives": [
+        ],
+        "weight": 2.0,
+        "range": 1,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "2 East Limgrave"
     }
 ]

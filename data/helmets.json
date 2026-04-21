@@ -99,5 +99,53 @@
         "find": 1,
         "rarity": "Com",
         "banner": "12 Caelid South"
+    },
+    {
+        "id": 308,
+        "name": "Blue Cloth Cowl",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/blue_cloth_cowl_elden_ring_wiki_guide_200px.png",
+        "desc": "Cowl of a nomadic warrior.\nThe blue color of its fabric symbolizes brisk waters, as fluid and flowing as the sword in the hand of its wearer.\nJust as still waters turn foul, stagnation leads to decay.\nWarriors must remain ever-drifting.  ",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 2.8
+            },
+            {
+                "name": "Strike",
+                "amount": 2.8
+            },
+            {
+                "name": "Slash",
+                "amount": 2.3
+            },
+            {
+                "name": "Pierce",
+                "amount": 2.3
+            },
+            {
+                "name": "Magic",
+                "amount": 3.1
+            },
+            {
+                "name": "Fire",
+                "amount": 3.4
+            },
+            {
+                "name": "Ligt",
+                "amount": 3.8
+            },
+            {
+                "name": "Holy",
+                "amount": 2.8
+            }
+        ],
+        "passives": [
+        ],
+        "weight": 2.7,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "7 Raya Lucaria Academy"
     }
 ]

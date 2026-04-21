@@ -92,5 +92,52 @@
         "find": 1,
         "rarity": "Com",
         "banner": "12 Caelid South"
+    },
+    {
+        "id": 307,
+        "name": "Warrior Gauntlets",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/warrior_gauntlets_elden_ring_wiki_guide_200px.png",
+        "desc": "Gauntlets of a nomadic warrior.\nCrafted from sturdy leather.",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 2.3
+            },
+            {
+                "name": "Strike",
+                "amount": 2.3
+            },
+            {
+                "name": "Slash",
+                "amount": 1.9
+            },
+            {
+                "name": "Pierce",
+                "amount": 1.9
+            },
+            {
+                "name": "Magic",
+                "amount": 2.5
+            },
+            {
+                "name": "Fire",
+                "amount": 2.7
+            },
+            {
+                "name": "Ligt",
+                "amount": 2.9
+            },
+            {
+                "name": "Holy",
+                "amount": 2.3
+            }
+        ],
+        "passives": [],
+        "weight": 2.6,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Unc",
+        "banner": "7 Raya Lucaria Academy"
     }
 ]

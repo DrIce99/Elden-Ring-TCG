@@ -102,9 +102,19 @@ def load_all_data():
 
 @app.before_request
 def check_user():
-    # Escludi la pagina di login e le API di login dal controllo, 
-    # altrimenti crei un loop infinito!
-    if 'user_id' not in session and request.endpoint not in ['login_page', 'login', 'static']:
+    public_routes = [
+        '/login',
+        '/api/login',
+        '/card-designer',
+        '/table-designer',
+        '/static/'
+    ]
+
+    if 'user_id' not in session:
+        for route in public_routes:
+            if request.path.startswith(route):
+                return
+        
         return redirect(url_for('login_page'))
 
 # --- NUOVA HOME ---

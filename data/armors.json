@@ -92,5 +92,52 @@
         "find": 1,
         "rarity": "Com",
         "banner": "12 Caelid South"
+    },
+    {
+        "id": 302,
+        "name": "Blue Cloth Vest",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/blue_cloth_vest_elden_ring_wiki_guide_200px.png",
+        "desc": "Vest of a nomadic warrior.\nThe blue color of its fabric symbolizes brisk waters, as fluid and flowing as the sword in the hand of its wearer.\nJust as still waters turn foul, stagnation leads to decay.\nWarriors must remain ever drifting. ",
+        "dmgNegation": [
+            {
+                "name": "Phy",
+                "amount": 9.5
+            },
+            {
+                "name": "Strike",
+                "amount": 9.5
+            },
+            {
+                "name": "Slash",
+                "amount": 8
+            },
+            {
+                "name": "Pierce",
+                "amount": 8
+            },
+            {
+                "name": "Magic",
+                "amount": 10.2
+            },
+            {
+                "name": "Fire",
+                "amount": 10.9
+            },
+            {
+                "name": "Ligt",
+                "amount": 11.9
+            },
+            {
+                "name": "Holy",
+                "amount": 9.5
+            }
+        ],
+        "passives": [],
+        "weight": 7.7,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Unc",
+        "banner": "7 Raya Lucaria Academy"
     }
 ]
