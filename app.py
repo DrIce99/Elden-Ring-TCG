@@ -2,14 +2,25 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 import json
 import os
 import random
+import uuid
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 from functools import wraps
+from config import DevelopmentConfig, ProductionConfig
+
+env = os.getenv("FLASK_ENV", "development")
+
+config_map = {
+    "development": DevelopmentConfig,
+    "production": ProductionConfig
+}
 
 app = Flask(__name__)
-app.secret_key = "FiHShavv#keeer#@r1304nvn3v"
+app.config.from_object(config_map[env])
 
-cred = credentials.Certificate("serviceAccountKey.json")
+app.secret_key = app.config["SECRET_KEY"]
+
+cred = credentials.Certificate(app.config["FIREBASE_CREDENTIALS"])
 firebase_admin.initialize_app(cred)
 db_firestore = firestore.client()
 
@@ -271,6 +282,158 @@ def card_detail(card_id):
         card_type = "class"
     
     return render_template('card_detail.html', card=card, card_type=card_type)
+
+# --- DECK BUILDER PAGE ---
+@app.route('/deck-builder')
+@login_required
+def deck_builder():
+    return render_template('deck_builder.html')
+ 
+# ─────────────────────────────────────────────
+#  DECK API
+# ─────────────────────────────────────────────
+ 
+@app.route('/api/decks', methods=['GET'])
+@login_required
+def get_decks():
+    """Restituisce tutti i mazzi dell'utente loggato."""
+    user_id = session['user_id']
+    try:
+        decks_ref = db_firestore.collection('users').document(user_id).collection('decks')
+        docs = decks_ref.stream()
+        decks = []
+        for doc in docs:
+            d = doc.to_dict()
+            d['id'] = doc.id
+            decks.append(d)
+        return jsonify({"status": "success", "decks": decks})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+ 
+ 
+@app.route('/api/decks', methods=['POST'])
+@login_required
+def create_deck():
+    """Crea un nuovo mazzo per l'utente loggato."""
+    user_id = session['user_id']
+    data = request.get_json()
+ 
+    if not data:
+        return jsonify({"status": "error", "message": "Payload mancante"}), 400
+ 
+    name  = data.get('name', 'Nuovo Mazzo').strip()
+    cards = data.get('cards', [])
+ 
+    if not name:
+        return jsonify({"status": "error", "message": "Il nome del mazzo è obbligatorio"}), 400
+ 
+    total_cards = sum(c.get('count', 1) for c in cards)
+    if total_cards > 40:
+        return jsonify({"status": "error", "message": "Il mazzo non può superare 40 carte"}), 400
+ 
+    try:
+        deck_id  = str(uuid.uuid4())
+        deck_ref = (db_firestore
+                    .collection('users').document(user_id)
+                    .collection('decks').document(deck_id))
+        deck_ref.set({
+            "name":       name,
+            "cards":      cards,
+            "equipped":   data.get('equipped', False),
+            "created_at": firestore.SERVER_TIMESTAMP,
+            "updated_at": firestore.SERVER_TIMESTAMP
+        })
+        return jsonify({"status": "success", "deck_id": deck_id})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+ 
+ 
+@app.route('/api/decks/<deck_id>', methods=['PUT'])
+@login_required
+def update_deck(deck_id):
+    """Aggiorna un mazzo esistente."""
+    user_id = session['user_id']
+    data = request.get_json()
+ 
+    if not data:
+        return jsonify({"status": "error", "message": "Payload mancante"}), 400
+ 
+    name  = data.get('name', '').strip()
+    cards = data.get('cards', [])
+ 
+    if not name:
+        return jsonify({"status": "error", "message": "Il nome del mazzo è obbligatorio"}), 400
+ 
+    total_cards = sum(c.get('count', 1) for c in cards)
+    if total_cards > 40:
+        return jsonify({"status": "error", "message": "Il mazzo non può superare 40 carte"}), 400
+ 
+    try:
+        deck_ref = (db_firestore
+                    .collection('users').document(user_id)
+                    .collection('decks').document(deck_id))
+ 
+        if not deck_ref.get().exists:
+            return jsonify({"status": "error", "message": "Mazzo non trovato"}), 404
+ 
+        deck_ref.update({
+            "name":       name,
+            "cards":      cards,
+            "updated_at": firestore.SERVER_TIMESTAMP
+        })
+        return jsonify({"status": "success", "deck_id": deck_id})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+ 
+ 
+@app.route('/api/decks/<deck_id>', methods=['DELETE'])
+@login_required
+def delete_deck(deck_id):
+    """Elimina un mazzo."""
+    user_id = session['user_id']
+    try:
+        deck_ref = (db_firestore
+                    .collection('users').document(user_id)
+                    .collection('decks').document(deck_id))
+ 
+        if not deck_ref.get().exists:
+            return jsonify({"status": "error", "message": "Mazzo non trovato"}), 404
+ 
+        deck_ref.delete()
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+ 
+ 
+@app.route('/api/decks/<deck_id>/equip', methods=['POST'])
+@login_required
+def equip_deck(deck_id):
+    """Equipaggia un mazzo (un solo mazzo può essere equipaggiato alla volta)."""
+    user_id = session['user_id']
+    try:
+        user_ref  = db_firestore.collection('users').document(user_id)
+        decks_ref = user_ref.collection('decks')
+ 
+        # Batch: de-equipaggia tutti, poi equipaggia quello scelto
+        batch = db_firestore.batch()
+ 
+        for doc in decks_ref.stream():
+            batch.update(doc.reference, {"equipped": False})
+ 
+        target_ref = decks_ref.document(deck_id)
+        if not target_ref.get().exists:
+            return jsonify({"status": "error", "message": "Mazzo non trovato"}), 404
+ 
+        batch.update(target_ref, {"equipped": True})
+        batch.commit()
+ 
+        # Salva anche sull'utente il riferimento al mazzo equipaggiato
+        user_ref.update({"equipped_deck": deck_id})
+ 
+        return jsonify({"status": "success", "equipped_deck": deck_id})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+ 
 
 if __name__ == '__main__':
     app.run(host='localhost')

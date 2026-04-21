@@ -1,3 +1,6 @@
 /static/src/locations
 
+.env
+__pycache__/
+*.pyc
 serviceAccountKey.json
