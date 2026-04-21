@@ -76,7 +76,7 @@ window.renderDeck = function (cards = [], containerSelector = null) {
         if (i === visible.length - 1) {
             wrapper.style.cursor = 'pointer';
             wrapper.style.pointerEvents = 'auto';
-            wrapper.title = `${cards.length} carte nel mazzo — clicca per pescare`;
+            wrapper.title = `${cards.length} cards`;
         } else {
             wrapper.style.pointerEvents = 'none';
         }
@@ -183,6 +183,12 @@ window.renderHand = function (target) {
                 target === 'player') {
                 window.trySummon(card, index);
             }
+            if (previewOpen && selectedCardData?.id === card.id) {
+                window.closePreview();
+            } else {
+                if (previewOpen) window.closePreview();
+                showPreview(card, wrapper);
+            }
         });
 
         container.appendChild(wrapper);
@@ -207,35 +213,52 @@ let selectedCardEl = null;
 let selectedCardData = null;
 let previewOpen = false;
 
-function showPreview(cardData, cardElement) {
+/**
+ * Mostra il pannello preview per una carta.
+ * @param {object} cardData  - dati della carta
+ * @param {HTMLElement} containerEl - wrapper cliccato (hand-card-wrapper o .card-wrapper)
+ */
+function showPreview(cardData, containerEl) {
+    // Rimuovi selezione precedente
     document.querySelectorAll('.card-wrapper.selected')
         .forEach(el => el.classList.remove('selected'));
-
-    cardElement.classList.add('selected');
-    selectedCardEl = cardElement;
+ 
+    // Trova il vero .card-wrapper per evidenziarlo (potrebbe essere containerEl stesso
+    // oppure un figlio se containerEl è un hand-card-wrapper / slot)
+    const cardWrapper = containerEl.classList.contains('card-wrapper')
+        ? containerEl
+        : containerEl.querySelector('.card-wrapper');
+ 
+    if (cardWrapper) cardWrapper.classList.add('selected');
+ 
+    selectedCardEl = cardWrapper || containerEl;
     selectedCardData = cardData;
     previewOpen = true;
-
+ 
     const previewEl = document.getElementById('card-preview');
     if (!previewEl) return;
-
-    document.getElementById('preview-img').src =
-        `static/src/cards/front/${cardData.id}.png`;
-    document.getElementById('preview-name').textContent = cardData.name || 'Sconosciuta';
-    document.getElementById('preview-desc').textContent = cardData.description || '';
-
+ 
+    const imgEl = document.getElementById('preview-img');
+    const nameEl = document.getElementById('preview-name');
+    const descEl = document.getElementById('preview-desc');
     const statsDiv = document.getElementById('preview-stats');
-    statsDiv.innerHTML = '';
-
-    ['hp', 'atk', 'def', 'speed', 'cost', 'fp'].forEach(stat => {
-        if (cardData[stat] !== undefined && cardData[stat] !== null) {
-            const badge = document.createElement('div');
-            badge.className = 'stat-badge';
-            badge.innerHTML = `<strong>${stat.toUpperCase()}:</strong> ${cardData[stat]}`;
-            statsDiv.appendChild(badge);
-        }
-    });
-
+ 
+    if (imgEl) imgEl.src = `static/src/cards/front/${cardData.id}.png`;
+    if (nameEl) nameEl.textContent = cardData.name || 'Sconosciuta';
+    if (descEl) descEl.textContent = cardData.description || '';
+ 
+    if (statsDiv) {
+        statsDiv.innerHTML = '';
+        ['hp', 'atk', 'def', 'speed', 'cost', 'fp'].forEach(stat => {
+            if (cardData[stat] !== undefined && cardData[stat] !== null) {
+                const badge = document.createElement('div');
+                badge.className = 'stat-badge';
+                badge.innerHTML = `<strong>${stat.toUpperCase()}:</strong> ${cardData[stat]}`;
+                statsDiv.appendChild(badge);
+            }
+        });
+    }
+ 
     previewEl.style.display = 'flex';
 }
 
@@ -302,26 +325,32 @@ document.addEventListener('keydown', (e) => {
 // ----------------------------------------
 // INIT — Avvia il gioco
 // ----------------------------------------
+let _gameInitialized = false;
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎮 table.js caricato, avvio inizializzazione...');
 
     // Aspetta che tutti gli script siano caricati
     const tryInit = () => {
+        if (_gameInitialized) return; // guard
+ 
         if (!window.GameState || !window.playerDeck || !window.opponentDeck) {
             setTimeout(tryInit, 100);
             return;
         }
+
+        _gameInitialized = true;
 
         // Render mazzi
         window.renderDeck(window.playerDeck, '#player-deck');
         window.renderDeck(window.opponentDeck, '.slot.deck.enemy');
 
         // Distribuisci mani iniziali
+        window.drawnThisTurn = 0;
         window.initHands();
 
         // Inizia fase 1
         window.GameState.currentPhase = 1;
-        window.drawnThisTurn = 0;
+        window.GameState.hasSummonedThisTurn = false;
         window.updatePhaseDisplay();
 
         // Nascondi bottone fase (fase 1 = pesca manuale)

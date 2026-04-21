@@ -22,19 +22,19 @@ window.GameState = {
     opponentBattlefield: Array(5).fill(null),
     opponentSupport: null,
     phases: [
-        { id: 1, name: "📖 Pesca (clicca il mazzo)" },
-        { id: 2, name: "⚔️ Schieramento" },
-        { id: 3, name: "🧠 Pianificazione" },
-        { id: 4, name: "🤖 Turno Avversario" },
-        { id: 5, name: "⚖️ Resa dei Conti" }
+        { id: 1, name: "Pesca (clicca il mazzo)" },
+        { id: 2, name: "Schieramento" },
+        { id: 3, name: "Pianificazione" },
+        { id: 4, name: "Turno Avversario" },
+        { id: 5, name: "Resa dei Conti" }
     ],
     checkWinCondition() {
         const playerLost = this.playerRunes <= 0 ||
             (this.playerHand.length === 0 && window.playerDeck?.length === 0);
         const opponentLost = this.opponentRunes <= 0 ||
             (this.opponentHand.length === 0 && window.opponentDeck?.length === 0);
-        if (playerLost) { alert("💀 Rune finite — HAI PERSO!"); return true; }
-        if (opponentLost) { alert("🏆 HAI VINTO!"); return true; }
+        if (playerLost) { alert("No more Runes — YOU LOST!"); return true; }
+        if (opponentLost) { alert("YOU WON!"); return true; }
         return false;
     }
 };
@@ -74,6 +74,15 @@ window.drawOneCard = function (target = 'player') {
         window.GameState[handKey].push(cardData);
         window.renderHand(target);
         window.isDrawing = false;
+
+        // Emetti evento DRAW sull'event bus (se disponibile)
+        if (window.EffectBus) {
+            window.EffectBus.emit(window.EVENTS?.DRAW, {
+                target,
+                card: cardData,
+                gameState: window.GameState
+            });
+        }
 
         if (target === 'player') {
             window.drawnThisTurn++;
@@ -155,7 +164,6 @@ function animateCardToHand(cardData, target, onComplete) {
     setTimeout(() => {
         flyCard.remove();
         onComplete();
-        window.isDrawing = false;
     }, 600);
 }
 
@@ -163,6 +171,10 @@ function animateCardToHand(cardData, target, onComplete) {
 // PESCA INIZIALE (5 carte senza animazione, per velocità)
 // ----------------------------------------
 window.initHands = function () {
+    // Previeni doppia chiamata accidentale
+    if (window._handsDealt) return;
+    window._handsDealt = true;
+ 
     const drawSilent = (target, count) => {
         const deck = target === 'player' ? window.playerDeck : window.opponentDeck;
         const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
@@ -172,6 +184,7 @@ window.initHands = function () {
         window.renderHand(target);
         renderDeck(deck, target === 'player' ? '#player-deck' : '.slot.deck.enemy');
     };
+ 
     drawSilent('player', 5);
     drawSilent('opponent', 5);
     console.log('🎮 Mani iniziali distribuite (5 carte ciascuno)');
@@ -191,6 +204,31 @@ window.advanceToNextPhase = function () {
         gs.hasSummonedThisTurn = false;
         gs.turnOwner = gs.turnOwner === 'player' ? 'opponent' : 'player';
         window.drawnThisTurn = 0;
+    
+        // Emetti TURN_START
+        if (window.EffectBus) {
+            window.EffectBus.emit(window.EVENTS?.TURN_START, {
+                turnOwner: gs.turnOwner,
+                gameState: gs
+            });
+        }
+    }
+
+    // Emetti eventi di fase
+    if (window.EffectBus && window.EVENTS) {
+        const phaseEvents = {
+            3: window.EVENTS.BEFORE_ACTION,
+            4: window.EVENTS.AFTER_ACTION,
+            5: window.EVENTS.RESOLUTION_START
+        };
+        if (phaseEvents[gs.currentPhase]) {
+            window.EffectBus.emit(phaseEvents[gs.currentPhase], { gameState: gs });
+        }
+        if (gs.currentPhase === 5) {
+            setTimeout(() => {
+                window.EffectBus.emit(window.EVENTS.RESOLUTION_END, { gameState: gs });
+            }, 2000);
+        }
     }
 
     updatePhaseDisplay();
@@ -212,6 +250,11 @@ window.advanceToNextPhase = function () {
     } else {
         // Altre fasi: mostra bottone
         if (phaseBtn) phaseBtn.classList.remove('hidden');
+
+        // Emetti TURN_END quando si arriva alla fase 5
+        if (gs.currentPhase === 5 && window.EffectBus) {
+            window.EffectBus.emit(window.EVENTS?.TURN_END, { gameState: gs });
+        }
     }
 
     console.log(`📍 Fase ${gs.currentPhase} — ${gs.phases[gs.currentPhase - 1]?.name}`);
