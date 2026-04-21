@@ -63,12 +63,15 @@ def login():
         
         # Inizializza il documento su Firestore se non esiste
         user_ref = db_firestore.collection('users').document(user_id)
-        if not user_ref.get().exists:
+        
+        user_data = user_ref.get().to_dict()
+        if not user_ref.get().exists or "username" not in user_data:
             user_ref.set({
                 "name": session['user_name'],
                 "inventory": [],
-                "created_at": firestore.SERVER_TIMESTAMP
-            })
+                "created_at": firestore.SERVER_TIMESTAMP,
+                "username": None
+            }, merge=True)
             
         return jsonify({"status": "success", "user": session['user_name']})
     except Exception as e:
@@ -434,6 +437,31 @@ def equip_deck(deck_id):
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
  
+@app.route('/set-username')
+@login_required
+def set_username_page():
+    return render_template('set_username.html')
+
+@app.route('/api/set-username', methods=['POST'])
+@login_required
+def set_username():
+    user_id = session['user_id']
+    username = request.json.get("username", "").strip()
+
+    if not username:
+        return jsonify({"status": "error", "message": "Username required"}), 400
+
+    user_ref = db_firestore.collection('users').document(user_id)
+
+    # controllo base (opzionale ma consigliato)
+    if len(username) < 3:
+        return jsonify({"status": "error", "message": "Username too short"}), 400
+
+    user_ref.update({
+        "username": username
+    })
+
+    return jsonify({"status": "success"})
 
 if __name__ == '__main__':
     app.run(host='localhost')
