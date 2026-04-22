@@ -2,7 +2,7 @@
     {
         "id": 113,
         "name": "White Mask Varré",
-        "desc": "",
+        "desc": "During planning phase, you can activate the following effect: choose a Mohgwyn type unit from your deck and move it to your hand.",
         "gamedesc": "Oh yes... Tarnished, are we? Come to the Lands Between for the Elden Ring, hmm?\nOf course you have. No shame in it.\nUnfortunately for you, however, you are maidenless.",
         "img" : "https://eldenring.wiki.fextralife.com/file/Elden-Ring/varre-art-elden-ring-wiki-300px.jpg",
         "bg": "https://preview.redd.it/white-mask-varre-via-v0-zrrqvovht03b1.jpg?width=640&crop=smart&auto=webp&s=fee214bd7557abb21c67086e30f5a7a07f326716",
@@ -56,7 +56,7 @@
     {
         "id": 213,
         "name": "Merchant Kale",
-        "desc": "At the start of every phase 2, choose a card to draw from your deck, then shuffle it.",
+        "desc": "Effect: At the start of every planning phase, choose a card to draw from your deck, then shuffle it.",
         "gamedesc": "You are a Tarnished, I can see it. And I can also see... That you're not after my throat.\nThen why not purchase a little something?",
         "img" : "https://static.wikia.nocookie.net/eldenring/images/c/cf/ER_NPC_Closeup_Kal%C3%A9.png/revision/latest?cb=20230712225834",
         "bg": "",

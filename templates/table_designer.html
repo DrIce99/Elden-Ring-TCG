@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Table designer</title>
     <link rel="stylesheet" href="/static/css/table.css">
     <link rel="stylesheet" href="/static/css/final_cards.css">
 </head>
@@ -14,10 +14,10 @@
         <div class="container">
             <div class="side-slots-container">
                 <div class="side-slots">
-                    <div class="slot deck enemy" data-label="Mazzo"></div>
+                    <div class="slot deck enemy" data-label="Deck"></div>
                 </div>
                 <div class="side-slots">
-                    <div id="player-deck" class="slot deck" data-label="Mazzo"></div>
+                    <div id="player-deck" class="slot deck" data-label="Deck"></div>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@
                     <!-- RIGA 2: Campo di Battaglia e Supporto -->
                     <div class="battlefield-row">
                         <div class="backgrounder2">
-                            <div class="slot support enemy" data-label="Supporto"></div>
+                            <div class="slot support enemy" data-label="Support"></div>
                         </div>
                         <div class="battle-slots backgrounder2">
                             <div class="slot battle"></div>
@@ -45,7 +45,7 @@
                     <!-- RIGA 1: Campo di Battaglia e Supporto -->
                     <div class="battlefield-row">
                         <div class="backgrounder2">
-                            <div class="slot support" data-label="Supporto"></div>
+                            <div class="slot support" data-label="Support"></div>
                         </div>
                         <div class="battle-slots backgrounder2">
                             <div class="slot battle"></div>
@@ -62,11 +62,11 @@
 
                 <!-- RIGA 1: Deck e Cimitero -->
                 <div class="side-slots">
-                    <div class="slot graveyard enemy" data-label="Albero Madre"></div>
+                    <div class="slot graveyard enemy" data-label="Erdtree"></div>
                 </div>
 
                 <div class="side-slots">
-                    <div class="slot graveyard" data-label="Albero Madre"></div>
+                    <div class="slot graveyard" data-label="Erdtree"></div>
                 </div>
             </div>
         </div>
@@ -74,31 +74,20 @@
         <div id="opponent-hand" class="hand-container opponent-hand"></div>
         <div id="player-hand" class="hand-container player-hand"></div>
 
-        <button onclick="nextPhaseAuto()" class="phase-button">Prossima Fase</button>
+        <button onclick="nextPhaseAuto()" class="phase-button">Next Phase</button>
 
         <div class="hud">
-            <div id="current-phase" class="phase-display">Pesca</div>
+            <div id="current-phase" class="phase-display">Draw</div>
         </div>
 
         <div class="rune-counter">
-            Tue Rune: <span id="player-runes">20</span> | Avversario: <span id="opponent-runes">20</span>
+            Your Runes: <span id="player-runes">20</span> | Opponent: <span id="opponent-runes">20</span>
         </div>
 
     </div>
     <!-- Overlay Selezione Carta -->
-    <div id="card-preview" class="card-preview-overlay" style="display: none;">
-        <div class="preview-content">
-            <div class="preview-image">
-                <img id="preview-img" src="" alt="">
-            </div>
-            <div class="preview-details">
-                <h2 id="preview-name"></h2>
-                <p id="preview-desc"></p>
-                <div id="preview-stats"></div>
-            </div>
-        </div>
-        <button id="close-preview" onclick="closePreview()">✕</button>
-    </div>
+    <div id="card-hover-panel" class="hiddenn"></div>
+    <div id="card-preview-top" class="hiddenn"></div>
     <script>
         const DECK_DATA = {{ deck | tojson }};
         const OPPONENT_DECK_DATA = [...DECK_DATA].reverse();

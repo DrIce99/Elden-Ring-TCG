@@ -27,7 +27,7 @@ window.renderDeck = function (cards = [], containerSelector = null) {
     }
 
     if (!deckContainer) {
-        console.error('❌ Deck container non trovato:', containerSelector);
+        console.error('❌ Deck container not found:', containerSelector);
         return;
     }
 
@@ -83,27 +83,6 @@ window.renderDeck = function (cards = [], containerSelector = null) {
 
         deckContainer.appendChild(wrapper);
     });
-
-    // Badge contatore
-    let badge = deckContainer.querySelector('.deck-count-badge');
-    if (!badge) {
-        badge = document.createElement('div');
-        badge.className = 'deck-count-badge';
-        badge.style.cssText = `
-            position: absolute; bottom: -30px; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: #edd7ab;
-            font-size: 0.75em;
-            padding: 2px 8px;
-            border-radius: 10px;
-            border: 1px solid #edd7ab55;
-            pointer-events: none;
-            white-space: nowrap;
-        `;
-        deckContainer.appendChild(badge);
-    }
-    badge.textContent = `${cards.length} carte`;
 };
 
 // ----------------------------------------
@@ -183,26 +162,9 @@ window.renderHand = function (target) {
                 target === 'player') {
                 window.trySummon(card, index);
             }
-            if (previewOpen && selectedCardData?.id === card.id) {
-                window.closePreview();
-            } else {
-                if (previewOpen) window.closePreview();
-                showPreview(card, wrapper);
-            }
         });
 
         container.appendChild(wrapper);
-
-        wrapper.addEventListener('mouseenter', () => {
-            if (window.placementState) return;
-
-            showPreview(card, wrapper);
-        });
-
-        wrapper.addEventListener('mouseleave', () => {
-            if (!previewOpen) return;
-            window.closePreview();
-        });
     });
 };
 
@@ -261,66 +223,6 @@ function showPreview(cardData, containerEl) {
  
     previewEl.style.display = 'flex';
 }
-
-window.closePreview = function () {
-    const previewEl = document.getElementById('card-preview');
-    if (previewEl) previewEl.style.display = 'none';
-
-    if (selectedCardEl) {
-        selectedCardEl.classList.remove('selected');
-        selectedCardEl = null;
-        selectedCardData = null;
-    }
-    previewOpen = false;
-};
-
-// Click su carta per preview (delegato)
-document.addEventListener('click', (e) => {
-    // Ignora se siamo in placement mode
-    if (window.placementState) return;  // nota: placementState è privato in game_rules, va esposto
-    if (e.target.closest('.slot')) return;
-    // Ignora se click su bottone fase o hint
-    if (e.target.closest('.phase-button, #placement-hint, #card-preview')) return;
-
-    const cardWrapper = e.target.closest('.card-wrapper');
-
-    // Click fuori da qualsiasi carta → chiudi preview
-    if (!cardWrapper) {
-        if (previewOpen) window.closePreview();
-        return;
-    }
-
-    // Escludi carte nel mazzo
-    if (cardWrapper.closest('.deck-card-wrapper')) return;
-
-    // Cerca il dato della carta
-    const source = cardWrapper.closest('.slot') ||
-        cardWrapper.closest('.hand-card-wrapper');
-    const cardDataStr = source?.dataset.card;
-
-    if (!cardDataStr) return;
-
-    try {
-        const cardData = JSON.parse(cardDataStr);
-
-        if (previewOpen && selectedCardData?.id === cardData.id) {
-            // Stessa carta → chiudi
-            window.closePreview();
-        } else {
-            if (previewOpen) window.closePreview();
-            showPreview(cardData, cardWrapper);
-        }
-    } catch (err) {
-        console.error('Preview error:', err);
-    }
-});
-
-// ESC chiude preview
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        window.closePreview();
-    }
-});
 
 // ----------------------------------------
 // INIT — Avvia il gioco

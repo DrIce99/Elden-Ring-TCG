@@ -84,7 +84,7 @@ window.drawOneCard = function (target = 'player') {
             });
         }
 
-        if (target === 'player') {
+        if (target === window.GameState.turnOwner) {
             window.drawnThisTurn++;
             updatePhaseDisplay(); // aggiorna label
 
@@ -174,7 +174,7 @@ window.initHands = function () {
     // Previeni doppia chiamata accidentale
     if (window._handsDealt) return;
     window._handsDealt = true;
- 
+
     const drawSilent = (target, count) => {
         const deck = target === 'player' ? window.playerDeck : window.opponentDeck;
         const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
@@ -184,7 +184,7 @@ window.initHands = function () {
         window.renderHand(target);
         renderDeck(deck, target === 'player' ? '#player-deck' : '.slot.deck.enemy');
     };
- 
+
     drawSilent('player', 5);
     drawSilent('opponent', 5);
     console.log('🎮 Mani iniziali distribuite (5 carte ciascuno)');
@@ -204,7 +204,7 @@ window.advanceToNextPhase = function () {
         gs.hasSummonedThisTurn = false;
         gs.turnOwner = gs.turnOwner === 'player' ? 'opponent' : 'player';
         window.drawnThisTurn = 0;
-    
+
         // Emetti TURN_START
         if (window.EffectBus) {
             window.EffectBus.emit(window.EVENTS?.TURN_START, {
@@ -241,10 +241,7 @@ window.advanceToNextPhase = function () {
         if (phaseBtn) phaseBtn.classList.add('hidden');
         if (gs.turnOwner === 'opponent') {
             setTimeout(() => {
-                window.isDrawing = false;
                 window.drawOneCard('opponent');
-                setTimeout(() => window.drawOneCard('opponent'), 700);
-                setTimeout(() => advanceToNextPhase(), 1400);
             }, 300);
         }
     } else {

@@ -298,51 +298,142 @@ window.trySummon = function (card, handIndex) {
     window.enterPlacementMode(card, handIndex);
 };
 
-document.addEventListener('mouseover', (e) => {
-    const slot = e.target.closest('.slot.battle');
-    if (!slot) return;
+document.addEventListener("mouseover", (e) => {
+    const cardSlot = e.target.closest("[data-card]");
+    if (!cardSlot) return;
 
-    if (slot.dataset.cardType !== 'classes') return;
-    if (!slot.dataset.equip) return;
+    // evita trigger multipli sui figli interni
+    if (cardSlot.contains(e.relatedTarget)) return;
 
-    const equips = JSON.parse(slot.dataset.equip);
+    const wrapper = cardSlot.querySelector(".card-wrapper");
+    if (!wrapper || wrapper.classList.contains("flipped")) return;
 
-    showEquipPreview(slot, equips);
+    const cardData = JSON.parse(cardSlot.dataset.card);
+
+    showCardInfo(cardData, cardSlot);
 });
 
-function showEquipPreview(slot, equips) {
-    hideEquipPreview();
+function showCardInfo(cardData, cardElement){
+    hideCardInfo();
 
-    const container = document.createElement('div');
-    container.id = 'equip-preview';
+    showSidePanel(cardData, cardElement);
+    showTopPreview(cardData);
+}
 
-    container.style.cssText = `
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 4px;
-        padding: 6px;
-        background: rgba(0,0,0,0.8);
-        border: 1px solid #edd7ab55;
-        border-radius: 8px;
-        z-index: 9999;
+document.addEventListener("mouseout", (e) => {
+    const cardSlot = e.target.closest("[data-card]");
+    if (!cardSlot) return;
+
+    // se stai ancora andando su un figlio della stessa carta, non chiudere
+    if (cardSlot.contains(e.relatedTarget)) return;
+
+    const isOverPreview =
+        e.relatedTarget?.closest("#card-hover-panel") ||
+        e.relatedTarget?.closest("#card-preview-top");
+
+    if (isOverPreview) return;
+
+    hideCardInfo();
+});
+
+function showSidePanel(card, element){
+    const panel = document.getElementById("card-hover-panel");
+    panel.classList.add("hiddenn");
+
+    const computed = computeCardStats(card, element);
+
+    panel.innerHTML = `
+        <h3>${card.name}</h3>
+        <hr>
+
+        ${computed.hp ? `<p>HP: ${computed.hp}</p>` : ""}
+        ${computed.mana ? `<p>Mana: ${computed.mana}</p>` : ""}
+        ${computed.stamina ? `<p>Stamina: ${computed.stamina}</p>` : ""}
+        ${computed.lightAtk ? `<p>Light: ${computed.lightAtk}</p>` : ""}
+        ${computed.heavyAtk ? `<p>Heavy: ${computed.heavyAtk}</p>` : ""}
+        ${computed.charges ? `<p>Charges: ${computed.charges}</p>` : ""}
     `;
 
-    equips.forEach(eq => {
-        const el = document.createElement('div');
-        el.style.width = '60px';
-        el.style.height = '85px';
-        el.innerHTML = `
-            <img src="static/src/cards/front/${eq.id}.png"
-                 style="width:100%;height:100%;object-fit:contain">
-        `;
-        container.appendChild(el);
-    });
+    const rect = element.getBoundingClientRect();
 
-    slot.style.position = 'relative';
-    slot.appendChild(container);
+    panel.style.left = `${rect.right + 10}px`;
+    panel.style.top = `${rect.top + window.scrollY}px`;
+    panel.classList.remove("hiddenn");
+}
+
+function showTopPreview(card){
+    const panel = document.getElementById("card-preview-top");
+    panel.classList.add("hiddenn");
+
+    const passivesHtml = (card.passives && card.passives.length > 0)
+            ? card.passives.map(p => `
+        <div class="flex justify-between">
+            <span>${p.type}</span>
+            <span class="opacity-70">${p.amount}%</span>
+        </div>
+    `).join("")
+            : `<div class="opacity-40">None</div>`;
+
+    panel.innerHTML = `
+        <img src="${card.img}" />
+
+        <div style="flex:1;color:white;">
+            <h2>${card.name}</h2>
+            <p>${card.desc || "No description"}</p>
+            <p style="opacity:0.7; text-style:italic;">
+                ${card.gamedesc || ""}
+            </p>
+            <div>${passivesHtml}</div>
+        </div>
+    `;
+
+    panel.classList.remove("hiddenn");
+}
+
+function hideCardInfo(){
+    hideSidePanel();
+    const topPanel = document.getElementById("card-preview-top");
+    if (topPanel) topPanel.classList.add("hiddenn");
+}
+
+function hideSidePanel(){
+    const panel = document.getElementById("card-hover-panel");
+    if (panel) panel.classList.add("hiddenn");
+}
+
+function computeCardStats(card, element){
+    const type = window.getCardType(card);
+
+    let stats = {};
+
+    if(type === "classes"){
+        // stats.hp = calculateClassHP(card);
+        // stats.mana = calculateMana(card);
+        // stats.stamina = calculateStamina(card);
+        // stats.lightAtk = calculateLightAttack(card, element);
+        // stats.heavyAtk = calculateHeavyAttack(card, element);
+        stats.hp = "";
+        stats.mana = "";
+        stats.stamina = "";
+        stats.lightAtk = "";
+        stats.heavyAtk = "";
+    }
+
+    else if(type === "bosses" || type === "npcs" || type === "creatures"){
+        stats.hp = card.hp;
+    }
+
+    else if(type === "weapons"){
+        // stats.lightAtk = totalWeaponDamage(card);
+        stats.lightAtk = "";
+    }
+
+    else if(type === "sorceries" || type === "incantations"){
+        stats.mana = card.fpcost;
+        stats.lightAtk = card.attack;
+    }
+
+    return stats;
 }
 
 function hideEquipPreview() {
