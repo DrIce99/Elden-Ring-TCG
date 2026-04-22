@@ -9,8 +9,8 @@
         "dupl": 0,
         "find": 0,
         "rarity": "Com",
-        "banner": "1 West Limgrave",
-        "sellvalue": 0
+        "banner": "0 Base Classes",
+        "sellvalue": 10
     },
     {
         "id": 210,
@@ -23,7 +23,7 @@
         "find": 1,
         "rarity": "Leg",
         "banner": "0 Base Classes",
-        "sellvalue": 0
+        "sellvalue": 50
     },
     {
         "id": 310,
@@ -36,7 +36,7 @@
         "find": 1,
         "rarity": "Leg",
         "banner": "0 Base Classes",
-        "sellvalue": 0
+        "sellvalue": 50
     },
     {
         "id": 410,
@@ -50,7 +50,7 @@
                 "scaling": "B"
             },
             {
-                "name": "Str",
+                "name": "Dex",
                 "scaling": "A"
             }
         ],
@@ -58,7 +58,20 @@
         "dupl": 1,
         "find": 1,
         "rarity": "Rar",
-        "banner": "0 Base Classes",
+        "banner": "1 West Limgrave",
+        "sellvalue": 10
+    },
+    {
+        "id": 510,
+        "name": "Telescope",
+        "desc": "Effect: Send this card to the erdtree. Peek two cards of your choice from the opponent's hand.",
+        "gamedesc": "Astrology tool used by members of the Carian royal family.\nA stolen part of a larger instrument.\nAllows the viewer to better see faraway things.\nDuring the age of the Erdtree,\nCarian astrology withered on the vine. \nThe fate once writ in the night skies had been fettered by the Golden Order.",
+        "img" : "https://eldenring.wiki.fextralife.com/file/Elden-Ring/telescope_elden_ring_wiki_guide_200px.png",
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Unc",
+        "banner": "1 West Limgrave",
         "sellvalue": 10
     }
 ]

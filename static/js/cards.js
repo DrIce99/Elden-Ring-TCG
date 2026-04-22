@@ -189,6 +189,163 @@ class Card {
     </div>`;
     }
 
+    renderIncantation() {
+        const imageSrc = (this.data.img && this.data.img !== "")
+            ? this.data.img
+            : "https://placehold.co";
+
+        const typeColors = {
+            "Fire": "border-red-600",
+            "Mag": "border-blue-500",
+            "Holy": "border-yellow-100",
+            "Ligt": "border-yellow-400",
+            "Phy": "border-gray-500"
+        };
+
+        let desc = "";
+        if (this.data.desc != "") {
+            desc = `
+                    <div class="text-xs text-white/90" style="text-align: justify;text-justify:inter-word; background:transparent;">
+                        ${this.data.desc || ''}
+                    </div>
+                    `;
+        }
+
+        const atkType = this.data.atktype || "Mag";
+        const rarityClass = `rarity-${this.data.rarity || "common"}`;
+
+        // Mapping attributi per Elden Ring (Fth = Faith)
+        const attributes = ["Str", "Dex", "Int", "Fth", "Arc"];
+        const required = this.data.requiredAttributes || [];
+
+        const attributeSlotsHtml = attributes.map(attr => {
+            const r = required.find(i => i.name.toLowerCase().startsWith(attr.toLowerCase().substring(0, 3)))?.amount || "-";
+            return `
+    <div class="flex-1 border border-[#edd7ab]/40 rounded-lg p-1 flex flex-col items-center justify-center bg-[#1c1b1b]" style="width:60px; height:80px; margin:8px; pointer-events: none;">
+        <div class="text-[14px] text-[#edd7ab] font-bold">${attr.toUpperCase()}</div>
+        <div class="text-[16px] text-white font-bold">-</div>
+        <div class="text-[12px] opacity-40">${r}</div>
+    </div>`;
+        }).join("");
+
+        const passivesHtml = (this.data.passives && this.data.passives.length > 0)
+            ? this.data.passives.map(p => `
+        <div class="flex justify-between">
+            <span>${p.type}</span>
+            <span class="opacity-70">${p.amount}%</span>
+        </div>
+    `).join("")
+            : `<div class="opacity-40">None</div>`;
+
+        return `
+        <div class="card-wrapper balatro-card">
+            <div class="card-inner">
+                <!-- FRONT -->
+                <div class="card face front relative ${rarityClass}" style="overflow: visible !important;">
+                    <div class="attributes-container">
+                        <div class="flex-column gap-10 mb-4">
+                            ${attributeSlotsHtml}
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <!-- CORNER DECORATIONS -->
+                        <div class="corner top left"></div><div class="corner top right"></div>
+                        <div class="corner bottom left"></div><div class="corner bottom right"></div>
+                        <div class="middle hor left"></div><div class="middle hor right"></div>
+            
+                        <!-- HEADER -->
+                        <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
+                            <div class="bg-[#1c1b1b] px-2 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center; white-space: nowrap; overflow: hidden;">
+                                ${this.data.Type || 'Incantation'}
+                            </div>
+                            <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
+                                SPELL
+                            </div>
+                            <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;">
+                                ${atkType}
+                            </div>
+                        </div>
+
+                        <!-- SEZIONE CENTRALE -->
+                        <div class="flex gap-2 h-64 mb-1">
+                            <!-- Statistiche (FP e Atk) -->
+                            <div class="w-1/5 flex flex-col gap-1">
+                                <div class="text-center text-[10px] font-bold opacity-50 uppercase">Cost</div>
+                                <div class="bg-[#1c1b1b] border-l-4 border-blue-400 rounded-r h-7 flex items-center justify-center text-[10px] text-blue-300 font-bold">${this.data.fpcost} FP</div>
+                                
+                                <div class="text-center text-[10px] font-bold opacity-50 uppercase mt-2">Slots</div>
+                                <div class="bg-[#1c1b1b] border-l-4 border-gray-400 rounded-r h-7 flex items-center justify-center text-[10px]">${this.data.slots}</div>
+                                
+                                <div class="bg-white/10 rounded h-5 flex items-center justify-center text-[9px] mt-10">ATK: x${this.data.attack}</div>
+                            </div>
+
+                            <!-- Immagine -->
+                            <div class="flex-1 bg-[#d1d1d109] rounded-2xl overflow-hidden border border-white/10">
+                                <img src="${imageSrc}" class="w-full h-full object-contain">
+                            </div>
+
+                            <!-- Colonna Destra -->
+                            <div class="w-1/5 flex flex-col gap-1">
+                                <div class="text-center text-[10px] font-bold opacity-50 uppercase">Type</div>
+                                <div class="bg-[#1c1b1b] border-r-4 ${typeColors[atkType] || 'border-white'} rounded-l h-7 flex items-center justify-center text-[10px]">${atkType}</div>
+                            </div>
+                        </div>
+
+                        <!-- NOME -->
+                        <div class="relative">
+                            <div class="name-banner flex items-center justify-center">
+                                <h2 class="text-xl font-bold text-center py-1 tracking-wide uppercase">${this.data.name}</h2>
+                            </div>
+                        </div>
+
+                         <!-- DESCRIZIONI -->
+                <div class="ninepatch-grid">
+                    <div class="tl"></div>
+                    <div class="top"></div>
+                    <div class="tr"></div>
+
+                    <div class="left"></div>
+                    <div class="center">
+                        <div class="flex-1 space-y-4 px-2 overflow-y-auto">
+                            ${desc}
+                            <div class="text-[11px] text-white/60 italic leading-relaxed" style="text-align: justify;text-justify:inter-word;background:transparent;">
+                                ${this.data.gamedesc || ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right"></div>
+
+                    <div class="bl"></div>
+                    <div class="bottom"></div>
+                    <div class="br"></div>
+                </div>
+
+                <!-- Passive Effects (Rettangolo Rosso) -->
+                <div class="border border-red-900/40 bg-red-950/20 rounded-lg p-2 mb-1">
+                    <div class="text-[7px] text-red-400 font-bold uppercase">Passive Effects</div>
+                    <div class="text-[10px] text-red-100/90">
+                        ${passivesHtml}
+                    </div>
+                </div>
+
+                <!-- FOOTER (Loot e ID) -->
+                <div class="flex justify-between items-end mt-4 px-1 opacity-40">
+                    <div class="flex content-between gap-1 align-middle">
+                        <div class="text-[10px] align-middle" style="vertical-align:center;">Runes: ${this.data.loot || 0}</div>
+                        <div><img src="https://eldenring.wiki.fextralife.com/file/Elden-Ring/runes-currency-elden-ring-wiki-guide-18.png" class="size-3"></div>
+                    </div>
+                    <div class="text-[10px]">ID: ${this.data.id}</div>
+                </div>
+            </div>
+            </div>
+                <div class="card face back">
+                    <img src="/static/src/page_bg_raw.jpg" class="back-img">
+                </div>
+            </div>
+        </div>`;
+    }
+
     renderArmor() {
         // FIX: Se l'immagine manca, usa un placeholder
         const imageSrc = (this.data.img && this.data.img !== "")
@@ -737,6 +894,26 @@ class Card {
 
         const cardType = "Item";
 
+        const attributes = ["Str", "Dex", "Int", "Fai", "Arc"];
+        const scaling = this.data.scalesWith || [];
+        const required = this.data.requiredAttributes || [];
+
+        const attributesContainerHtml = (scaling.length > 0) ? `
+            <div class="attributes-container" style="position: absolute; left: -100px; top: 20px; z-index: 10;">
+                <div class="flex flex-col gap-2">
+                    ${attributes.map(attr => {
+                        const s = scaling.find(i => i.name.startsWith(attr))?.scaling || "-";
+                        const r = required.find(i => i.name.startsWith(attr))?.amount || "-";
+                        return `
+                            <div class="border border-[#edd7ab]/40 rounded-lg p-1 flex flex-col items-center justify-center bg-[#1c1b1b]" style="width:60px; height:80px; pointer-events: none;">
+                                <div class="text-[14px] text-[#edd7ab] font-bold">${attr.toUpperCase()}</div>
+                                <div class="text-[16px] text-white font-bold">${s}</div>
+                                <div class="text-[12px] opacity-40">${r}</div>
+                            </div>`;
+                    }).join("")}
+                </div>
+            </div>` : "";
+
         // Per leggendaria:
         // <div class="middle ver left"></div>
         // <div class="middle ver right"></div>
@@ -745,6 +922,7 @@ class Card {
     <div class="card-wrapper balatro-card">
         <div class="card-inner">
         <div class="card face front relative ${rarityClass}">
+        ${attributesContainerHtml}
         <div class="card-content">
             <div class="corner top left"></div>
             <div class="corner top right"></div>
@@ -780,7 +958,7 @@ class Card {
 
                 <!-- CENTRO: IMMAGINE -->
                 <div class="flex-1 bg-[#d1d1d109] rounded-2xl overflow-hidden shadow-inner border border-white/10">
-                    <img src="${this.data.img}" class="w-full h-full object-cover">
+                    <img src="${this.data.img}" class="w-full h-full object-contain">
                 </div>
 
                 <!-- COLONNA DX: ARMATURA -->
@@ -852,6 +1030,7 @@ function render() {
     else if (TYPE === 'weapon') container.innerHTML = cardObj.renderWeapon();
     else if (TYPE === 'class') container.innerHTML = cardObj.renderClass();
     else if (TYPE === 'armor') container.innerHTML = cardObj.renderArmor();
+    else if (TYPE === 'magic') container.innerHTML = cardObj.renderIncantation();
     else if (TYPE === 'item') container.innerHTML = cardObj.renderItem();
 
     document.querySelectorAll('.balatro-card').forEach((wrapper) => {
@@ -927,11 +1106,7 @@ document.getElementById("searchSelect").addEventListener("change", (e) => {
 
     if (found) {
         ITEM = found;
-        if (found.attack) TYPE = "weapon";
-        else if (found.dmgNegation) TYPE = "armor";
-        else if (found.stats) TYPE = "class";
-        else if (found.stats) TYPE = "character";
-        else TYPE = "item";
+        TYPE = found.type;
         render();
     }
 });

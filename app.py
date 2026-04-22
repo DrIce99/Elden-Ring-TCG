@@ -181,13 +181,32 @@ def card_designer():
     elif card_type == "armor":
         pool = db.get("helmets", []) + db.get("armors", []) + db.get("gloves", []) + db.get("leg_armors", [])
     
+    elif card_type == "magic":
+        pool = db.get("incantations", []) + db.get("sorceries", [])
+    
     else:
         pool = []
     
     all_items = []
 
     for key in db:
-        all_items.extend(db[key])
+        for item in db[key]:
+            item_copy = item.copy()
+
+            if key in ["weapons", "shields"]:
+                item_copy["type"] = "weapon"
+            elif key == "npcs":
+                item_copy["type"] = "character"
+            elif key == "classes":
+                item_copy["type"] = "class"
+            elif key in ["helmets", "armors", "gloves", "leg_armors"]:
+                item_copy["type"] = "armor"
+            elif key in ["incantations", "sorceries"]:
+                item_copy["type"] = "magic"
+            else:
+                item_copy["type"] = "item"
+
+            all_items.append(item_copy)
 
     # Seleziona un item casuale o un dizionario vuoto se il pool è vuoto
     random_item = random.choice(pool) if pool else {
@@ -219,7 +238,8 @@ def table_designer():
         db.get("helmets", []) +
         db.get("armors", []) +
         db.get("leg_armors", []) +
-        db.get("gloves", [])
+        db.get("gloves", []) +
+        db.get("items", [])
     )
 
     # 2. Pesca 10 carte casuali dal pool

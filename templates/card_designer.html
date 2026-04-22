@@ -17,6 +17,7 @@
         <a href="/card-designer?type=class">Classe</a>
         <a href="/card-designer?type=weapon">Arma</a>
         <a href="/card-designer?type=armor">Armatura</a>
+        <a href="/card-designer?type=magic">Magia</a>
         <a href="/card-designer?type=item">Oggetto</a>
 
         <select id="searchSelect" class="px-4 py-2 bg-[#1c1b1b] text-white border border-white/20 rounded w-80">
@@ -40,7 +41,7 @@
 
     <script>
         let ITEM = {{ item | tojson | safe }};
-        let TYPE = "{{ card_type }}";
+        let TYPE = {{ card_type | tojson | safe }};
         let ALL_ITEMS = {{ all_items | tojson | safe }};
     </script>
 

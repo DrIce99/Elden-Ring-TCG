@@ -3,7 +3,8 @@
         "id": "109",
         "name": "Catch Flame",
         "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/catch_flame_incantation_elden_ring_wiki_guide_200px.png",
-        "desc": "Incantation originating from a sinister prophecy.\n\nMomentarily sparks flame from the caster's hand.\nThis incantation can be cast without delay after performing another action. \n\nThe flame of ruin is anathema to the Erdtree. But prophets sometimes glimpse it within the faith all the same. Sadly when this occurs their sole reward is banishment.",
+        "desc": "You can equip this item to a class or use it directly.\nEffect: Once per turn, during the planning phase, the unit having this incantation equipped can use it without consuming its action.",
+        "gamedesc": "Incantation originating from a sinister prophecy.\n\nMomentarily sparks flame from the caster's hand.\nThe flame of ruin is anathema to the Erdtree. But prophets sometimes glimpse it within the faith all the same. Sadly when this occurs their sole reward is banishment.",
         "Type": "Giant's Flame",
         "fpcost": 10,
         "slots": 1,
@@ -13,7 +14,13 @@
                 "amount": 8
             }
         ],
+        "passives": [],
+        "dupl": 1,
+        "find": 1,
         "attack": 1.67,
-        "atktype": "Fire"
+        "atktype": "Fire",
+        "rarity": "Leg",
+        "banner": "4 Roundtable Hold",
+        "sellvalue": 100
     }
 ]
