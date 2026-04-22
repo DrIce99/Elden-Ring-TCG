@@ -7,30 +7,37 @@
     <title>Elden Ring TCG — Deck Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700&display=swap"
+        rel="stylesheet">
     <script src="/static/js/deck_rules.js"></script>
     <style>
         /* ── RESET & BASE ───────────────────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; }
-
-        :root {
-            --gold:        #c9a84c;
-            --gold-bright: #f0d080;
-            --gold-dim:    rgba(201,168,76,0.25);
-            --gold-glow:   rgba(201,168,76,0.15);
-            --bg:          #080807;
-            --surface:     rgba(12,11,9,0.85);
-            --surface2:    rgba(20,18,14,0.9);
-            --border:      rgba(201,168,76,0.18);
-            --border-h:    rgba(201,168,76,0.55);
-            --text:        rgba(240,220,170,0.85);
-            --text-dim:    rgba(200,180,130,0.45);
-            --red:         #e05555;
-            --cyan:        #4fd1e0;
-            --cyan-dim:    rgba(79,209,224,0.25);
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
         }
 
-        html, body {
+        :root {
+            --gold: #c9a84c;
+            --gold-bright: #f0d080;
+            --gold-dim: rgba(201, 168, 76, 0.25);
+            --gold-glow: rgba(201, 168, 76, 0.15);
+            --bg: #080807;
+            --surface: rgba(12, 11, 9, 0.85);
+            --surface2: rgba(20, 18, 14, 0.9);
+            --border: rgba(201, 168, 76, 0.18);
+            --border-h: rgba(201, 168, 76, 0.55);
+            --text: rgba(240, 220, 170, 0.85);
+            --text-dim: rgba(200, 180, 130, 0.45);
+            --red: #e05555;
+            --cyan: #4fd1e0;
+            --cyan-dim: rgba(79, 209, 224, 0.25);
+        }
+
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -47,7 +54,8 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
             opacity: 0.18;
             z-index: 0;
             pointer-events: none;
@@ -69,9 +77,9 @@
             align-items: center;
             gap: 20px;
             padding: 10px 24px;
-            background: rgba(8,8,7,0.96);
+            background: rgba(8, 8, 7, 0.96);
             border-bottom: 1px solid var(--border);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
             flex-shrink: 0;
         }
 
@@ -81,11 +89,19 @@
             gap: 10px;
             flex-shrink: 0;
         }
-        #topbar .logo-wrap img { height: 38px; filter: drop-shadow(0 0 8px rgba(201,168,76,0.4)); }
-        #topbar .logo-wrap .tcg-logo { height: 28px; }
+
+        #topbar .logo-wrap img {
+            height: 38px;
+            filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.4));
+        }
+
+        #topbar .logo-wrap .tcg-logo {
+            height: 28px;
+        }
 
         .topbar-sep {
-            width: 1px; height: 32px;
+            width: 1px;
+            height: 32px;
             background: var(--border);
             flex-shrink: 0;
         }
@@ -110,10 +126,15 @@
             scrollbar-width: none;
             padding: 2px 0;
         }
-        #deckTabs::-webkit-scrollbar { display: none; }
+
+        #deckTabs::-webkit-scrollbar {
+            display: none;
+        }
 
         .deck-tab {
-            display: flex; align-items: center; gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             padding: 5px 14px;
             border: 1px solid var(--border);
             background: transparent;
@@ -126,12 +147,18 @@
             transition: all 0.25s;
             position: relative;
         }
-        .deck-tab:hover { border-color: var(--border-h); color: var(--text); }
+
+        .deck-tab:hover {
+            border-color: var(--border-h);
+            color: var(--text);
+        }
+
         .deck-tab.active {
             background: var(--gold-glow);
             border-color: var(--gold);
             color: var(--gold-bright);
         }
+
         .deck-tab.equipped-badge::after {
             content: "◆";
             font-size: 0.5rem;
@@ -140,12 +167,19 @@
         }
 
         .deck-tab .del-tab {
-            background: none; border: none; cursor: pointer;
-            color: rgba(224,85,85,0.5);
-            font-size: 0.7rem; padding: 0; line-height: 1;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: rgba(224, 85, 85, 0.5);
+            font-size: 0.7rem;
+            padding: 0;
+            line-height: 1;
             transition: color 0.2s;
         }
-        .deck-tab .del-tab:hover { color: var(--red); }
+
+        .deck-tab .del-tab:hover {
+            color: var(--red);
+        }
 
         .btn-new-deck {
             padding: 5px 12px;
@@ -160,10 +194,19 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .btn-new-deck:hover { border-color: var(--gold); color: var(--gold); }
+
+        .btn-new-deck:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
 
         /* Topbar actions */
-        .topbar-actions { display: flex; gap: 8px; flex-shrink: 0; margin-left: auto; }
+        .topbar-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
 
         .btn-action {
             padding: 6px 16px;
@@ -179,23 +222,26 @@
 
         .btn-save {
             color: var(--gold);
-            border-color: rgba(201,168,76,0.4);
+            border-color: rgba(201, 168, 76, 0.4);
         }
+
         .btn-save:hover {
             background: var(--gold-glow);
             border-color: var(--gold);
-            box-shadow: 0 0 12px rgba(201,168,76,0.2);
+            box-shadow: 0 0 12px rgba(201, 168, 76, 0.2);
         }
 
         .btn-equip {
             color: var(--cyan);
             border-color: var(--cyan-dim);
         }
+
         .btn-equip:hover {
             background: var(--cyan-dim);
             border-color: var(--cyan);
-            box-shadow: 0 0 12px rgba(79,209,224,0.2);
+            box-shadow: 0 0 12px rgba(79, 209, 224, 0.2);
         }
+
         .btn-equip.is-equipped {
             background: var(--cyan-dim);
             border-color: var(--cyan);
@@ -206,9 +252,14 @@
             color: var(--text-dim);
             border-color: var(--border);
             text-decoration: none;
-            display: flex; align-items: center;
+            display: flex;
+            align-items: center;
         }
-        .btn-back:hover { color: var(--text); border-color: var(--border-h); }
+
+        .btn-back:hover {
+            color: var(--text);
+            border-color: var(--border-h);
+        }
 
         /* ── WORKSPACE ──────────────────────────────────────────────── */
         #workspace {
@@ -231,7 +282,7 @@
             align-items: center;
             gap: 10px;
             padding: 12px 16px;
-            background: rgba(8,8,7,0.7);
+            background: rgba(8, 8, 7, 0.7);
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
         }
@@ -243,8 +294,9 @@
             text-transform: uppercase;
         }
 
-        .filter-select, .filter-input {
-            background: rgba(255,255,255,0.03);
+        .filter-select,
+        .filter-input {
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             color: var(--text);
             font-family: 'Cinzel', serif;
@@ -253,9 +305,19 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .filter-select:focus, .filter-input:focus { border-color: var(--border-h); }
-        .filter-input::placeholder { color: var(--text-dim); }
-        .filter-input { width: 160px; }
+
+        .filter-select:focus,
+        .filter-input:focus {
+            border-color: var(--border-h);
+        }
+
+        .filter-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .filter-input {
+            width: 160px;
+        }
 
         #cardGrid {
             overflow-y: auto;
@@ -277,28 +339,36 @@
             overflow: hidden;
             aspect-ratio: 3/4;
         }
+
         .card-thumb:hover {
             border-color: var(--border-h);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
         }
+
         .card-thumb img {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
         }
 
         /* overlay con info */
         .card-thumb-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 55%);
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 55%);
             opacity: 0;
             transition: opacity 0.2s;
-            display: flex; flex-direction: column;
+            display: flex;
+            flex-direction: column;
             justify-content: flex-end;
             padding: 6px;
         }
-        .card-thumb:hover .card-thumb-overlay { opacity: 1; }
+
+        .card-thumb:hover .card-thumb-overlay {
+            opacity: 1;
+        }
 
         .card-thumb-name {
             font-size: 0.55rem;
@@ -307,6 +377,7 @@
             line-height: 1.3;
             text-align: center;
         }
+
         .card-thumb-rarity {
             font-size: 0.5rem;
             text-align: center;
@@ -316,14 +387,16 @@
         /* Indicatore copie già in mazzo */
         .copy-badge {
             position: absolute;
-            top: 4px; right: 4px;
-            background: rgba(0,0,0,0.85);
+            top: 4px;
+            right: 4px;
+            background: rgba(0, 0, 0, 0.85);
             border: 1px solid var(--gold);
             color: var(--gold-bright);
             font-size: 0.55rem;
             padding: 1px 5px;
             letter-spacing: 1px;
         }
+
         .copy-badge.maxed {
             border-color: var(--red);
             color: var(--red);
@@ -358,24 +431,41 @@
             padding: 4px 0;
             transition: border-color 0.2s;
         }
-        #deckNameInput:focus { border-bottom-color: var(--gold); }
-        #deckNameInput::placeholder { color: var(--text-dim); font-size: 0.75rem; }
+
+        #deckNameInput:focus {
+            border-bottom-color: var(--gold);
+        }
+
+        #deckNameInput::placeholder {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
 
         .deck-stats {
-            display: flex; gap: 12px;
+            display: flex;
+            gap: 12px;
             font-size: 0.55rem;
             letter-spacing: 2px;
             color: var(--text-dim);
         }
-        .deck-stats span { color: var(--text); }
+
+        .deck-stats span {
+            color: var(--text);
+        }
 
         #deckCounter {
             font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 1px;
         }
-        #deckCounter.warning { color: #f59e0b; }
-        #deckCounter.full { color: var(--gold); }
+
+        #deckCounter.warning {
+            color: #f59e0b;
+        }
+
+        #deckCounter.full {
+            color: var(--gold);
+        }
 
         /* Lista carte nel mazzo */
         #deckCardList {
@@ -398,18 +488,23 @@
             border: 1px solid transparent;
             transition: all 0.15s;
         }
+
         .deck-row:hover {
             border-color: var(--border);
-            background: rgba(255,255,255,0.02);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .deck-row-thumb {
-            width: 36px; height: 48px;
+            width: 36px;
+            height: 48px;
             object-fit: cover;
             border: 1px solid var(--border);
         }
 
-        .deck-row-info { overflow: hidden; }
+        .deck-row-info {
+            overflow: hidden;
+        }
+
         .deck-row-name {
             font-size: 0.6rem;
             letter-spacing: 1px;
@@ -418,6 +513,7 @@
             text-overflow: ellipsis;
             color: var(--text);
         }
+
         .deck-row-meta {
             font-size: 0.5rem;
             color: var(--text-dim);
@@ -425,20 +521,31 @@
         }
 
         .deck-row-count {
-            display: flex; align-items: center; gap: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
+
         .count-btn {
-            width: 18px; height: 18px;
+            width: 18px;
+            height: 18px;
             background: none;
             border: 1px solid var(--border);
             color: var(--text-dim);
             font-size: 0.7rem;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.15s;
             padding: 0;
         }
-        .count-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .count-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
         .count-num {
             font-size: 0.7rem;
             color: var(--gold-bright);
@@ -447,38 +554,49 @@
         }
 
         .deck-row-remove {
-            background: none; border: none;
-            color: rgba(224,85,85,0.4);
+            background: none;
+            border: none;
+            color: rgba(224, 85, 85, 0.4);
             font-size: 0.9rem;
             cursor: pointer;
             transition: color 0.15s;
-            padding: 0; line-height: 1;
+            padding: 0;
+            line-height: 1;
         }
-        .deck-row-remove:hover { color: var(--red); }
+
+        .deck-row-remove:hover {
+            color: var(--red);
+        }
 
         /* Deck panel footer */
         #deckFooter {
             padding: 12px 16px;
             border-top: 1px solid var(--border);
-            background: rgba(8,8,7,0.6);
+            background: rgba(8, 8, 7, 0.6);
         }
 
         .progress-bar-wrap {
             height: 3px;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             margin-bottom: 8px;
             position: relative;
         }
+
         #progressBar {
             height: 100%;
             background: linear-gradient(90deg, var(--gold-dim), var(--gold));
             transition: width 0.3s ease;
-            position: absolute; left: 0; top: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .rarity-dist {
-            display: flex; gap: 6px; flex-wrap: wrap;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
+
         .rarity-pill {
             font-size: 0.5rem;
             letter-spacing: 1px;
@@ -490,8 +608,10 @@
         /* ── TOAST ──────────────────────────────────────────────────── */
         #toast {
             position: fixed;
-            bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-            background: rgba(12,11,9,0.95);
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(12, 11, 9, 0.95);
             border: 1px solid var(--border-h);
             color: var(--gold-bright);
             font-size: 0.65rem;
@@ -503,32 +623,47 @@
             z-index: 1000;
             text-transform: uppercase;
         }
+
         #toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-        #toast.error { border-color: var(--red); color: var(--red); }
-        #toast.success { border-color: var(--cyan); color: var(--cyan); }
+
+        #toast.error {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        #toast.success {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
 
         /* ── MODALE CONFIRM DELETE ──────────────────────────────────── */
         #modal {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.7);
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(4px);
             z-index: 500;
             display: none;
             align-items: center;
             justify-content: center;
         }
-        #modal.open { display: flex; }
+
+        #modal.open {
+            display: flex;
+        }
+
         .modal-box {
             background: var(--surface2);
             border: 1px solid var(--border-h);
             padding: 32px 40px;
             text-align: center;
-            box-shadow: 0 0 60px rgba(0,0,0,0.9);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
             max-width: 340px;
         }
+
         .modal-box h2 {
             font-family: 'Cinzel Decorative', serif;
             font-size: 0.85rem;
@@ -536,13 +671,20 @@
             letter-spacing: 3px;
             margin: 0 0 12px;
         }
+
         .modal-box p {
             font-size: 0.65rem;
             color: var(--text-dim);
             letter-spacing: 1px;
             margin: 0 0 24px;
         }
-        .modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
         .btn-modal {
             padding: 8px 20px;
             border: 1px solid;
@@ -553,10 +695,26 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-modal-cancel { border-color: var(--border); color: var(--text-dim); }
-        .btn-modal-cancel:hover { border-color: var(--border-h); color: var(--text); }
-        .btn-modal-confirm { border-color: rgba(224,85,85,0.5); color: var(--red); }
-        .btn-modal-confirm:hover { background: rgba(224,85,85,0.1); border-color: var(--red); }
+
+        .btn-modal-cancel {
+            border-color: var(--border);
+            color: var(--text-dim);
+        }
+
+        .btn-modal-cancel:hover {
+            border-color: var(--border-h);
+            color: var(--text);
+        }
+
+        .btn-modal-confirm {
+            border-color: rgba(224, 85, 85, 0.5);
+            color: var(--red);
+        }
+
+        .btn-modal-confirm:hover {
+            background: rgba(224, 85, 85, 0.1);
+            border-color: var(--red);
+        }
 
         /* ── STATO VUOTO ────────────────────────────────────────────── */
         .empty-state {
@@ -568,337 +726,414 @@
             gap: 10px;
             color: var(--text-dim);
         }
-        .empty-state .icon { font-size: 2.5rem; opacity: 0.3; }
-        .empty-state p { font-size: 0.6rem; letter-spacing: 2px; }
+
+        .empty-state .icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+
+        .empty-state p {
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+        }
 
         /* Scrollbar globale */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-dim);
+        }
 
         /* Loading spinner */
         .loading {
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             height: 100%;
             font-size: 0.6rem;
             letter-spacing: 3px;
             color: var(--text-dim);
         }
+
+        .card-thumb.unowned {
+            opacity: 0.35;
+            filter: grayscale(100%);
+            cursor: not-allowed;
+        }
+
+        .card-thumb.unowned:hover {
+            transform: none;
+            border-color: var(--border);
+            box-shadow: none;
+        }
     </style>
 </head>
 
 <body>
-<div id="app">
+    <div id="app">
 
-    <!-- ── TOP BAR ──────────────────────────────────────────────── -->
-    <div id="topbar">
-        <div class="logo-wrap">
-            <img src="/static/src/misc/Elden-Ring-Logo-PNG-File.png" alt="Elden Ring">
-            <img src="/static/src/misc/ChatGPT_Image_20_apr_2026__09_53_16-removebg-preview.png" alt="TCG" class="tcg-logo">
-        </div>
-        <div class="topbar-sep"></div>
-        <h1>Deck Builder</h1>
-        <div class="topbar-sep"></div>
-
-        <!-- Deck tabs -->
-        <div id="deckTabs">
-            <!-- generati da JS -->
-        </div>
-        <button class="btn-new-deck" onclick="createNewDeck()">+ NEW DECK</button>
-
-        <div class="topbar-actions">
-            <button class="btn-action btn-equip" id="btnEquip" onclick="equipCurrentDeck()">◆ EQUIP</button>
-            <button class="btn-action btn-save" onclick="saveDeck()">✦ SAVE</button>
-            <a href="/" class="btn-action btn-back">← HOME</a>
-        </div>
-    </div>
-
-    <!-- ── WORKSPACE ─────────────────────────────────────────────── -->
-    <div id="workspace">
-
-        <!-- BROWSER CARTE -->
-        <div id="browser">
-            <div id="browserFilters">
-                <span class="filter-label">Category</span>
-                <select class="filter-select" id="filterCat" onchange="applyFilters()">
-                    <option value="all">All</option>
-                </select>
-                <span class="filter-label" style="margin-left:10px;">Search</span>
-                <input class="filter-input" id="filterSearch" placeholder="Card name…"
-                       oninput="applyFilters()">
-                <span class="filter-label" style="margin-left:10px;">Rarity</span>
-                <select class="filter-select" id="filterRarity" onchange="applyFilters()">
-                    <option value="">All</option>
-                    <option value="Com">Common</option>
-                    <option value="Unc">Uncommon</option>
-                    <option value="Rar">Rare</option>
-                    <option value="Epi">Epic</option>
-                    <option value="Leg">Legendary</option>
-                </select>
+        <!-- ── TOP BAR ──────────────────────────────────────────────── -->
+        <div id="topbar">
+            <div class="logo-wrap">
+                <img src="/static/src/misc/Elden-Ring-Logo-PNG-File.png" alt="Elden Ring">
+                <img src="/static/src/misc/ChatGPT_Image_20_apr_2026__09_53_16-removebg-preview.png" alt="TCG"
+                    class="tcg-logo">
             </div>
-            <div id="cardGrid">
-                <div class="loading">Loading cards…</div>
+            <div class="topbar-sep"></div>
+            <h1>Deck Builder</h1>
+            <div class="topbar-sep"></div>
+
+            <!-- Deck tabs -->
+            <div id="deckTabs">
+                <!-- generati da JS -->
+            </div>
+            <button class="btn-new-deck" onclick="createNewDeck()">+ NEW DECK</button>
+
+            <div class="topbar-actions">
+                <button class="btn-action btn-equip" id="btnEquip" onclick="equipCurrentDeck()">◆ EQUIP</button>
+                <button class="btn-action btn-save" onclick="saveDeck()">✦ SAVE</button>
+                <a href="/" class="btn-action btn-back">← HOME</a>
             </div>
         </div>
 
-        <!-- DECK PANEL -->
-        <div id="deckPanel">
-            <div id="deckHeader">
-                <input id="deckNameInput" type="text"
-                       placeholder="Deck name…"
-                       maxlength="30"
-                       oninput="markDirty()">
-                <div class="deck-stats">
-                    Cards: <span id="deckCounter">0 / 40</span>
-                    &nbsp;·&nbsp;
-                    Deck ID: <span id="deckIdDisplay">—</span>
+        <!-- ── WORKSPACE ─────────────────────────────────────────────── -->
+        <div id="workspace">
+
+            <!-- BROWSER CARTE -->
+            <div id="browser">
+                <div id="browserFilters">
+                    <span class="filter-label">Category</span>
+                    <select class="filter-select" id="filterCat" onchange="applyFilters()">
+                        <option value="all">All</option>
+                    </select>
+                    <span class="filter-label" style="margin-left:10px;">Search</span>
+                    <input class="filter-input" id="filterSearch" placeholder="Card name…" oninput="applyFilters()">
+                    <span class="filter-label" style="margin-left:10px;">Rarity</span>
+                    <select class="filter-select" id="filterRarity" onchange="applyFilters()">
+                        <option value="">All</option>
+                        <option value="Com">Common</option>
+                        <option value="Unc">Uncommon</option>
+                        <option value="Rar">Rare</option>
+                        <option value="Epi">Epic</option>
+                        <option value="Leg">Legendary</option>
+                    </select>
+                    <button class="btn-action" id="toggleUnownedBtn" onclick="toggleUnownedCards()">
+                        Show Unowned
+                    </button>
+                </div>
+                <div id="cardGrid">
+                    <div class="loading">Loading cards…</div>
                 </div>
             </div>
 
-            <div id="deckCardList">
-                <div class="empty-state">
-                    <div class="icon">🎴</div>
-                    <p>No deck selected</p>
+            <!-- DECK PANEL -->
+            <div id="deckPanel">
+                <div id="deckHeader">
+                    <input id="deckNameInput" type="text" placeholder="Deck name…" maxlength="30" oninput="markDirty()">
+                    <div class="deck-stats">
+                        Cards: <span id="deckCounter">0 / 40</span>
+                        &nbsp;·&nbsp;
+                        Deck ID: <span id="deckIdDisplay">—</span>
+                    </div>
                 </div>
-            </div>
 
-            <div id="deckFooter">
-                <div class="progress-bar-wrap">
-                    <div id="progressBar" style="width:0%"></div>
+                <div id="deckCardList">
+                    <div class="empty-state">
+                        <div class="icon"></div>
+                        <p>No deck selected</p>
+                    </div>
                 </div>
-                <div class="rarity-dist" id="rarityDist"></div>
+
+                <div id="deckFooter">
+                    <div class="progress-bar-wrap">
+                        <div id="progressBar" style="width:0%"></div>
+                    </div>
+                    <div class="rarity-dist" id="rarityDist"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- ── TOAST ──────────────────────────────────────────────────── -->
-<div id="toast"></div>
+    <!-- ── TOAST ──────────────────────────────────────────────────── -->
+    <div id="toast"></div>
 
-<!-- ── MODALE ELIMINA ─────────────────────────────────────────── -->
-<div id="modal">
-    <div class="modal-box">
-        <h2>DELETE DECK</h2>
-        <p>Are you sure? This action cannot be undone.</p>
-        <div class="modal-actions">
-            <button class="btn-modal btn-modal-cancel" onclick="closeModal()">Cancel</button>
-            <button class="btn-modal btn-modal-confirm" onclick="confirmDelete()">Delete</button>
+    <!-- ── MODALE ELIMINA ─────────────────────────────────────────── -->
+    <div id="modal">
+        <div class="modal-box">
+            <h2>DELETE DECK</h2>
+            <p>Are you sure? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn-modal btn-modal-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-modal btn-modal-confirm" onclick="confirmDelete()">Delete</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-/* ═══════════════════════════════════════════════════════════════
-   STATE
-═══════════════════════════════════════════════════════════════ */
-let allCards       = [];     // tutte le carte dal backend
-let filteredCards  = [];     // carte filtrate (browser)
-let decks          = [];     // array di deck objects
-let activeDeckIdx  = -1;     // indice del deck attivo in `decks`
-let isDirty        = false;  // modifiche non salvate
-let deleteTargetId = null;   // id deck da eliminare (modale)
+    <script>
+        /* ═══════════════════════════════════════════════════════════════
+           STATE
+        ═══════════════════════════════════════════════════════════════ */
+        let allCards = [];     // tutte le carte dal backend
+        let filteredCards = [];     // carte filtrate (browser)
+        let decks = [];     // array di deck objects
+        let activeDeckIdx = -1;     // indice del deck attivo in `decks`
+        let isDirty = false;  // modifiche non salvate
+        let deleteTargetId = null;   // id deck da eliminare (modale)
+        let showUnowned = false;
 
-/** Struttura di un deck:
- * {
- *   id: string (firestore doc id, null se nuovo),
- *   name: string,
- *   cards: [ { id, name, rarity, category, count } ],
- *   equipped: bool
- * }
- */
+        /** Struttura di un deck:
+         * {
+         *   id: string (firestore doc id, null se nuovo),
+         *   name: string,
+         *   cards: [ { id, name, rarity, category, count } ],
+         *   equipped: bool
+         * }
+         */
 
-/* ═══════════════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', async () => {
-    await Promise.all([loadCards(), loadDecks()]);
-    renderTabs();
-    if (decks.length > 0) selectDeck(0);
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   API CALLS
-═══════════════════════════════════════════════════════════════ */
-async function loadCards() {
-    try {
-        const res  = await fetch('/api/all');
-        const data = await res.json();
-        allCards = data.items || [];
-
-        // Popola filtro categorie
-        const cats = [...new Set(allCards.map(c => c.category).filter(Boolean))].sort();
-        const sel  = document.getElementById('filterCat');
-        cats.forEach(c => {
-            const opt   = document.createElement('option');
-            opt.value   = c;
-            opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
-            sel.appendChild(opt);
+        /* ═══════════════════════════════════════════════════════════════
+           INIT
+        ═══════════════════════════════════════════════════════════════ */
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Promise.all([loadCards(), loadDecks()]);
+            renderTabs();
+            if (decks.length > 0) selectDeck(0);
         });
 
-        applyFilters();
-    } catch (e) {
-        showToast('Error loading cards', 'error');
-    }
-}
+        /* ═══════════════════════════════════════════════════════════════
+           API CALLS
+        ═══════════════════════════════════════════════════════════════ */
+        async function loadCards() {
+            try {
+                const res = await fetch('/api/all');
 
-async function loadDecks() {
-    try {
-        const res  = await fetch('/api/decks');
-        const data = await res.json();
-        decks = data.decks || [];
-    } catch (e) {
-        decks = [];
-    }
-}
+                // Log dello stato HTTP (es: 200, 404, 500)
+                console.log("Status Risposta:", res.status, res.statusText);
 
-async function saveDeck() {
-    const deck = activeDeck();
-    if (!deck) { showToast('No deck to save', 'error'); return; }
+                if (!res.ok) {
+                    // Se il server risponde con un errore, leggiamo il testo dell'errore
+                    const errorText = await res.text();
+                    console.error("Errore del Server (HTML/Text):", errorText);
+                    throw new Error(`Server ha risposto con ${res.status}`);
+                }
 
-    const name = document.getElementById('deckNameInput').value.trim();
-    if (!name) { showToast('Enter a deck name', 'error'); return; }
-    deck.name = name;
+                const data = await res.json();
+                console.log("Dati ricevuti dal backend:", data);
 
-    const payload = { name: deck.name, cards: deck.cards, equipped: deck.equipped };
+                // Verifichiamo la struttura dei dati
+                if (!data.items || !Array.isArray(data.items)) {
+                    console.warn("Attenzione: 'items' non è un array o è mancante!", data.items);
+                }
+                if (!data.collection) {
+                    console.warn("Attenzione: 'collection' (inventory) è mancante!");
+                }
 
-    try {
-        let res, data;
-        if (deck.id) {
-            res  = await fetch(`/api/decks/${deck.id}`, {
-                method:  'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(payload)
-            });
-        } else {
-            res  = await fetch('/api/decks', {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(payload)
-            });
+                allCards = data.items || [];
+                userCollection = data.collection || {};
+
+                console.log(`Caricate ${allCards.length} carte.`);
+                console.log("Inventory Utente:", userCollection);
+
+                // Popola filtro categorie
+                const cats = [...new Set(allCards.map(c => c.category).filter(Boolean))].sort();
+                const sel = document.getElementById('filterCat');
+
+                // Pulizia opzioni precedenti (tranne "All")
+                sel.innerHTML = '<option value="all">All</option>';
+
+                cats.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c;
+                    opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+                    sel.appendChild(opt);
+                });
+
+                applyFilters();
+                console.log("--- DEBUG: Fine caricamento con successo ---");
+
+            } catch (err) {
+                console.error("--- DEBUG ERROR ---");
+                console.error("Messaggio:", err.message);
+                console.error("Stack Trace:", err.stack);
+                showToast('Error loading cards', 'error');
+            }
         }
-        data = await res.json();
-        if (data.status === 'success') {
-            if (!deck.id) deck.id = data.deck_id;
-            isDirty = false;
+
+        async function loadDecks() {
+            try {
+                const res = await fetch('/api/decks');
+                const data = await res.json();
+                decks = data.decks || [];
+            } catch (e) {
+                decks = [];
+            }
+        }
+
+        async function saveDeck() {
+            const deck = activeDeck();
+            if (!deck) { showToast('No deck to save', 'error'); return; }
+
+            const name = document.getElementById('deckNameInput').value.trim();
+            if (!name) { showToast('Enter a deck name', 'error'); return; }
+            deck.name = name;
+
+            const payload = { name: deck.name, cards: deck.cards, equipped: deck.equipped };
+
+            try {
+                let res, data;
+                if (deck.id) {
+                    res = await fetch(`/api/decks/${deck.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    res = await fetch('/api/decks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+                data = await res.json();
+                if (data.status === 'success') {
+                    if (!deck.id) deck.id = data.deck_id;
+                    isDirty = false;
+                    renderTabs();
+                    renderDeckPanel();
+                    showToast('Deck saved', 'success');
+                } else {
+                    showToast(data.message || 'Save error', 'error');
+                }
+            } catch (e) {
+                showToast('Network error', 'error');
+            }
+        }
+
+        async function equipCurrentDeck() {
+            const deck = activeDeck();
+            if (!deck) return;
+            if (!deck.id) { showToast('Save the deck first', 'error'); return; }
+
+            try {
+                const res = await fetch(`/api/decks/${deck.id}/equip`, { method: 'POST' });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    decks.forEach(d => d.equipped = false);
+                    deck.equipped = true;
+                    renderTabs();
+                    renderEquipBtn();
+                    showToast('Deck equipped ◆', 'success');
+                }
+            } catch (e) {
+                showToast('Equip error', 'error');
+            }
+        }
+
+        async function deleteDeck(deckId) {
+            try {
+                const res = await fetch(`/api/decks/${deckId}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.status !== 'success') throw new Error(data.message);
+            } catch (e) {
+                showToast('Delete error', 'error');
+                return false;
+            }
+            return true;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           DECK MANAGEMENT
+        ═══════════════════════════════════════════════════════════════ */
+        function activeDeck() { return activeDeckIdx >= 0 ? decks[activeDeckIdx] : null; }
+
+        function createNewDeck() {
+            const deck = { id: null, name: 'New deck', cards: [], equipped: false };
+            decks.push(deck);
+            selectDeck(decks.length - 1);
+            renderTabs();
+            document.getElementById('deckNameInput').focus();
+            document.getElementById('deckNameInput').select();
+            markDirty();
+        }
+
+        function selectDeck(idx) {
+            activeDeckIdx = idx;
             renderTabs();
             renderDeckPanel();
-            showToast('Deck saved', 'success');
-        } else {
-            showToast(data.message || 'Save error', 'error');
-        }
-    } catch (e) {
-        showToast('Network error', 'error');
-    }
-}
-
-async function equipCurrentDeck() {
-    const deck = activeDeck();
-    if (!deck) return;
-    if (!deck.id) { showToast('Save the deck first', 'error'); return; }
-
-    try {
-        const res  = await fetch(`/api/decks/${deck.id}/equip`, { method: 'POST' });
-        const data = await res.json();
-        if (data.status === 'success') {
-            decks.forEach(d => d.equipped = false);
-            deck.equipped = true;
-            renderTabs();
             renderEquipBtn();
-            showToast('Deck equipped ◆', 'success');
+            isDirty = false;
         }
-    } catch (e) {
-        showToast('Equip error', 'error');
-    }
-}
 
-async function deleteDeck(deckId) {
-    try {
-        const res  = await fetch(`/api/decks/${deckId}`, { method: 'DELETE' });
-        const data = await res.json();
-        if (data.status !== 'success') throw new Error(data.message);
-    } catch (e) {
-        showToast('Delete error', 'error');
-        return false;
-    }
-    return true;
-}
+        function addCardToDeck(card) {
+            const deck = activeDeck();
 
-/* ═══════════════════════════════════════════════════════════════
-   DECK MANAGEMENT
-═══════════════════════════════════════════════════════════════ */
-function activeDeck() { return activeDeckIdx >= 0 ? decks[activeDeckIdx] : null; }
+            const ownedCopies = userCollection[card.id] || 0;
+            if (!deck) { showToast('Select or create a deck first', 'error'); return; }
 
-function createNewDeck() {
-    const deck = { id: null, name: 'New deck', cards: [], equipped: false };
-    decks.push(deck);
-    selectDeck(decks.length - 1);
-    renderTabs();
-    document.getElementById('deckNameInput').focus();
-    document.getElementById('deckNameInput').select();
-    markDirty();
-}
+            const total = deck.cards.reduce((s, c) => s + c.count, 0);
+            const check = DECK_RULES.canAdd(card, deck.cards, total);
 
-function selectDeck(idx) {
-    activeDeckIdx = idx;
-    renderTabs();
-    renderDeckPanel();
-    renderEquipBtn();
-    isDirty = false;
-}
+            if (!check.allowed) { showToast(check.reason, 'error'); return; }
 
-function addCardToDeck(card) {
-    const deck = activeDeck();
-    if (!deck) { showToast('Select or create a deck first', 'error'); return; }
+            const existing = deck?.cards.find(
+                c => String(c.id) === String(card.id)
+            );
+            const alreadyInDeck = existing ? existing.count : 0;
 
-    const total  = deck.cards.reduce((s, c) => s + c.count, 0);
-    const check  = DECK_RULES.canAdd(card, deck.cards, total);
+            if (alreadyInDeck >= ownedCopies) {
+                showToast("You don't own more copies of this card", "error");
+                return;
+            }
 
-    if (!check.allowed) { showToast(check.reason, 'error'); return; }
+            if (existing) {
+                existing.count++;
+            } else {
+                deck.cards.push({
+                    id: card.id,
+                    name: card.name,
+                    rarity: card.rarity || '',
+                    category: card.category || '',
+                    count: 1
+                });
+            }
+            markDirty();
+            renderDeckPanel();
+            renderCardGrid();   // aggiorna badge copie
+        }
 
-    const existing = deck.cards.find(c => String(c.id) === String(card.id));
-    if (existing) {
-        existing.count++;
-    } else {
-        deck.cards.push({
-            id:       card.id,
-            name:     card.name,
-            rarity:   card.rarity || '',
-            category: card.category || '',
-            count:    1
-        });
-    }
-    markDirty();
-    renderDeckPanel();
-    renderCardGrid();   // aggiorna badge copie
-}
+        function removeOneFromDeck(cardId) {
+            const deck = activeDeck();
+            if (!deck) return;
+            const entry = deck.cards.find(c => String(c.id) === String(cardId));
+            if (!entry) return;
+            entry.count--;
+            if (entry.count <= 0) deck.cards = deck.cards.filter(c => String(c.id) !== String(cardId));
+            markDirty();
+            renderDeckPanel();
+            renderCardGrid();
+        }
 
-function removeOneFromDeck(cardId) {
-    const deck = activeDeck();
-    if (!deck) return;
-    const entry = deck.cards.find(c => String(c.id) === String(cardId));
-    if (!entry) return;
-    entry.count--;
-    if (entry.count <= 0) deck.cards = deck.cards.filter(c => String(c.id) !== String(cardId));
-    markDirty();
-    renderDeckPanel();
-    renderCardGrid();
-}
+        function removeAllFromDeck(cardId) {
+            const deck = activeDeck();
+            if (!deck) return;
+            deck.cards = deck.cards.filter(c => String(c.id) !== String(cardId));
+            markDirty();
+            renderDeckPanel();
+            renderCardGrid();
+        }
 
-function removeAllFromDeck(cardId) {
-    const deck = activeDeck();
-    if (!deck) return;
-    deck.cards = deck.cards.filter(c => String(c.id) !== String(cardId));
-    markDirty();
-    renderDeckPanel();
-    renderCardGrid();
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   RENDER — TABS
-═══════════════════════════════════════════════════════════════ */
-function renderTabs() {
-    const container = document.getElementById('deckTabs');
-    container.innerHTML = decks.map((d, i) => `
+        /* ═══════════════════════════════════════════════════════════════
+           RENDER — TABS
+        ═══════════════════════════════════════════════════════════════ */
+        function renderTabs() {
+            const container = document.getElementById('deckTabs');
+            container.innerHTML = decks.map((d, i) => `
         <button class="deck-tab ${i === activeDeckIdx ? 'active' : ''} ${d.equipped ? 'equipped-badge' : ''}"
                 onclick="selectDeck(${i})">
             ${escHtml(d.name || 'Senza nome')}
@@ -906,55 +1141,56 @@ function renderTabs() {
                     onclick="event.stopPropagation(); askDelete(${i})">✕</button>
         </button>
     `).join('');
-}
+        }
 
-/* ═══════════════════════════════════════════════════════════════
-   RENDER — DECK PANEL
-═══════════════════════════════════════════════════════════════ */
-function renderDeckPanel() {
-    const deck = activeDeck();
-    const nameInput  = document.getElementById('deckNameInput');
-    const counterEl  = document.getElementById('deckCounter');
-    const idDisplay  = document.getElementById('deckIdDisplay');
-    const listEl     = document.getElementById('deckCardList');
-    const progBar    = document.getElementById('progressBar');
-    const rarityDist = document.getElementById('rarityDist');
+        /* ═══════════════════════════════════════════════════════════════
+           RENDER — DECK PANEL
+        ═══════════════════════════════════════════════════════════════ */
+        function renderDeckPanel() {
+            const deck = activeDeck();
+            const nameInput = document.getElementById('deckNameInput');
+            const counterEl = document.getElementById('deckCounter');
+            const idDisplay = document.getElementById('deckIdDisplay');
+            const listEl = document.getElementById('deckCardList');
+            const progBar = document.getElementById('progressBar');
+            const rarityDist = document.getElementById('rarityDist');
 
-    if (!deck) {
-        nameInput.value = '';
-        counterEl.textContent = '0 / 40';
-        idDisplay.textContent = '—';
-        listEl.innerHTML = `
+            if (!deck) {
+                nameInput.value = '';
+                counterEl.textContent = '0 / 40';
+                idDisplay.textContent = '—';
+                listEl.innerHTML = `
             <div class="empty-state">
-                <div class="icon">🎴</div>
+                <div class="icon"></div>
                 <p>No deck selected</p>
             </div>`;
-        progBar.style.width = '0%';
-        rarityDist.innerHTML = '';
-        return;
-    }
+                progBar.style.width = '0%';
+                rarityDist.innerHTML = '';
+                return;
+            }
 
-    nameInput.value   = deck.name || '';
-    idDisplay.textContent = deck.id ? deck.id.slice(-6).toUpperCase() : 'New';
+            nameInput.value = deck.name || '';
+            idDisplay.textContent = deck.id ? deck.id.slice(-6).toUpperCase() : 'New';
 
-    const total = deck.cards.reduce((s, c) => s + c.count, 0);
-    const pct   = Math.min(100, (total / DECK_RULES.MAX_DECK_SIZE) * 100);
+            const total = deck.cards.reduce((s, c) => s + c.count, 0);
+            const pct = Math.min(100, (total / DECK_RULES.MAX_DECK_SIZE) * 100);
 
-    counterEl.textContent = `${total} / ${DECK_RULES.MAX_DECK_SIZE}`;
-    counterEl.className   = total >= DECK_RULES.MAX_DECK_SIZE ? 'full' : total > 30 ? 'warning' : '';
-    progBar.style.width   = pct + '%';
+            counterEl.textContent = `${total} / ${DECK_RULES.MAX_DECK_SIZE}`;
+            counterEl.className = total >= DECK_RULES.MAX_DECK_SIZE ? 'full' : total > 30 ? 'warning' : '';
+            progBar.style.width = pct + '%';
 
-    if (deck.cards.length === 0) {
-        listEl.innerHTML = `
+            if (deck.cards.length === 0) {
+                listEl.innerHTML = `
             <div class="empty-state">
                 <div class="icon">⚔</div>
                 <p>Add cards from browser</p>
             </div>`;
-    } else {
-        listEl.innerHTML = deck.cards.map(entry => {
-            const maxCopies = DECK_RULES.getMaxCopies(entry);
-            const rColor    = DECK_RULES.rarityColor(entry.rarity);
-            return `
+            } else {
+                listEl.innerHTML = deck.cards.map(entry => {
+                    const maxCopies = DECK_RULES.getMaxCopies(entry);
+                    const ownedCopies = userCollection[entry.id] || 0;
+                    const rColor = DECK_RULES.rarityColor(entry.rarity);
+                    return `
             <div class="deck-row">
                 <img class="deck-row-thumb"
                      src="/static/src/cards/front/${entry.id}.png"
@@ -969,153 +1205,186 @@ function renderDeckPanel() {
                 <div class="deck-row-count">
                     <button class="count-btn" onclick="removeOneFromDeck('${entry.id}')"
                             title="Remove a copy">−</button>
-                    <span class="count-num">${entry.count}</span>
+                    <span class="count-num">
+                        ${entry.count}/${ownedCopies}/${maxCopies}
+                    </span>
                     <button class="count-btn"
-                            onclick="addCardToDeck(${JSON.stringify({id:entry.id,name:entry.name,rarity:entry.rarity,category:entry.category}).replace(/"/g,'&quot;')})"
+                            onclick="addCardToDeck(${JSON.stringify({ id: entry.id, name: entry.name, rarity: entry.rarity, category: entry.category }).replace(/"/g, '&quot;')})"
                             title="Add a copy(max ${maxCopies})">+</button>
                 </div>
                 <button class="deck-row-remove" onclick="removeAllFromDeck('${entry.id}')"
                         title="Remove all">×</button>
             </div>`;
-        }).join('');
-    }
+                }).join('');
+            }
 
-    // Rarity distribution
-    const rarityCounts = {};
-    deck.cards.forEach(c => {
-        rarityCounts[c.rarity] = (rarityCounts[c.rarity] || 0) + c.count;
-    });
-    rarityDist.innerHTML = Object.entries(rarityCounts).map(([r, n]) => `
+            // Rarity distribution
+            const rarityCounts = {};
+            deck.cards.forEach(c => {
+                rarityCounts[c.rarity] = (rarityCounts[c.rarity] || 0) + c.count;
+            });
+            rarityDist.innerHTML = Object.entries(rarityCounts).map(([r, n]) => `
         <span class="rarity-pill" style="border-color:${DECK_RULES.rarityColor(r)};color:${DECK_RULES.rarityColor(r)}">
             ${DECK_RULES.rarityLabel(r)}&nbsp;×${n}
         </span>`).join('');
-}
+        }
 
-function renderEquipBtn() {
-    const deck = activeDeck();
-    const btn  = document.getElementById('btnEquip');
-    if (!btn) return;
-    btn.classList.toggle('is-equipped', !!(deck && deck.equipped));
-    btn.textContent = (deck && deck.equipped) ? '◆ Equipped' : '◆ Equip';
-}
+        function renderEquipBtn() {
+            const deck = activeDeck();
+            const btn = document.getElementById('btnEquip');
+            if (!btn) return;
+            btn.classList.toggle('is-equipped', !!(deck && deck.equipped));
+            btn.textContent = (deck && deck.equipped) ? '◆ Equipped' : '◆ Equip';
+        }
 
-/* ═══════════════════════════════════════════════════════════════
-   RENDER — CARD GRID (browser)
-═══════════════════════════════════════════════════════════════ */
-function applyFilters() {
-    const cat    = document.getElementById('filterCat').value;
-    const search = document.getElementById('filterSearch').value.toLowerCase().trim();
-    const rarity = document.getElementById('filterRarity').value;
+        /* ═══════════════════════════════════════════════════════════════
+           RENDER — CARD GRID (browser)
+        ═══════════════════════════════════════════════════════════════ */
+        function applyFilters() {
+            const cat = document.getElementById('filterCat').value;
+            const search = document.getElementById('filterSearch').value.toLowerCase().trim();
+            const rarity = document.getElementById('filterRarity').value;
 
-    filteredCards = allCards.filter(c => {
-        if (cat !== 'all' && c.category !== cat)               return false;
-        if (rarity && c.rarity !== rarity)                     return false;
-        if (search && !c.name?.toLowerCase().includes(search)) return false;
-        return true;
-    });
+            filteredCards = allCards.filter(c => {
+                const ownedCopies = userCollection[c.id] || 0;
 
-    renderCardGrid();
-}
+                if (!showUnowned && ownedCopies <= 0) return false;
 
-function renderCardGrid() {
-    const deck    = activeDeck();
-    const grid    = document.getElementById('cardGrid');
+                if (cat !== 'all' && c.category !== cat) return false;
+                if (rarity && c.rarity !== rarity) return false;
+                if (search && !c.name?.toLowerCase().includes(search)) return false;
 
-    if (filteredCards.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.6rem;letter-spacing:2px;padding:40px 0">Nessuna carta trovata</div>`;
-        return;
-    }
+                return true;
+            });
 
-    grid.innerHTML = filteredCards.map(card => {
-        // Quante copie nel mazzo attivo?
-        const deckEntry = deck ? deck.cards.find(c => String(c.id) === String(card.id)) : null;
-        const copies    = deckEntry ? deckEntry.count : 0;
-        const maxCopies = DECK_RULES.getMaxCopies(card);
-        const isMaxed   = copies >= maxCopies;
-        const rColor    = DECK_RULES.rarityColor(card.rarity);
+            renderCardGrid();
+        }
 
-        return `
-        <div class="card-thumb" onclick="addCardToDeck(${JSON.stringify(card).replace(/"/g,'&quot;')})"
-             title="${escHtml(card.name)} — click to add">
-            <img src="/static/src/cards/front/${card.id}.png"
-                 alt="${escHtml(card.name)}"
-                 loading="lazy"
-                 onerror="this.src='https://placehold.co/110x148/111/333?text=?'">
-            <div class="card-thumb-overlay">
-                <div class="card-thumb-name">${escHtml(card.name)}</div>
-                <div class="card-thumb-rarity" style="color:${rColor}">
-                    ${DECK_RULES.rarityLabel(card.rarity)}
-                </div>
-            </div>
-            ${copies > 0 ? `<div class="copy-badge ${isMaxed ? 'maxed' : ''}">${copies}/${maxCopies}</div>` : ''}
-        </div>`;
-    }).join('');
-}
+        function renderCardGrid() {
+            const deck = activeDeck();
+            const grid = document.getElementById('cardGrid');
 
-/* ═══════════════════════════════════════════════════════════════
-   DELETE FLOW
-═══════════════════════════════════════════════════════════════ */
-function askDelete(deckIdx) {
-    const deck = decks[deckIdx];
-    if (!deck) return;
-    deleteTargetId = { idx: deckIdx, id: deck.id };
-    document.getElementById('modal').classList.add('open');
-}
+            if (filteredCards.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.6rem;letter-spacing:2px;padding:40px 0">Nessuna carta trovata</div>`;
+                return;
+            }
 
-function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-    deleteTargetId = null;
-}
+            grid.innerHTML = filteredCards.map(card => {
+                // Quante copie nel mazzo attivo?
+                const ownedCopies = userCollection[card.id] || 0;
+                const isOwned = ownedCopies > 0;
+                const deckEntry = deck ? deck.cards.find(c => String(c.id) === String(card.id)) : null;
+                const copies = deckEntry ? deckEntry.count : 0;
+                const maxCopies = DECK_RULES.getMaxCopies(card);
+                const isMaxed = copies >= maxCopies;
+                const rColor = DECK_RULES.rarityColor(card.rarity);
 
-async function confirmDelete() {
-    if (!deleteTargetId) return;
-    const { idx, id } = deleteTargetId;
-    closeModal();
+                return `
+                    <div class="card-thumb ${!isOwned ? 'unowned' : ''}"
+                        ${isOwned ? `onclick="addCardToDeck(${JSON.stringify(card).replace(/"/g, '&quot;')})"` : ''}
+                        title="${escHtml(card.name)}">
 
-    if (id) {
-        const ok = await deleteDeck(id);
-        if (!ok) return;
-    }
+                        <img src="/static/src/cards/front/${card.id}.png"
+                            alt="${escHtml(card.name)}"
+                            loading="lazy">
 
-    decks.splice(idx, 1);
+                        <div class="card-thumb-overlay">
+                            <div class="card-thumb-name">${escHtml(card.name)}</div>
 
-    if (activeDeckIdx >= decks.length) activeDeckIdx = decks.length - 1;
-    if (decks.length === 0)            activeDeckIdx = -1;
+                            <div class="card-thumb-rarity" style="color:${rColor}">
+                                ${DECK_RULES.rarityLabel(card.rarity)}
+                            </div>
 
-    renderTabs();
-    renderDeckPanel();
-    renderEquipBtn();
-    renderCardGrid();
-    showToast('Deck deleted');
-}
+                            <div style="font-size:0.5rem;color:white;text-align:center;">
+                                Owned: ${ownedCopies}
+                            </div>
+                        </div>
 
-/* ═══════════════════════════════════════════════════════════════
-   UTILS
-═══════════════════════════════════════════════════════════════ */
-function markDirty() { isDirty = true; }
+                        ${copies > 0
+                        ? `<div class="copy-badge ${isMaxed ? 'maxed' : ''}">
+                                ${copies}/${maxCopies}
+                            </div>`
+                        : ''
+                    }
+                    </div>
+                    `;
+            }).join('');
+        }
 
-let toastTimer = null;
-function showToast(msg, type = '') {
-    const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.className   = 'show' + (type ? ' ' + type : '');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { el.className = ''; }, 2800);
-}
+        /* ═══════════════════════════════════════════════════════════════
+           DELETE FLOW
+        ═══════════════════════════════════════════════════════════════ */
+        function askDelete(deckIdx) {
+            const deck = decks[deckIdx];
+            if (!deck) return;
+            deleteTargetId = { idx: deckIdx, id: deck.id };
+            document.getElementById('modal').classList.add('open');
+        }
 
-function escHtml(str) {
-    return String(str ?? '')
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
+        function closeModal() {
+            document.getElementById('modal').classList.remove('open');
+            deleteTargetId = null;
+        }
 
-// Avvisa l'utente prima di lasciare la pagina con modifiche non salvate
-window.addEventListener('beforeunload', e => {
-    if (isDirty) {
-        e.preventDefault();
-        e.returnValue = '';
-    }
-});
-</script>
+        async function confirmDelete() {
+            if (!deleteTargetId) return;
+            const { idx, id } = deleteTargetId;
+            closeModal();
+
+            if (id) {
+                const ok = await deleteDeck(id);
+                if (!ok) return;
+            }
+
+            decks.splice(idx, 1);
+
+            if (activeDeckIdx >= decks.length) activeDeckIdx = decks.length - 1;
+            if (decks.length === 0) activeDeckIdx = -1;
+
+            renderTabs();
+            renderDeckPanel();
+            renderEquipBtn();
+            renderCardGrid();
+            showToast('Deck deleted');
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           UTILS
+        ═══════════════════════════════════════════════════════════════ */
+        function markDirty() { isDirty = true; }
+
+        let toastTimer = null;
+        function showToast(msg, type = '') {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.className = 'show' + (type ? ' ' + type : '');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { el.className = ''; }, 2800);
+        }
+
+        function escHtml(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // Avvisa l'utente prima di lasciare la pagina con modifiche non salvate
+        window.addEventListener('beforeunload', e => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        function toggleUnownedCards() {
+            showUnowned = !showUnowned;
+
+            document.getElementById("toggleUnownedBtn").textContent =
+                showUnowned ? "Hide Unowned" : "Show Unowned";
+
+            applyFilters();
+        }
+    </script>
 </body>
+
 </html>

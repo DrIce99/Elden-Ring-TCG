@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gacha Banner</title>
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/gacha.css">
+</head>
+
+<body>
+
+    <div id="shop">
+        <h1>Summoning Shop</h1>
+
+        <div class="header">
+            <h1>Summoning Shop</h1>
+            <div class="user-info">
+                <span>Runes: <span id="userRunes" class="runes-count">10,000</span></span>
+            </div>
+        </div>
+
+        <div class="banner-grid">
+            <div class="banner-card" onclick="openBanner('West Limgrave', 7500)">
+                <img src="/static/src/banner/limgrave.jpg">
+                <div class="banner-title">West Limgrave</div>
+                <div class="banner-price">7500 RUNES</div>
+            </div>
+
+            <div class="banner-card" onclick="openBanner('Base Classes', 5000)">
+                <img src="/static/src/banner/base.jpg">
+                <div class="banner-title">Base Classes</div>
+                <div class="banner-price">5000 RUNES</div>
+            </div>
+        </div>
+
+        <div id="bannerModal" class="banner-modal hidden">
+            <div class="banner-box">
+
+                <h2 id="bannerName">Banner</h2>
+
+                <img id="bannerImg">
+
+                <div class="banner-info">
+                    <div>Price: <span id="bannerPrice"></span> RUNES</div>
+                    <div id="bannerType"></div>
+                </div>
+
+                <!-- PITY UI -->
+                <div id="pityContainer"></div>
+
+                <button class="gacha-btn" onclick="buyAndSummon()">
+                    SUMMON ×5
+                </button>
+
+                <button class="gacha-btn" onclick="closeBanner()">
+                    CLOSE
+                </button>
+
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="probabilities">
+                <h3>Drop Rates</h3>
+                <ul>
+                    <li class="leg">Legendary: 0.7%</li>
+                    <li class="epi">Epic: 8%</li>
+                    <li class="rar">Rare: 15%</li>
+                    <li class="unc">Uncommon: 25%</li>
+                    <li class="com">Common: 51.3%</li>
+                </ul>
+            </div>
+
+            <div class="pity-box">
+                <div class="pity-title">Summon Pity</div>
+
+                <div class="pity-row">
+                    <span>Legendary</span>
+                    <div class="bar">
+                        <div id="legPityBar"></div>
+                    </div>
+                    <span id="legPityText">0 / 80</span>
+                </div>
+
+                <div class="pity-row">
+                    <span>Epic</span>
+                    <div class="bar">
+                        <div id="epiPityBar"></div>
+                    </div>
+                    <span id="epiPityText">0 / 20</span>
+                </div>
+
+                <div class="pity-note" id="pityNote">
+                    Guaranteed: —
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="/static/js/gacha.js"></script>
+
+</body>
+
+</html>

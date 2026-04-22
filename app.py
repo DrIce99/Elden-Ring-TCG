@@ -35,6 +35,27 @@ def get_user_data(user_id):
         return doc.to_dict()
     return {"inventory": [], "decks": []} # Dati di default
 
+def get_user_pity(user_id):
+    """Recupera pity utente da Firestore"""
+    user_ref = db_firestore.collection('users').document(user_id)
+    doc = user_ref.get()
+    if doc.exists:
+        data = doc.to_dict()
+        return {
+            'legendary': data.get('pity_legendary', 0),
+            'epic': data.get('pity_epic', 0)
+        }
+    return {'legendary': 0, 'epic': 0}
+
+def update_user_pity(user_id, pity_data):
+    """Aggiorna pity utente"""
+    user_ref = db_firestore.collection('users').document(user_id)
+    user_ref.update({
+        'pity_legendary': pity_data['legendary'],
+        'pity_epic': pity_data['epic'],
+        'pity_updated': firestore.SERVER_TIMESTAMP
+    })
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -63,17 +84,33 @@ def login():
         
         # Inizializza il documento su Firestore se non esiste
         user_ref = db_firestore.collection('users').document(user_id)
+        doc = user_ref.get()
         
-        user_data = user_ref.get().to_dict()
-        if not user_ref.get().exists or "username" not in user_data:
-            user_ref.set({
-                "name": session['user_name'],
-                "inventory": [],
-                "created_at": firestore.SERVER_TIMESTAMP,
-                "username": None
-            }, merge=True)
-            
+        user_data = user_ref.get().to_dict() if doc.exists else None
+        
+        init_data = {
+            "name": session['user_name'],
+            "inventory": [],
+            "runes": 10000,  # ← Rune iniziali
+            "created_at": firestore.SERVER_TIMESTAMP,
+            "username": None
+        }
+        
+        if not doc.exists:
+            user_ref.set(init_data)
+        else:
+            user_ref.set(init_data, merge=True)
+        
+        # ✅ CONTROLLA SE USERNAME È IMPOSTATO
+        if not user_data or user_data.get('username') is None:
+            return jsonify({
+                "status": "need_username", 
+                "message": "Username required",
+                "redirect": "/set-username"
+            })
+        
         return jsonify({"status": "success", "user": session['user_name']})
+        
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 401
 
@@ -258,15 +295,16 @@ def table_designer():
 
 @app.route('/api/all')
 def api_all():
-    db = load_all_data()
+    db_data = load_all_data()
 
     category = request.args.get('category')
     area = request.args.get('area')
 
     all_items = []
 
-    for cat, items in db.items():
+    for cat, items in db_data.items():
         for item in items:
+            item = item.copy()
             item['category'] = cat
 
             # filtro categoria
@@ -279,9 +317,46 @@ def api_all():
 
             all_items.append(item)
 
-    all_items.sort(key=lambda x: int(x.get('id', 0)))
+    all_items.sort(key=lambda x: str(x.get('id', '0')))
 
-    return jsonify({'items': all_items})
+    # --------------------------
+    # INVENTARIO UTENTE
+    # --------------------------
+    collection = {}
+
+    user_id = session.get("user_id")
+
+    if user_id:
+        try:
+            inventory_docs = (
+                db_firestore
+                .collection("users")
+                .document(user_id)
+                .collection("inventory")
+                .stream()
+            )
+
+            for doc in inventory_docs:
+                card_data = doc.to_dict()
+                card_id = str(card_data.get("id"))
+
+                if card_id:
+                    collection[card_id] = collection.get(card_id, 0) + 1
+
+        except Exception as e:
+            print("Errore caricamento inventory:", e)
+
+    else:
+        # DEV MODE -> mostra tutto posseduto
+        collection = {
+            str(card["id"]): 99
+            for card in all_items
+        }
+
+    return jsonify({
+        "items": all_items,
+        "collection": collection
+    })
 
 @app.route('/card/<card_id>')
 def card_detail(card_id):
@@ -492,6 +567,302 @@ def set_username():
     })
 
     return jsonify({"status": "success"})
+
+@app.route('/api/pull', methods=['POST'])
+@login_required
+def pull():
+    user_id = session['user_id']
+    data = request.get_json()
+
+    pack = data.get("pack", [])
+
+    user_ref = db_firestore.collection('users').document(user_id)
+
+    inv = user_ref.collection("inventory")
+
+    batch = db_firestore.batch()
+
+    for c in pack:
+        doc = inv.document(str(uuid.uuid4()))
+
+        payload = {
+            "id": c["id"],
+            "star-up": 0
+        }
+
+        if c.get("category") == "weapons":
+            payload["level"] = 1
+
+        if c.get("category") == "classes":
+            payload["stats"] = c.get("stats", {})
+
+        batch.set(doc, payload)
+
+    batch.commit()
+
+    return jsonify({"status": "ok"})
+
+@app.route('/shop')
+@login_required
+def shop():
+    db = load_all_data()
+
+    banners = [
+        {
+            "name": "West Limgrave",
+            "type": "limited",
+            "cards": db.get("cards", [])
+        },
+        {
+            "name": "Base Classes",
+            "type": "standard",
+            "cards": db.get("cards", [])
+        }
+    ]
+
+    return render_template("gacha.html", banners=banners)
+
+# --- GESTIONE RUNE ---
+def get_user_runes(user_id):
+    """Recupera le rune dell'utente"""
+    user_ref = db_firestore.collection('users').document(user_id)
+    doc = user_ref.get()
+    if doc.exists:
+        user_data = doc.to_dict()
+        return user_data.get('runes', 10000)  # Default 10k rune
+    return 10000
+
+def update_user_runes(user_id, new_amount):
+    """Aggiorna le rune dell'utente"""
+    user_ref = db_firestore.collection('users').document(user_id)
+    user_ref.update({'runes': new_amount, 'updated_at': firestore.SERVER_TIMESTAMP})
+
+@app.route('/api/summon', methods=['POST'])
+@login_required
+def api_summon():
+    """Summon completo con pity"""
+    try:
+        user_id = session['user_id']
+        data = request.get_json()
+        
+        banner = data.get('banner', 'Base Classes')
+        cost = int(data.get('cost', 5000))
+        
+        # Verifica rune
+        runes = get_user_runes(user_id)
+        if runes < cost:
+            return jsonify({"success": False, "message": f"Rune insufficienti ({runes}/{cost})"}), 400
+        
+        # Carica DB
+        db = load_all_data()
+        pack = generate_pack(db, banner, user_id)
+        
+        save_pull_to_inventory(user_id, pack)
+        
+        # Sottrai rune
+        new_runes = runes - cost
+        update_user_runes(user_id, new_runes)
+        
+        return jsonify({
+            "success": True,
+            "pack": pack,
+            "runes_remaining": new_runes,
+            "banner": banner
+        })
+    except Exception as e:
+        print(f"❌ /api/summon CRASH: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "message": f"Server error: {str(e)}"}), 500
+
+def generate_pack(db, banner, user_id):
+    """Genera 5 carte con pity"""
+    pity = get_user_pity(user_id)
+    pack = []
+    
+    owned_cards = set()
+
+    inventory_docs = (
+        db_firestore
+        .collection("users")
+        .document(user_id)
+        .collection("inventory")
+        .stream()
+    )
+
+    for doc in inventory_docs:
+        owned_cards.add(str(doc.to_dict().get("id")))
+    
+    # Pool carte
+    all_cards = []
+    for cat, cards in db.items():
+        for card in cards:
+            card['category'] = cat
+            all_cards.append(card)
+    
+    banner_cards = [c for c in all_cards if banner.lower() in str(c.get('banner', '')).lower()]
+    pool = banner_cards if banner_cards else all_cards
+    
+    for _ in range(5):
+        rarity = roll_rarity_server(pity)
+        rarity_cards = []
+
+        for c in pool:
+            if c.get("rarity", "Com") != rarity:
+                continue
+
+            card_id = str(c.get("id"))
+
+            # se non duplicabile e già posseduta -> skip
+            if c.get("dupl", 1) == 0 and card_id in owned_cards:
+                continue
+
+            rarity_cards.append(c)
+        card = random.choice(rarity_cards) if rarity_cards else random.choice(pool)
+        
+        owned_cards.add(str(card.get("id")))
+        
+        pack.append({
+            "id": card.get("id", 0),
+            "name": card.get("name", "Unknown"),
+            "img": card.get("img", "/static/src/cards/unknown.png"),
+            "rarity": rarity,
+            "category": card.get("category", "items"),
+            "stats": card.get("stats", {})
+        })
+        
+        # Aggiorna pity
+        pity = update_pity_server(pity, rarity)
+    
+    update_user_pity(user_id, pity)
+    return pack
+
+def save_pull_to_inventory(user_id, pack):
+    user_ref = db_firestore.collection('users').document(user_id)
+    inv_ref = user_ref.collection("inventory")
+
+    for card in pack:
+        card_id = card.get("id")
+        existing = inv_ref.where("id", "==", card["id"]).limit(1).stream()
+        existing_docs = list(existing)
+
+        # Se già posseduta
+        if existing_docs:
+            dpayload = {
+                "id": card_id,
+                "star-up": 0
+            }
+
+            if card.get("category") == "weapons":
+                payload["level"] = 1
+
+            elif card.get("category") == "classes":
+                payload["stats"] = {
+                    "level": card.get("stats", {}).get("level", 1),
+                    "vigor": card.get("stats", {}).get("vigor", 0),
+                    "mind": card.get("stats", {}).get("mind", 0),
+                    "endurance": card.get("stats", {}).get("endurance", 0),
+                    "strength": card.get("stats", {}).get("strength", 0),
+                    "dexterity": card.get("stats", {}).get("dexterity", 0),
+                    "intelligence": card.get("stats", {}).get("intelligence", 0),
+                    "faith": card.get("stats", {}).get("faith", 0),
+                    "arcane": card.get("stats", {}).get("arcane", 0)
+                }
+
+            # Creiamo un nuovo documento per il duplicato
+            inv_ref.document(str(uuid.uuid4())).set(payload)
+
+        else:
+            payload = {
+                "id": card_id,
+                "star-up": 0
+            }
+
+            if card["category"] == "weapons":
+                payload["level"] = 1
+
+            elif card["category"] == "classes":
+                payload["stats"] = {
+                    "level": card.get("stats", {}).get("level", 1),
+                    "vigor": card.get("stats", {}).get("vigor", 0),
+                    "mind": card.get("stats", {}).get("mind", 0),
+                    "endurance": card.get("stats", {}).get("endurance", 0),
+                    "strength": card.get("stats", {}).get("strength", 0),
+                    "dexterity": card.get("stats", {}).get("dexterity", 0),
+                    "intelligence": card.get("stats", {}).get("intelligence", 0),
+                    "faith": card.get("stats", {}).get("faith", 0),
+                    "arcane": card.get("stats", {}).get("arcane", 0)
+                }
+
+            inv_ref.document(str(uuid.uuid4())).set(payload)
+        
+
+# Aggiungi endpoint per ottenere rune correnti
+@app.route('/api/user/runes', methods=['GET'])
+@login_required
+def api_user_runes():
+    """Rune + pity utente"""
+    user_id = session['user_id']
+    try:
+        runes = get_user_runes(user_id)
+        pity = get_user_pity(user_id)
+        return jsonify({
+            "runes": runes,
+            "pity": pity
+        })
+    except Exception as e:
+        print(f"❌ /api/user/runes error: {e}")
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/cards')
+def api_cards():
+    """Tutte le carte per gacha"""
+    try:
+        db = load_all_data()
+        all_cards = []
+        for category, cards_list in db.items():
+            for card in cards_list:
+                card_copy = card.copy()
+                card_copy['category'] = category
+                all_cards.append(card_copy)
+        return jsonify(all_cards)
+    except Exception as e:
+        print(f"❌ /api/cards error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# Inizializza rune per nuovi utenti (aggiungi in /api/login dopo user_ref.set)
+# Nel login, dopo la creazione utente:
+# user_ref.update({"runes": 10000, "runes_updated_at": firestore.SERVER_TIMESTAMP}, merge=True)
+
+def roll_rarity_server(pity):
+    """Roll con pity server-side"""
+    if pity['legendary'] >= 80:
+        return "Leg"
+    if pity['epic'] >= 20:
+        return "Epi"
+    
+    roll = random.random()
+    if roll < 0.007:
+        return "Leg"
+    if roll < 0.087:
+        return "Epi"
+    if roll < 0.237:
+        return "Rar"
+    if roll < 0.487:
+        return "Unc"
+    return "Com"
+
+def update_pity_server(pity, rarity):
+    """Aggiorna contatori pity"""
+    if rarity == "Leg":
+        return {'legendary': 0, 'epic': 0}
+    elif rarity == "Epi":
+        return {'legendary': pity['legendary'] + 1, 'epic': 0}
+    else:
+        return {
+            'legendary': pity['legendary'] + 1, 
+            'epic': pity['epic'] + 1
+        }
 
 if __name__ == '__main__':
     app.run(host='localhost')
