@@ -265,5 +265,90 @@
         "find": 1,
         "rarity": "Unc",
         "banner": "0 Base Classes"
+    },
+    {
+        "id": 418,
+        "name": "Short Sword",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/short_sword_straight_sword_weapon_elden_ring_wiki_guide_200px.png",
+        "desc": "A short straight sword with a short blade. In addition to its reliable standard damage, this weapon also boasts powerful piercing attacks. \nLightweight amongst straight swords, this weapon is easy to wield, requiring only humble attributes. ",
+        "attack": [
+            {
+                "name": "Phy",
+                "amount": 102
+            },
+            {
+                "name": "Mag",
+                "amount": 0
+            },
+            {
+                "name": "Fire",
+                "amount": 0
+            },
+            {
+                "name": "Ligt",
+                "amount": 0
+            },
+            {
+                "name": "Holy",
+                "amount": 0
+            },
+            {
+                "name": "Crit",
+                "amount": 100
+            }
+        ],
+        "defence": [
+            {
+                "name": "Phy",
+                "amount": 42
+            },
+            {
+                "name": "Mag",
+                "amount": 28
+            },
+            {
+                "name": "Fire",
+                "amount": 28
+            },
+            {
+                "name": "Ligt",
+                "amount": 28
+            },
+            {
+                "name": "Holy",
+                "amount": 28
+            }
+        ],
+        "scalesWith": [
+            {
+                "name": "Str",
+                "scaling": "D"
+            },
+            {
+                "name": "Dex",
+                "scaling": "D"
+            }
+        ],
+        "requiredAttributes": [
+            {
+                "name": "Str",
+                "amount": 8
+            },
+            {
+                "name": "Dex",
+                "amount": 10
+            }
+        ],
+        "category": "Straight Sword",
+        "atktype": "Std/Prce",
+        "passives": [
+        ],
+        "weight": 3.0,
+        "range": 1,
+        "consumable": 0,
+        "dupl": 1,
+        "find": 1,
+        "rarity": "Com",
+        "banner": "1 West Limgrave"
     }
 ]

@@ -1,1 +1,50 @@
-[]
+[
+    {
+        "id": "115",
+        "name": "Glintstone Pebble",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/glintstone_pebble_sorcery_elden_ring_wiki_guide_200px.png",
+        "desc": "You can equip this item to a class or use it directly. Effect: once per turn, you can choose to spend double the FP. Use it again.",
+        "gamedesc": "The most basic glintstone sorcery of the Academy of Raya Lucaria.\nThe glintstone serves as a conduit, launching magical projectiles at foes.\nThis sorcery can be cast repeatedly and while in motion.\nThis is a universal first step on the journey to true knowledge of sorcery.",
+        "Type": "Glintstone",
+        "fpcost": 7,
+        "slots": 1,
+        "requiredAttributes": [
+            {
+                "name": "Int",
+                "amount": 10
+            }
+        ],
+        "passives": [],
+        "dupl": 1,
+        "find": 1,
+        "attack": 1.52,
+        "atktype": "Mag",
+        "rarity": "Epi",
+        "banner": "1 West Limgrave",
+        "sellvalue": 100
+    },
+    {
+        "id": "215",
+        "name": "Glintstone Arc",
+        "img": "https://eldenring.wiki.fextralife.com/file/Elden-Ring/glintstone_arc_sorcery_elden_ring_wiki_guide_200px.png",
+        "desc": "You can equip this item to a class or use it directly.",
+        "gamedesc": "One of the glintstone sorceries of the Academy of Raya Lucaria.\nGranted to sorcererers who depart from the academy to embark on\njourneys, in order to fend off large groups of would-be adversaries.\nFools often roam in packs.",
+        "Type": "Glintstone",
+        "fpcost": 9,
+        "slots": 1,
+        "requiredAttributes": [
+            {
+                "name": "Int",
+                "amount": 13
+            }
+        ],
+        "passives": [],
+        "dupl": 1,
+        "find": 1,
+        "attack": 1.48,
+        "atktype": "Mag",
+        "rarity": "Unc",
+        "banner": "1 West Limgrave",
+        "sellvalue": 100
+    }
+]

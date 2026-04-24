@@ -101,7 +101,7 @@ class Card {
         
                     <!-- HEADER: Category a SX, AtkType a DX -->
                     <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
-                        <div class="bg-[#1c1b1b] px-2 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;font-size: clamp(7px, 13px, 20px);inline-size: 100%;overflow-wrap: break-word;white-space: nowrap;overflow: hidden;">
+                        <div class="bg-[#1c1b1b] px-2 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;font-size: clamp(7px, 11px, 20px);inline-size: 100%;overflow-wrap: break-word;white-space: nowrap;overflow: hidden;">
                             ${this.data.category || '-'}
                         </div>
                         <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
@@ -256,7 +256,7 @@ class Card {
             
                         <!-- HEADER -->
                         <div class="mb-2 px-1 topprpr" style="display: grid;grid-template-columns: 1fr auto 1fr;align-items: center;width: 100%; grid-gap: 20px;">
-                            <div class="bg-[#1c1b1b] px-2 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center; white-space: nowrap; overflow: hidden;">
+                            <div class="bg-[#1c1b1b] px-2 py-1 text-[#edd7ab] font-bold text-sm w-30" style="text-align:center;font-size: clamp(7px, 13px, 20px);inline-size: 100%;overflow-wrap: break-word;white-space: nowrap;overflow: hidden;">
                                 ${this.data.Type || 'Incantation'}
                             </div>
                             <div class="bg-[#1c1b1b] px-4 py-1 text-[#edd7ab] font-bold text-sm" style="text-align: center;">
