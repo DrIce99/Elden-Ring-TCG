@@ -215,8 +215,11 @@ h1 {
 
 #stack {
     position: relative;
-    width: 260px;
-    height: 360px;
+    width: 300px;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-reveal {
@@ -521,7 +524,9 @@ h1 {
     width: 280px;
     height: 400px;
     cursor: pointer;
-    transition: transform 0.7s ease, opacity 0.7s ease;
+    left: 10px;
+    top: 10px;
+    transform-origin: center;
 }
 
 .reward-card img {
@@ -564,4 +569,36 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+}
+
+.btn-action {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    background: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-transform: uppercase;
+}
+
+.btn-back {
+    color: var(--text-dim);
+    border-color: var(--border);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.btn-back:hover {
+    color: var(--text);
+    border-color: var(--border-h);
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-right: auto;
 }

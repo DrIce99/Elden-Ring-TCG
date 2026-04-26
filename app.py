@@ -743,58 +743,30 @@ def save_pull_to_inventory(user_id, pack):
 
     for card in pack:
         card_id = card.get("id")
-        existing = inv_ref.where("id", "==", card["id"]).limit(1).stream()
-        existing_docs = list(existing)
 
-        # Se già posseduta
-        if existing_docs:
-            dpayload = {
-                "id": card_id,
-                "star-up": 0
+        payload = {
+            "id": card_id,
+            "star-up": 0
+        }
+
+        if card.get("category") == "weapons":
+            payload["level"] = 1
+
+        elif card.get("category") == "classes":
+            payload["stats"] = {
+                "level": card.get("stats", {}).get("level", 1),
+                "vigor": card.get("stats", {}).get("vigor", 0),
+                "mind": card.get("stats", {}).get("mind", 0),
+                "endurance": card.get("stats", {}).get("endurance", 0),
+                "strength": card.get("stats", {}).get("strength", 0),
+                "dexterity": card.get("stats", {}).get("dexterity", 0),
+                "intelligence": card.get("stats", {}).get("intelligence", 0),
+                "faith": card.get("stats", {}).get("faith", 0),
+                "arcane": card.get("stats", {}).get("arcane", 0)
             }
 
-            if card.get("category") == "weapons":
-                payload["level"] = 1
-
-            elif card.get("category") == "classes":
-                payload["stats"] = {
-                    "level": card.get("stats", {}).get("level", 1),
-                    "vigor": card.get("stats", {}).get("vigor", 0),
-                    "mind": card.get("stats", {}).get("mind", 0),
-                    "endurance": card.get("stats", {}).get("endurance", 0),
-                    "strength": card.get("stats", {}).get("strength", 0),
-                    "dexterity": card.get("stats", {}).get("dexterity", 0),
-                    "intelligence": card.get("stats", {}).get("intelligence", 0),
-                    "faith": card.get("stats", {}).get("faith", 0),
-                    "arcane": card.get("stats", {}).get("arcane", 0)
-                }
-
-            # Creiamo un nuovo documento per il duplicato
-            inv_ref.document(str(uuid.uuid4())).set(payload)
-
-        else:
-            payload = {
-                "id": card_id,
-                "star-up": 0
-            }
-
-            if card["category"] == "weapons":
-                payload["level"] = 1
-
-            elif card["category"] == "classes":
-                payload["stats"] = {
-                    "level": card.get("stats", {}).get("level", 1),
-                    "vigor": card.get("stats", {}).get("vigor", 0),
-                    "mind": card.get("stats", {}).get("mind", 0),
-                    "endurance": card.get("stats", {}).get("endurance", 0),
-                    "strength": card.get("stats", {}).get("strength", 0),
-                    "dexterity": card.get("stats", {}).get("dexterity", 0),
-                    "intelligence": card.get("stats", {}).get("intelligence", 0),
-                    "faith": card.get("stats", {}).get("faith", 0),
-                    "arcane": card.get("stats", {}).get("arcane", 0)
-                }
-
-            inv_ref.document(str(uuid.uuid4())).set(payload)
+        # salva sempre una nuova entry
+        inv_ref.document(str(uuid.uuid4())).set(payload)
         
 
 # Aggiungi endpoint per ottenere rune correnti

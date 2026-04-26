@@ -123,9 +123,31 @@ function playPackOpenAnimation(pack) {
         </div>
     `;
 
-    setTimeout(() => {
-        showPackAnimation(pack);
-    }, 1400);
+    const packBox = container.querySelector(".pack-box");
+
+    const tl = gsap.timeline({
+        onComplete: () => {
+            showPackAnimation(pack);
+        }
+    });
+
+    tl.from(packBox, {
+        scale: 0,
+        duration: 0.6,
+        ease: "back.out(1.7)"
+    })
+    .to(packBox, {
+        rotation: 10,
+        duration: 0.15,
+        repeat: 5,
+        yoyo: true
+    })
+    .to(packBox, {
+        scale: 2,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power4.out"
+    });
 }
 
 function createAnimationContainer() {
@@ -147,54 +169,81 @@ function showPackAnimation(pack) {
 
     const stack = document.getElementById("stack");
 
-    // crea stack sovrapposto
     pack.forEach((card, i) => {
         const div = document.createElement("div");
         div.className = "reward-card";
         div.dataset.index = i;
 
-        // usa immagine reale carta
         div.innerHTML = `
             <img src="/static/src/cards/front/${card.id}.png"
                  onerror="this.src='${card.img}'">
         `;
 
-        // effetto sovrapposto
+        // crea effetto stack
         div.style.zIndex = pack.length - i;
-        div.style.transform = `translateY(${i * 5}px) scale(${1 - i * 0.03})`;
+        div.style.transform = `
+            translateY(${i * 4}px)
+            rotate(${(i - pack.length/2) * 2}deg)
+        `;
 
         stack.appendChild(div);
     });
 
-    let currentIndex = 0;
     const cards = document.querySelectorAll(".reward-card");
+
+    // animazione iniziale stack
+    gsap.from(cards, {
+        y: 500,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        clearProps: "opacity,transform"
+    });
+
+    let currentIndex = 0;
+    let isAnimating = false;
 
     cards.forEach((cardEl, index) => {
         cardEl.addEventListener("click", () => {
-            if (index !== currentIndex) return;
+            if (index !== currentIndex || isAnimating) return;
 
-            // slide via
-            cardEl.style.pointerEvents = "none";
+            isAnimating = true;
 
-            const baseTransform = cardEl.style.transform;
+            revealCard(cardEl, pack[index], () => {
+                currentIndex++;
+                isAnimating = false;
 
-            cardEl.style.transform = `
-                ${baseTransform}
-                translateX(-120vw)
-                rotate(-15deg)
-            `;
-
-            cardEl.style.opacity = "0";
-
-            currentIndex++;
-
-            // ultima carta -> mostra recap
-            if (currentIndex >= pack.length) {
-                setTimeout(() => {
-                    showFinalResults(pack);
-                }, 700);
-            }
+                if (currentIndex >= pack.length) {
+                    setTimeout(() => {
+                        showFinalResults(pack);
+                    }, 1000);
+                }
+            });
         });
+    });
+}
+
+function revealCard(cardEl, cardData, callback) {
+    const rarityColor = RARITY_COLORS[cardData.rarity] || "#fff";
+
+    gsap.timeline({
+        onComplete: () => {
+            cardEl.remove();
+            callback();
+        }
+    })
+    .to(cardEl, {
+        scale: 1.15,
+        boxShadow: `0 0 50px ${rarityColor}`,
+        duration: 0.3
+    })
+    .to(cardEl, {
+        x: -window.innerWidth,
+        rotation: -25,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power4.in"
     });
 }
 
@@ -213,7 +262,7 @@ function showFinalResults(pack) {
 
     const grid = container.querySelector(".results-grid");
 
-    pack.forEach(card => {
+    pack.forEach((card, i) => {
         const div = document.createElement("div");
         div.className = "result-card";
 
@@ -223,6 +272,15 @@ function showFinalResults(pack) {
         `;
 
         grid.appendChild(div);
+
+        gsap.from(div, {
+            opacity: 0,
+            y: 50,
+            scale: 0.7,
+            duration: 0.6,
+            delay: i * 0.15,
+            ease: "back.out(1.7)"
+        });
     });
 }
 
