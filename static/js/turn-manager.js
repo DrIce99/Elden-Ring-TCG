@@ -2,55 +2,76 @@
 // TURN MANAGER — Gestione fasi e pesca
 // ========================================
 
-// Stub per funzioni mancanti
-function checkTribute(card) { return true; }
-function saveAction(slot, action) { console.log('Azione:', action); }
-
 // ----------------------------------------
 // GAME STATE
 // ----------------------------------------
 window.GameState = {
     currentPhase: 0,
-    turnOwner: 'player',
+    turnNumber: 1,          // primo turno = niente attacchi
+    turnOwner: 'player',    // fisso: fasi 1-3 = player, fase 4 = opponent AI
     hasSummonedThisTurn: false,
+    hasOpponentSummonedThisTurn: false,
     playerHand: [],
     opponentHand: [],
     playerRunes: 20,
     opponentRunes: 20,
-    playerBattlefield: Array(5).fill(null),
-    playerSupport: null,
-    opponentBattlefield: Array(5).fill(null),
-    opponentSupport: null,
+    plannedActions: {},     // { 'player_0': {type:'light'}, 'opponent_2': {type:'charge'} }
+    unitStates: {},         // { 'player_0': { hp, maxHp, charges, dodgedLastTurn }, ... }
     phases: [
-        { id: 1, name: "Pesca (clicca il mazzo)" },
-        { id: 2, name: "Schieramento" },
-        { id: 3, name: "Pianificazione" },
-        { id: 4, name: "Turno Avversario" },
-        { id: 5, name: "Resa dei Conti" }
+        { id: 1, name: "Fase 1 — Pesca (clicca il mazzo)" },
+        { id: 2, name: "Fase 2 — Schieramento" },
+        { id: 3, name: "Fase 3 — Pianificazione" },
+        { id: 4, name: "Fase 4 — Turno Avversario" },
+        { id: 5, name: "Fase 5 — Resa dei Conti" }
     ],
     checkWinCondition() {
-        const playerLost = this.playerRunes <= 0 ||
+        const playerLost   = this.playerRunes <= 0 ||
             (this.playerHand.length === 0 && window.playerDeck?.length === 0);
         const opponentLost = this.opponentRunes <= 0 ||
             (this.opponentHand.length === 0 && window.opponentDeck?.length === 0);
-        if (playerLost) { alert("No more Runes — YOU LOST!"); return true; }
-        if (opponentLost) { alert("YOU WON!"); return true; }
+        if (playerLost)   { _showGameOver('💀 Le tue Rune sono esaurite — HAI PERSO!'); return true; }
+        if (opponentLost) { _showGameOver('🏆 HAI VINTO! Il Senzaluce trionfa!'); return true; }
         return false;
     }
 };
+
+function _showGameOver(msg) {
+    let overlay = document.getElementById('gameover-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'gameover-overlay';
+        overlay.style.cssText = `
+            position:fixed;inset:0;background:rgba(0,0,0,0.85);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            z-index:99999;font-family:'Cinzel',sans-serif;
+        `;
+        document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `
+        <div style="color:#edd7ab;font-size:2.2em;font-weight:bold;
+                    text-shadow:0 0 24px #edd7ab88;margin-bottom:28px;text-align:center;
+                    padding:0 20px;">${msg}</div>
+        <button onclick="location.reload()" style="
+            background:rgba(237,215,171,0.12);color:#edd7ab;
+            border:2px solid #edd7ab;padding:12px 36px;
+            font-family:'Cinzel',sans-serif;font-size:1.1em;
+            border-radius:8px;cursor:pointer;letter-spacing:.05em;">
+            ↺ Nuova Partita
+        </button>`;
+}
 
 // ----------------------------------------
 // DRAW — variabili di stato
 // ----------------------------------------
 const DRAW_PER_TURN = 2;
 window.drawnThisTurn = 0;
-window.isDrawing = false; // lock anti-doppio click
+window.isDrawing = false;
 
 // ----------------------------------------
 // PESCA SINGOLA CON ANIMAZIONE
 // ----------------------------------------
-window.drawOneCard = function (target = 'player') {
-    if (window.isDrawing) return; // previeni click rapidi
+window.drawOneCard = function (target = 'player', skipCounter = false) {
+    if (target === 'player' && window.isDrawing) return;
 
     const deck = target === 'player' ? window.playerDeck : window.opponentDeck;
     if (!deck || deck.length === 0) {
@@ -58,125 +79,37 @@ window.drawOneCard = function (target = 'player') {
         return;
     }
 
-    window.isDrawing = true;
+    if (target === 'player') window.isDrawing = true;
 
-    const cardData = deck.pop(); // top card (ultima)
+    const cardData = deck.pop();
+    renderDeck(deck, target === 'player' ? '#player-deck' : '.slot.deck.enemy');
 
-    // Aggiorna visuale mazzo SUBITO (prima dell'animazione)
-    renderDeck(
-        deck,
-        target === 'player' ? '#player-deck' : '.slot.deck.enemy'
-    );
-
-    // Avvia animazione, poi aggiungi alla mano
-    animateCardToHand(cardData, target, () => {
+    window.animateCardToHand(cardData, target, () => {
         const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
         window.GameState[handKey].push(cardData);
         window.renderHand(target);
-        window.isDrawing = false;
+        if (target === 'player') window.isDrawing = false;
 
-        // Emetti evento DRAW sull'event bus (se disponibile)
-        if (window.EffectBus) {
-            window.EffectBus.emit(window.EVENTS?.DRAW, {
-                target,
-                card: cardData,
-                gameState: window.GameState
-            });
-        }
-
-        if (target === window.GameState.turnOwner) {
+        // Solo per la pesca manuale del giocatore (fase 1)
+        if (target === 'player' && !skipCounter) {
             window.drawnThisTurn++;
-            updatePhaseDisplay(); // aggiorna label
-
+            updatePhaseDisplay();
             if (window.drawnThisTurn >= DRAW_PER_TURN) {
-                // Tutte le carte pescate → avanza automaticamente
-                setTimeout(() => advanceToNextPhase(), 400);
+                setTimeout(() => window.advanceToNextPhase(), 400);
             }
         }
     });
 };
 
 // ----------------------------------------
-// ANIMAZIONE: carta vola dal mazzo alla mano
-// ----------------------------------------
-function animateCardToHand(cardData, target, onComplete) {
-    const deckSelector = target === 'player' ? '#player-deck' : '.slot.deck.enemy';
-    const handSelector = target === 'player' ? '#player-hand' : '#opponent-hand';
-
-    const deckEl = document.querySelector(deckSelector);
-    const handEl = document.querySelector(handSelector);
-
-    if (!deckEl || !handEl) {
-        onComplete();
-        return;
-    }
-
-    const deckRect = deckEl.getBoundingClientRect();
-    const handRect = handEl.getBoundingClientRect();
-
-    // Crea la carta animata
-    const flyCard = document.createElement('div');
-    flyCard.className = 'card-wrapper balatro-card fly-card';
-    flyCard.innerHTML = `
-        <div class="card-inner">
-            <div class="card face back">
-                <img src="static/src/cards/back/back.png"
-                     style="width:100%;height:100%;object-fit:contain"
-                     onerror="this.src='https://placehold.co/140x200?text=BACK'">
-            </div>
-        </div>`;
-
-    // Partenza: centro dello slot mazzo
-    const startX = deckRect.left + deckRect.width / 2 - 70;
-    const startY = deckRect.top + deckRect.height / 2 - 100;
-
-    // Arrivo: centro della zona mano
-    const endX = handRect.left + handRect.width / 2 - 70;
-    const endY = target === 'player'
-        ? handRect.top + 10
-        : handRect.bottom - 210;
-
-    flyCard.style.cssText = `
-        position: fixed;
-        width: 140px;
-        height: 200px;
-        left: ${startX}px;
-        top: ${startY}px;
-        z-index: 9999;
-        pointer-events: none;
-        transition: left 0.55s cubic-bezier(0.22,1,0.36,1),
-                    top  0.55s cubic-bezier(0.22,1,0.36,1),
-                    transform 0.55s ease;
-        transform: scale(1.1) rotate(${Math.random() * 10 - 5}deg);
-    `;
-
-    document.body.appendChild(flyCard);
-
-    // Forza reflow poi anima
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            flyCard.style.left = `${endX}px`;
-            flyCard.style.top = `${endY}px`;
-            flyCard.style.transform = 'scale(0.85) rotate(0deg)';
-        });
-    });
-
-    setTimeout(() => {
-        flyCard.remove();
-        onComplete();
-    }, 600);
-}
-
-// ----------------------------------------
-// PESCA INIZIALE (5 carte senza animazione, per velocità)
+// PESCA INIZIALE (5 carte silenziosa)
 // ----------------------------------------
 window.initHands = function () {
-    // Previeni doppia chiamata accidentale
     if (window._handsDealt) return;
     window._handsDealt = true;
 
     const drawSilent = (target, count) => {
-        const deck = target === 'player' ? window.playerDeck : window.opponentDeck;
+        const deck    = target === 'player' ? window.playerDeck : window.opponentDeck;
         const handKey = target === 'player' ? 'playerHand' : 'opponentHand';
         for (let i = 0; i < count && deck.length > 0; i++) {
             window.GameState[handKey].push(deck.pop());
@@ -195,80 +128,452 @@ window.initHands = function () {
 // ----------------------------------------
 window.advanceToNextPhase = function () {
     const gs = window.GameState;
-
     gs.currentPhase++;
 
+    // Fine ciclo → nuovo turno
     if (gs.currentPhase > 5) {
-        // Nuovo turno
         gs.currentPhase = 1;
+        gs.turnNumber++;
         gs.hasSummonedThisTurn = false;
-        gs.turnOwner = gs.turnOwner === 'player' ? 'opponent' : 'player';
+        gs.hasOpponentSummonedThisTurn = false;
+        gs.plannedActions = {};
         window.drawnThisTurn = 0;
-
-        // Emetti TURN_START
-        if (window.EffectBus) {
-            window.EffectBus.emit(window.EVENTS?.TURN_START, {
-                turnOwner: gs.turnOwner,
-                gameState: gs
-            });
-        }
-    }
-
-    // Emetti eventi di fase
-    if (window.EffectBus && window.EVENTS) {
-        const phaseEvents = {
-            3: window.EVENTS.BEFORE_ACTION,
-            4: window.EVENTS.AFTER_ACTION,
-            5: window.EVENTS.RESOLUTION_START
-        };
-        if (phaseEvents[gs.currentPhase]) {
-            window.EffectBus.emit(phaseEvents[gs.currentPhase], { gameState: gs });
-        }
-        if (gs.currentPhase === 5) {
-            setTimeout(() => {
-                window.EffectBus.emit(window.EVENTS.RESOLUTION_END, { gameState: gs });
-            }, 2000);
-        }
+        console.log(`🔄 ===== TURNO ${gs.turnNumber} =====`);
     }
 
     updatePhaseDisplay();
-    gs.checkWinCondition();
-
     const phaseBtn = document.querySelector('.phase-button');
 
-    if (gs.currentPhase === 1) {
-        // Fase pesca: nascondi bottone, aspetta click sul mazzo
-        if (phaseBtn) phaseBtn.classList.add('hidden');
-        if (gs.turnOwner === 'opponent') {
-            setTimeout(() => {
-                window.drawOneCard('opponent');
-            }, 300);
-        }
-    } else {
-        // Altre fasi: mostra bottone
-        if (phaseBtn) phaseBtn.classList.remove('hidden');
+    switch (gs.currentPhase) {
+        case 1:
+            // Pesca manuale — nascondi bottone
+            if (phaseBtn) { phaseBtn.classList.add('hidden'); phaseBtn.textContent = 'Next Phase'; }
+            break;
 
-        // Emetti TURN_END quando si arriva alla fase 5
-        if (gs.currentPhase === 5 && window.EffectBus) {
-            window.EffectBus.emit(window.EVENTS?.TURN_END, { gameState: gs });
+        case 2:
+            // Schieramento
+            if (phaseBtn) {
+                phaseBtn.classList.remove('hidden');
+                phaseBtn.textContent = 'Fine Schieramento →';
+            }
+            break;
+
+        case 3:
+            // Pianificazione — attiva UI azioni
+            if (phaseBtn) {
+                phaseBtn.classList.remove('hidden');
+                phaseBtn.textContent = 'Conferma Azioni →';
+            }
+            if (window.initPlanningPhase) window.initPlanningPhase();
+            break;
+
+        case 4:
+            // Turno avversario — tutto automatico
+            if (phaseBtn) phaseBtn.classList.add('hidden');
+            if (window.clearPlanningUI) window.clearPlanningUI();
+            setTimeout(_runOpponentTurn, 600);
+            break;
+
+        case 5:
+            // Resa dei conti — tutto automatico
+            if (phaseBtn) phaseBtn.classList.add('hidden');
+            setTimeout(window.resolvePhase5, 800);
+            break;
+    }
+
+    console.log(`📍 Fase ${gs.currentPhase} — ${gs.phases[gs.currentPhase - 1]?.name} (Turno ${gs.turnNumber})`);
+    gs.checkWinCondition();
+};
+
+// Alias bottone HTML
+window.nextPhaseAuto = window.advanceToNextPhase;
+
+// ----------------------------------------
+// FASE 4 — TURNO AVVERSARIO (AI)
+// ----------------------------------------
+function _runOpponentTurn() {
+    console.log('🤖 Avversario — Fase 1: Pesca...');
+    let drawn = 0;
+
+    const drawNext = () => {
+        if (drawn >= DRAW_PER_TURN) {
+            setTimeout(_opponentDeploy, 500);
+            return;
+        }
+        window.drawOneCard('opponent', true); // skipCounter
+        drawn++;
+        setTimeout(drawNext, 700);
+    };
+    drawNext();
+}
+
+function _opponentDeploy() {
+    const gs = window.GameState;
+    console.log('🤖 Avversario — Fase 2: Schieramento...');
+
+    if (!gs.hasOpponentSummonedThisTurn) {
+        // Cerca prima unità non-boss valida in mano
+        const unitIndex = gs.opponentHand.findIndex(card => {
+            const type = window.getCardType(card);
+            return window.isUnit(type) && !window.isSupportNPC(card, type) && type !== 'bosses';
+        });
+
+        if (unitIndex !== -1) {
+            const opponentSlots = [...document.querySelectorAll('.player-area.opponent .slot.battle')];
+            const preferred     = [2, 1, 3, 0, 4];
+            const emptySlot     = preferred.map(i => opponentSlots[i]).find(s => s && !s.dataset.card);
+
+            if (emptySlot) {
+                const card      = gs.opponentHand[unitIndex];
+                const type      = window.getCardType(card);
+                gs.opponentHand.splice(unitIndex, 1);
+
+                emptySlot.innerHTML = window.createCardImage(card, false);
+                const inner = emptySlot.querySelector('.card-inner');
+                if (inner) inner.style.transform = 'rotate(180deg)';
+                emptySlot.dataset.card     = JSON.stringify(card);
+                emptySlot.dataset.cardType = type;
+
+                const allSlots = [...document.querySelectorAll('.player-area.opponent .slot.battle')];
+                const slotIdx  = allSlots.indexOf(emptySlot);
+                const stateKey = 'opponent_' + slotIdx;
+
+                gs.unitStates[stateKey] = {
+                    hp:             card.hp || 8,
+                    maxHp:          card.hp || 8,
+                    charges:        0,
+                    dodgedLastTurn: false
+                };
+                window._showHPBadge(emptySlot, gs.unitStates[stateKey].hp);
+
+                gs.hasOpponentSummonedThisTurn = true;
+                window.renderHand('opponent');
+                console.log(`🤖 Avversario schiera: ${card.name} (slot ${slotIdx})`);
+            }
         }
     }
 
-    console.log(`📍 Fase ${gs.currentPhase} — ${gs.phases[gs.currentPhase - 1]?.name}`);
+    setTimeout(_opponentPlan, 600);
+}
+
+function _opponentPlan() {
+    const gs           = window.GameState;
+    const opponentSlots = [...document.querySelectorAll('.player-area.opponent .slot.battle')];
+    const playerSlots   = [...document.querySelectorAll('.player-area.player .slot.battle')];
+    console.log('🤖 Avversario — Fase 3: Pianificazione...');
+
+    opponentSlots.forEach((slot, i) => {
+        if (!slot.dataset.card) return;
+        const key   = 'opponent_' + i;
+        const state = gs.unitStates[key] || {};
+
+        if (gs.turnNumber === 1) {
+            // Primo turno: niente attacchi
+            if      (i < 2) gs.plannedActions[key] = { type: 'move_right' };
+            else if (i > 2) gs.plannedActions[key] = { type: 'move_left' };
+            else            gs.plannedActions[key] = { type: 'charge' };
+        } else {
+            const range     = [i, i - 1, i + 1].filter(t => t >= 0 && t < 5);
+            const hasTarget = range.some(t => playerSlots[t]?.dataset.card);
+
+            if (hasTarget) {
+                gs.plannedActions[key] = (state.charges > 0) ? { type: 'heavy' } : { type: 'light' };
+            } else {
+                const dir = (i < 2) ? 'move_right' : (i > 2) ? 'move_left' : 'charge';
+                gs.plannedActions[key] = { type: dir };
+            }
+        }
+    });
+
+    console.log('🤖 Azioni pianificate:', gs.plannedActions);
+    setTimeout(() => window.advanceToNextPhase(), 900); // → Fase 5
+}
+
+// ----------------------------------------
+// FASE 5 — RESA DEI CONTI
+// ----------------------------------------
+window.resolvePhase5 = function () {
+    const gs = window.GameState;
+    console.log('⚔️ === RESA DEI CONTI === Azioni:', gs.plannedActions);
+
+    // 1. Marca schivate
+    Object.entries(gs.plannedActions).forEach(([key, action]) => {
+        const state = gs.unitStates[key];
+        if (!state) return;
+        state.dodging = (action.type === 'dodge');
+    });
+
+    // 2. Cariche
+    Object.entries(gs.plannedActions).forEach(([key, action]) => {
+        if (action.type !== 'charge') return;
+        const state  = gs.unitStates[key] || (gs.unitStates[key] = {});
+        state.charges = (state.charges || 0) + 1;
+        window._updateChargeBadge(key);
+        console.log(`⚡ ${key}: +1 carica (tot: ${state.charges})`);
+    });
+
+    // 3. Movimenti (simultanei — ordine: gli extremi prima per evitare collisioni)
+    const moves = Object.entries(gs.plannedActions)
+        .filter(([, a]) => a.type === 'move_left' || a.type === 'move_right');
+
+    moves.sort(([ka, a], [kb]) => {
+        const ia = parseInt(ka.split('_')[1]);
+        const ib = parseInt(kb.split('_')[1]);
+        return a.type === 'move_right' ? ib - ia : ia - ib;
+    });
+    moves.forEach(([key, action]) => {
+        const [owner, idxStr] = key.split('_');
+        const idx    = parseInt(idxStr);
+        const newIdx = action.type === 'move_left' ? idx - 1 : idx + 1;
+        if (newIdx >= 0 && newIdx < 5) _moveUnit(owner, idx, newIdx);
+    });
+
+    // 4. Calcolo danni (simultaneo — raccogliamo prima, poi applichiamo)
+    const damageMap    = {};
+    const directDamage = { player: 0, opponent: 0 };
+
+    Object.entries(gs.plannedActions).forEach(([key, action]) => {
+        if (!['light', 'heavy', 'magic'].includes(action.type)) return;
+
+        const [owner, idxStr] = key.split('_');
+        const idx     = parseInt(idxStr);
+        const enemy   = owner === 'player' ? 'opponent' : 'player';
+        const state   = gs.unitStates[key] || {};
+
+        const attackerSlots = [...document.querySelectorAll(`.player-area.${owner} .slot.battle`)];
+        const attackerSlot  = attackerSlots[idx];
+        if (!attackerSlot?.dataset.card) return;
+
+        const card = JSON.parse(attackerSlot.dataset.card);
+
+        // Attacco pesante: richiede carica
+        if (action.type === 'heavy') {
+            if ((state.charges || 0) < 1) {
+                console.warn(`⚠️ ${key}: attacco pesante senza carica — annullato`);
+                return;
+            }
+            state.charges--;
+            window._updateChargeBadge(key);
+        }
+
+        const baseAtk = card.atk || card.attack || 2;
+        const dmg     = action.type === 'heavy' ? Math.round(baseAtk * 1.5)
+                      : action.type === 'magic'  ? (card.fpcost || baseAtk)
+                      :                             baseAtk;
+
+        // Bersagli: 3 caselle frontali (posizione speculare ±1)
+        const enemySlots = [...document.querySelectorAll(`.player-area.${enemy} .slot.battle`)];
+        let targetIdx    = null;
+        for (const t of [idx, idx - 1, idx + 1]) {
+            if (t >= 0 && t < 5 && enemySlots[t]?.dataset.card) { targetIdx = t; break; }
+        }
+
+        if (targetIdx !== null) {
+            const targetKey   = enemy + '_' + targetIdx;
+            const targetState = gs.unitStates[targetKey] || {};
+
+            if (targetState.dodging && !targetState.dodgedLastTurn) {
+                targetState.dodgedLastTurn = true;
+                console.log(`💨 ${targetKey} schiva l'attacco di ${key}!`);
+                return;
+            }
+
+            damageMap[targetKey] = (damageMap[targetKey] || 0) + dmg;
+            console.log(`⚔️ ${key}(${card.name}) → ${targetKey}: ${dmg} danno`);
+        } else {
+            // Danno diretto — nessuna unità nel raggio
+            directDamage[enemy] += dmg;
+            console.log(`💥 ${key}(${card.name}) → ${enemy} DIRETTO: ${dmg} rune`);
+        }
+    });
+
+    // 5. Applica danni diretti alle Rune
+    if (directDamage.player   > 0) { gs.playerRunes   -= directDamage.player;   _flashRunes('player',   directDamage.player); }
+    if (directDamage.opponent > 0) { gs.opponentRunes -= directDamage.opponent; _flashRunes('opponent', directDamage.opponent); }
+
+    // 6. Applica danni alle unità (simultaneo → accumula tutto, poi distruggi)
+    const toDestroy = [];
+    Object.entries(damageMap).forEach(([key, dmg]) => {
+        const state = gs.unitStates[key];
+        if (!state) return;
+        state.hp -= dmg;
+        if (state.hp <= 0) {
+            toDestroy.push(key);
+        } else {
+            const [owner, idxStr] = key.split('_');
+            const slots = [...document.querySelectorAll(`.player-area.${owner} .slot.battle`)];
+            window._showHPBadge(slots[parseInt(idxStr)], state.hp);
+        }
+    });
+
+    // Distruzione simultanea
+    toDestroy.forEach(key => {
+        const [owner, idxStr] = key.split('_');
+        _destroyUnit(owner, parseInt(idxStr));
+    });
+
+    // 7. Reset stato schivata per il prossimo turno
+    Object.values(gs.unitStates).forEach(state => {
+        if (!state.dodging) state.dodgedLastTurn = false;
+        state.dodging = false;
+    });
+
+    // 8. Pulizia UI azioni
+    gs.plannedActions = {};
+    if (window.clearAllActionBadges) window.clearAllActionBadges();
+
+    // 9. Aggiorna HUD
+    updatePhaseDisplay();
+    if (gs.checkWinCondition()) return;
+
+    // 10. Avanza al prossimo turno dopo pausa visuale
+    setTimeout(() => window.advanceToNextPhase(), 1600);
 };
 
-// Alias per compatibilità col bottone HTML
-window.nextPhaseAuto = window.advanceToNextPhase;
+// ----------------------------------------
+// HELPER — Movimento unità
+// ----------------------------------------
+function _moveUnit(owner, fromIdx, toIdx) {
+    const sel      = `.player-area.${owner} .slot.battle`;
+    const slots    = [...document.querySelectorAll(sel)];
+    const fromSlot = slots[fromIdx];
+    const toSlot   = slots[toIdx];
+    if (!fromSlot?.dataset.card || toSlot?.dataset.card) return;
+
+    toSlot.innerHTML        = fromSlot.innerHTML;
+    toSlot.dataset.card     = fromSlot.dataset.card;
+    toSlot.dataset.cardType = fromSlot.dataset.cardType;
+    if (fromSlot.dataset.equip) toSlot.dataset.equip = fromSlot.dataset.equip;
+
+    fromSlot.innerHTML = '';
+    delete fromSlot.dataset.card;
+    delete fromSlot.dataset.cardType;
+    delete fromSlot.dataset.equip;
+
+    const gs      = window.GameState;
+    const fromKey = owner + '_' + fromIdx;
+    const toKey   = owner + '_' + toIdx;
+    if (gs.unitStates[fromKey]) { gs.unitStates[toKey] = gs.unitStates[fromKey]; delete gs.unitStates[fromKey]; }
+    if (gs.plannedActions[fromKey]) { gs.plannedActions[toKey] = gs.plannedActions[fromKey]; delete gs.plannedActions[fromKey]; }
+
+    console.log(`🚶 ${owner} slot ${fromIdx} → ${toIdx}`);
+}
+
+// ----------------------------------------
+// HELPER — Distruzione unità
+// ----------------------------------------
+function _destroyUnit(owner, idx) {
+    const gs    = window.GameState;
+    const slots = [...document.querySelectorAll(`.player-area.${owner} .slot.battle`)];
+    const slot  = slots[idx];
+    if (!slot) return;
+
+    let card = null;
+    try { card = slot.dataset.card ? JSON.parse(slot.dataset.card) : null; } catch {}
+
+    const wrapper = slot.querySelector('.card-wrapper');
+    const clear   = () => {
+        slot.innerHTML = '';
+        delete slot.dataset.card;
+        delete slot.dataset.cardType;
+        delete slot.dataset.equip;
+    };
+
+    if (wrapper && window.animateDestroyCard) {
+        window.animateDestroyCard(wrapper, clear);
+    } else {
+        clear();
+    }
+
+    const key = owner + '_' + idx;
+    delete gs.unitStates[key];
+    delete gs.plannedActions[key];
+
+    // Loot
+    if (card) {
+        const loot = card.loot || card.drop || 2;
+        if (owner === 'opponent') { gs.playerRunes   += loot; console.log(`💰 Loot: +${loot} Rune (${card.name})`); }
+        else                     { gs.opponentRunes += loot; }
+    }
+
+    // Albero Madre
+    if (card) {
+        const mtSel = owner === 'player' ? '.slot.graveyard:not(.enemy)' : '.slot.graveyard.enemy';
+        const mt    = document.querySelector(mtSel);
+        if (mt) { mt.innerHTML = window.createCardImage(card, false); mt.dataset.card = JSON.stringify(card); }
+    }
+
+    updatePhaseDisplay();
+    console.log(`💀 ${owner} unità ${idx} (${card?.name}) distrutta`);
+}
+
+// ----------------------------------------
+// HELPER — Badge HP e Carica
+// ----------------------------------------
+window._showHPBadge = function (slotEl, hp) {
+    if (!slotEl) return;
+    let badge = slotEl.querySelector('.hp-badge');
+    if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'hp-badge';
+        badge.style.cssText = `
+            position:absolute;bottom:4px;right:4px;
+            background:rgba(160,25,25,0.9);color:#fff;
+            font-size:0.6em;font-weight:bold;padding:2px 7px;
+            border-radius:6px;z-index:110;pointer-events:none;
+            font-family:'Cinzel',sans-serif;border:1px solid #ff443366;
+        `;
+        slotEl.style.position = 'relative';
+        slotEl.appendChild(badge);
+    }
+    badge.textContent = `❤ ${hp}`;
+};
+
+window._updateChargeBadge = function (key) {
+    const [owner, idxStr] = key.split('_');
+    const slots   = [...document.querySelectorAll(`.player-area.${owner} .slot.battle`)];
+    const slot    = slots[parseInt(idxStr)];
+    if (!slot) return;
+    const charges = window.GameState.unitStates[key]?.charges || 0;
+    let badge     = slot.querySelector('.charge-badge');
+    if (charges === 0) { if (badge) badge.remove(); return; }
+    if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'charge-badge';
+        badge.style.cssText = `
+            position:absolute;bottom:4px;left:4px;
+            background:rgba(15,70,180,0.9);color:#fff;
+            font-size:0.6em;font-weight:bold;padding:2px 7px;
+            border-radius:6px;z-index:110;pointer-events:none;
+            font-family:'Cinzel',sans-serif;border:1px solid #4488ff44;
+        `;
+        slot.style.position = 'relative';
+        slot.appendChild(badge);
+    }
+    badge.textContent = `⚡ ${charges}`;
+};
+
+// ----------------------------------------
+// HELPER — Flash Rune
+// ----------------------------------------
+function _flashRunes(side, amount) {
+    const el = document.getElementById(side === 'player' ? 'player-runes' : 'opponent-runes');
+    if (!el) return;
+    el.style.transition = 'all 0.15s';
+    el.style.color      = '#ff4444';
+    el.style.transform  = 'scale(1.5)';
+    setTimeout(() => { el.style.color = ''; el.style.transform = ''; }, 700);
+}
 
 // ----------------------------------------
 // HUD
 // ----------------------------------------
 window.updatePhaseDisplay = function () {
-    const gs = window.GameState;
+    const gs        = window.GameState;
     const phaseName = gs.phases[gs.currentPhase - 1]?.name || '—';
+    let label       = phaseName;
 
-    let label = phaseName;
-    if (gs.currentPhase === 1 && gs.turnOwner === 'player') {
+    if (gs.currentPhase === 1) {
         const remaining = DRAW_PER_TURN - window.drawnThisTurn;
         label += ` — ancora ${remaining}`;
     }
@@ -276,40 +581,35 @@ window.updatePhaseDisplay = function () {
     const phaseEl = document.getElementById('current-phase');
     if (phaseEl) phaseEl.textContent = label;
 
-    const playerRunes = document.getElementById('player-runes');
+    const playerRunes   = document.getElementById('player-runes');
     const opponentRunes = document.getElementById('opponent-runes');
-    if (playerRunes) playerRunes.textContent = gs.playerRunes;
+    if (playerRunes)   playerRunes.textContent   = gs.playerRunes;
     if (opponentRunes) opponentRunes.textContent = gs.opponentRunes;
-
-    document.body.classList.toggle('player-turn', gs.turnOwner === 'player');
 };
 
 // ----------------------------------------
-// CLICK SUL MAZZO (fase pesca)
+// CLICK SUL MAZZO (solo fase 1)
 // ----------------------------------------
 document.addEventListener('click', (e) => {
     const deckSlot = e.target.closest('#player-deck');
     if (!deckSlot) return;
-
     const gs = window.GameState;
-    if (gs.currentPhase !== 1 || gs.turnOwner !== 'player') return;
-    if (window.drawnThisTurn >= DRAW_PER_TURN) return;
-    if (window.isDrawing) return;
-
+    if (gs.currentPhase !== 1) return;
+    if (window.drawnThisTurn >= DRAW_PER_TURN || window.isDrawing) return;
     window.drawOneCard('player');
 });
 
 // ----------------------------------------
-// TYPE UTILS (duplicati qui per autonomia)
+// TYPE UTILS (duplicati per autonomia)
 // ----------------------------------------
 function getCardTypeFromId(cardId) {
-    const idNum = String(cardId).slice(-2);
+    const idNum  = String(cardId).slice(-2);
     const typeMap = {
-        '01': 'ammos', '02': 'armors', '03': 'ashes', '04': 'bosses',
-        '05': 'classes', '06': 'creatures', '07': 'gloves', '08': 'helmets',
-        '09': 'incantations', '10': 'items', '11': 'leg_armors', '12': 'locations',
-        '13': 'npcs', '14': 'shields', '15': 'sorceries', '16': 'spirits',
-        '17': 'talismans', '18': 'weapons'
+        '01':'ammos','02':'armors','03':'ashes','04':'bosses',
+        '05':'classes','06':'creatures','07':'gloves','08':'helmets',
+        '09':'incantations','10':'items','11':'leg_armors','12':'locations',
+        '13':'npcs','14':'shields','15':'sorceries','16':'spirits',
+        '17':'talismans','18':'weapons'
     };
     return typeMap[idNum] || 'unknown';
 }
@@ -318,9 +618,9 @@ function getCardTypeFromId(cardId) {
 // CARD IMAGE HELPER
 // ----------------------------------------
 window.createCardImage = function (cardData, showBack = false) {
-    const id = cardData.id;
+    const id    = cardData.id;
     const front = `static/src/cards/front/${id}.png`;
-    const back = `static/src/cards/back/back.png`;
+    const back  = `static/src/cards/back/back.png`;
     return `
         <div class="card-wrapper balatro-card ${showBack ? 'flipped' : ''}">
             <div class="card-inner">

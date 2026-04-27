@@ -265,5 +265,113 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(tryInit, 200);
 });
 
+window.animateCardToHand = function(cardData, target, onComplete) {
+    const deckSelector = target === 'player'
+        ? '#player-deck'
+        : '.slot.deck.enemy';
+
+    const handSelector = target === 'player'
+        ? '#player-hand'
+        : '#opponent-hand';
+
+    const deckEl = document.querySelector(deckSelector);
+    const handEl = document.querySelector(handSelector);
+
+    if (!deckEl || !handEl) {
+        onComplete();
+        return;
+    }
+
+    const deckRect = deckEl.getBoundingClientRect();
+    const handRect = handEl.getBoundingClientRect();
+
+    const flyCard = document.createElement('div');
+    flyCard.className = 'fly-card';
+
+    flyCard.innerHTML = window.createCardImage(cardData, true);
+
+    document.body.appendChild(flyCard);
+
+    gsap.set(flyCard, {
+        position: "fixed",
+        width: 140,
+        height: 200,
+        left: deckRect.left,
+        top: deckRect.top,
+        zIndex: 9999
+    });
+
+    gsap.to(flyCard, {
+        left: handRect.left + handRect.width / 2,
+        top: handRect.top,
+        rotation: gsap.utils.random(-20, 20),
+        scale: 0.8,
+        duration: 0.7,
+        ease: "power3.out",
+        onComplete: () => {
+            flyCard.remove();
+            onComplete();
+        }
+    });
+};
+
+window.animateCardToBattlefield = function(cardEl, slotEl, callback) {
+    const cardRect = cardEl.getBoundingClientRect();
+    const slotRect = slotEl.getBoundingClientRect();
+
+    const clone = cardEl.cloneNode(true);
+    document.body.appendChild(clone);
+
+    gsap.set(clone, {
+        position: "fixed",
+        left: cardRect.left,
+        top: cardRect.top,
+        width: cardRect.width,
+        height: cardRect.height,
+        zIndex: 9999
+    });
+
+    gsap.to(clone, {
+        left: slotRect.left,
+        top: slotRect.top,
+        duration: 0.6,
+        ease: "power2.out",
+        scale: 1.05,
+        onComplete: () => {
+            clone.remove();
+            callback();
+        }
+    });
+};
+
+window.animateAttack = function(attackerEl, targetEl, callback) {
+    const attackerRect = attackerEl.getBoundingClientRect();
+    const targetRect = targetEl.getBoundingClientRect();
+
+    gsap.to(attackerEl, {
+        x: targetRect.left - attackerRect.left,
+        y: targetRect.top - attackerRect.top,
+        duration: 0.25,
+        ease: "power2.out",
+        yoyo: true,
+        repeat: 1,
+        onComplete: callback
+    });
+};
+
+window.animateDestroyCard = function(cardEl, callback) {
+    gsap.to(cardEl, {
+        scale: 0,
+        rotation: 180,
+        opacity: 0,
+        duration: 0.5,
+        ease: "back.in",
+        onComplete: () => {
+            cardEl.remove();
+            callback?.();
+        }
+    });
+};
+
 // Esponi renderHand globalmente
 window.renderHand = window.renderHand || function () { };
