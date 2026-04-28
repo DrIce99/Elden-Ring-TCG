@@ -48,6 +48,18 @@
             }
         ],
         "hp": "5868",
+        "mp": "357",
+        "stats": {
+            "level": 154,
+            "vigor": "28",
+            "mind": "6",
+            "endurance": "8",
+            "strength": "11",
+            "dexterity": "10",
+            "intelligence": "7",
+            "faith": "16",
+            "arcane": "10"
+        },
         "loot": 6439,
         "rarity": "Epi",
         "banner": "1 West Limgrave",

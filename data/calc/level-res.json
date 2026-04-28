@@ -1,0 +1,3567 @@
+[
+  {
+    "level": 1,
+    "defense": 0.4,
+    "resistance": 0.2
+  },
+  {
+    "level": 2,
+    "defense": 0.8,
+    "resistance": 0.4
+  },
+  {
+    "level": 3,
+    "defense": 1.2,
+    "resistance": 0.6
+  },
+  {
+    "level": 4,
+    "defense": 1.6,
+    "resistance": 0.8
+  },
+  {
+    "level": 5,
+    "defense": 2.0,
+    "resistance": 1.0
+  },
+  {
+    "level": 6,
+    "defense": 2.4,
+    "resistance": 1.2
+  },
+  {
+    "level": 7,
+    "defense": 2.8,
+    "resistance": 1.4
+  },
+  {
+    "level": 8,
+    "defense": 3.2,
+    "resistance": 1.6
+  },
+  {
+    "level": 9,
+    "defense": 3.6,
+    "resistance": 1.8
+  },
+  {
+    "level": 10,
+    "defense": 4.0,
+    "resistance": 2.0
+  },
+  {
+    "level": 11,
+    "defense": 4.4,
+    "resistance": 2.2
+  },
+  {
+    "level": 12,
+    "defense": 4.8,
+    "resistance": 2.4
+  },
+  {
+    "level": 13,
+    "defense": 5.2,
+    "resistance": 2.6
+  },
+  {
+    "level": 14,
+    "defense": 5.6,
+    "resistance": 2.8
+  },
+  {
+    "level": 15,
+    "defense": 6.0,
+    "resistance": 3.0
+  },
+  {
+    "level": 16,
+    "defense": 6.4,
+    "resistance": 3.2
+  },
+  {
+    "level": 17,
+    "defense": 6.8,
+    "resistance": 3.4
+  },
+  {
+    "level": 18,
+    "defense": 7.2,
+    "resistance": 3.6
+  },
+  {
+    "level": 19,
+    "defense": 7.6,
+    "resistance": 3.8
+  },
+  {
+    "level": 20,
+    "defense": 8.0,
+    "resistance": 4.0
+  },
+  {
+    "level": 21,
+    "defense": 8.4,
+    "resistance": 4.2
+  },
+  {
+    "level": 22,
+    "defense": 8.8,
+    "resistance": 4.4
+  },
+  {
+    "level": 23,
+    "defense": 9.2,
+    "resistance": 4.6
+  },
+  {
+    "level": 24,
+    "defense": 9.6,
+    "resistance": 4.8
+  },
+  {
+    "level": 25,
+    "defense": 10.0,
+    "resistance": 5.0
+  },
+  {
+    "level": 26,
+    "defense": 10.4,
+    "resistance": 5.2
+  },
+  {
+    "level": 27,
+    "defense": 10.8,
+    "resistance": 5.4
+  },
+  {
+    "level": 28,
+    "defense": 11.2,
+    "resistance": 5.6
+  },
+  {
+    "level": 29,
+    "defense": 11.6,
+    "resistance": 5.8
+  },
+  {
+    "level": 30,
+    "defense": 12.0,
+    "resistance": 6.0
+  },
+  {
+    "level": 31,
+    "defense": 12.4,
+    "resistance": 6.2
+  },
+  {
+    "level": 32,
+    "defense": 12.8,
+    "resistance": 6.4
+  },
+  {
+    "level": 33,
+    "defense": 13.2,
+    "resistance": 6.6
+  },
+  {
+    "level": 34,
+    "defense": 13.6,
+    "resistance": 6.8
+  },
+  {
+    "level": 35,
+    "defense": 14.0,
+    "resistance": 7.0
+  },
+  {
+    "level": 36,
+    "defense": 14.4,
+    "resistance": 7.2
+  },
+  {
+    "level": 37,
+    "defense": 14.8,
+    "resistance": 7.4
+  },
+  {
+    "level": 38,
+    "defense": 15.2,
+    "resistance": 7.6
+  },
+  {
+    "level": 39,
+    "defense": 15.6,
+    "resistance": 7.8
+  },
+  {
+    "level": 40,
+    "defense": 16.0,
+    "resistance": 8.0
+  },
+  {
+    "level": 41,
+    "defense": 16.4,
+    "resistance": 8.2
+  },
+  {
+    "level": 42,
+    "defense": 16.8,
+    "resistance": 8.4
+  },
+  {
+    "level": 43,
+    "defense": 17.2,
+    "resistance": 8.6
+  },
+  {
+    "level": 44,
+    "defense": 17.6,
+    "resistance": 8.8
+  },
+  {
+    "level": 45,
+    "defense": 18.0,
+    "resistance": 9.0
+  },
+  {
+    "level": 46,
+    "defense": 18.4,
+    "resistance": 9.2
+  },
+  {
+    "level": 47,
+    "defense": 18.8,
+    "resistance": 9.4
+  },
+  {
+    "level": 48,
+    "defense": 19.2,
+    "resistance": 9.6
+  },
+  {
+    "level": 49,
+    "defense": 19.6,
+    "resistance": 9.8
+  },
+  {
+    "level": 50,
+    "defense": 20.0,
+    "resistance": 10.0
+  },
+  {
+    "level": 51,
+    "defense": 20.4,
+    "resistance": 10.2
+  },
+  {
+    "level": 52,
+    "defense": 20.8,
+    "resistance": 10.4
+  },
+  {
+    "level": 53,
+    "defense": 21.2,
+    "resistance": 10.6
+  },
+  {
+    "level": 54,
+    "defense": 21.6,
+    "resistance": 10.8
+  },
+  {
+    "level": 55,
+    "defense": 22.0,
+    "resistance": 11.0
+  },
+  {
+    "level": 56,
+    "defense": 22.4,
+    "resistance": 11.2
+  },
+  {
+    "level": 57,
+    "defense": 22.8,
+    "resistance": 11.4
+  },
+  {
+    "level": 58,
+    "defense": 23.2,
+    "resistance": 11.6
+  },
+  {
+    "level": 59,
+    "defense": 23.6,
+    "resistance": 11.8
+  },
+  {
+    "level": 60,
+    "defense": 24.0,
+    "resistance": 12.0
+  },
+  {
+    "level": 61,
+    "defense": 24.4,
+    "resistance": 12.2
+  },
+  {
+    "level": 62,
+    "defense": 24.8,
+    "resistance": 12.4
+  },
+  {
+    "level": 63,
+    "defense": 25.2,
+    "resistance": 12.6
+  },
+  {
+    "level": 64,
+    "defense": 25.6,
+    "resistance": 12.8
+  },
+  {
+    "level": 65,
+    "defense": 26.0,
+    "resistance": 13.0
+  },
+  {
+    "level": 66,
+    "defense": 26.4,
+    "resistance": 13.2
+  },
+  {
+    "level": 67,
+    "defense": 26.8,
+    "resistance": 13.4
+  },
+  {
+    "level": 68,
+    "defense": 27.2,
+    "resistance": 13.6
+  },
+  {
+    "level": 69,
+    "defense": 27.6,
+    "resistance": 13.8
+  },
+  {
+    "level": 70,
+    "defense": 28.0,
+    "resistance": 14.0
+  },
+  {
+    "level": 71,
+    "defense": 28.4,
+    "resistance": 14.2
+  },
+  {
+    "level": 72,
+    "defense": 29.4,
+    "resistance": 15.2
+  },
+  {
+    "level": 73,
+    "defense": 30.4,
+    "resistance": 16.2
+  },
+  {
+    "level": 74,
+    "defense": 31.4,
+    "resistance": 17.2
+  },
+  {
+    "level": 75,
+    "defense": 32.4,
+    "resistance": 18.2
+  },
+  {
+    "level": 76,
+    "defense": 33.4,
+    "resistance": 19.2
+  },
+  {
+    "level": 77,
+    "defense": 34.4,
+    "resistance": 20.2
+  },
+  {
+    "level": 78,
+    "defense": 35.4,
+    "resistance": 21.2
+  },
+  {
+    "level": 79,
+    "defense": 36.4,
+    "resistance": 22.2
+  },
+  {
+    "level": 80,
+    "defense": 37.4,
+    "resistance": 23.2
+  },
+  {
+    "level": 81,
+    "defense": 38.4,
+    "resistance": 24.2
+  },
+  {
+    "level": 82,
+    "defense": 39.4,
+    "resistance": 25.2
+  },
+  {
+    "level": 83,
+    "defense": 40.4,
+    "resistance": 26.2
+  },
+  {
+    "level": 84,
+    "defense": 41.4,
+    "resistance": 27.2
+  },
+  {
+    "level": 85,
+    "defense": 42.4,
+    "resistance": 28.2
+  },
+  {
+    "level": 86,
+    "defense": 43.4,
+    "resistance": 29.2
+  },
+  {
+    "level": 87,
+    "defense": 44.4,
+    "resistance": 30.2
+  },
+  {
+    "level": 88,
+    "defense": 45.4,
+    "resistance": 31.2
+  },
+  {
+    "level": 89,
+    "defense": 46.4,
+    "resistance": 32.2
+  },
+  {
+    "level": 90,
+    "defense": 47.4,
+    "resistance": 33.2
+  },
+  {
+    "level": 91,
+    "defense": 48.4,
+    "resistance": 34.2
+  },
+  {
+    "level": 92,
+    "defense": 48.61,
+    "resistance": 35.2
+  },
+  {
+    "level": 93,
+    "defense": 48.82,
+    "resistance": 36.2
+  },
+  {
+    "level": 94,
+    "defense": 49.03,
+    "resistance": 37.2
+  },
+  {
+    "level": 95,
+    "defense": 49.24,
+    "resistance": 38.2
+  },
+  {
+    "level": 96,
+    "defense": 49.45,
+    "resistance": 39.2
+  },
+  {
+    "level": 97,
+    "defense": 49.66,
+    "resistance": 40.2
+  },
+  {
+    "level": 98,
+    "defense": 49.87,
+    "resistance": 41.2
+  },
+  {
+    "level": 99,
+    "defense": 50.08,
+    "resistance": 42.2
+  },
+  {
+    "level": 100,
+    "defense": 50.29,
+    "resistance": 43.2
+  },
+  {
+    "level": 101,
+    "defense": 50.5,
+    "resistance": 44.2
+  },
+  {
+    "level": 102,
+    "defense": 50.71,
+    "resistance": 45.2
+  },
+  {
+    "level": 103,
+    "defense": 50.92,
+    "resistance": 46.2
+  },
+  {
+    "level": 104,
+    "defense": 51.13,
+    "resistance": 47.2
+  },
+  {
+    "level": 105,
+    "defense": 51.34,
+    "resistance": 48.2
+  },
+  {
+    "level": 106,
+    "defense": 51.55,
+    "resistance": 49.2
+  },
+  {
+    "level": 107,
+    "defense": 51.76,
+    "resistance": 50.2
+  },
+  {
+    "level": 108,
+    "defense": 51.97,
+    "resistance": 51.2
+  },
+  {
+    "level": 109,
+    "defense": 52.18,
+    "resistance": 52.2
+  },
+  {
+    "level": 110,
+    "defense": 52.39,
+    "resistance": 53.2
+  },
+  {
+    "level": 111,
+    "defense": 52.6,
+    "resistance": 54.2
+  },
+  {
+    "level": 112,
+    "defense": 52.81,
+    "resistance": 54.5
+  },
+  {
+    "level": 113,
+    "defense": 53.02,
+    "resistance": 54.8
+  },
+  {
+    "level": 114,
+    "defense": 53.23,
+    "resistance": 55.1
+  },
+  {
+    "level": 115,
+    "defense": 53.44,
+    "resistance": 55.4
+  },
+  {
+    "level": 116,
+    "defense": 53.65,
+    "resistance": 55.7
+  },
+  {
+    "level": 117,
+    "defense": 53.86,
+    "resistance": 56.0
+  },
+  {
+    "level": 118,
+    "defense": 54.07,
+    "resistance": 56.3
+  },
+  {
+    "level": 119,
+    "defense": 54.28,
+    "resistance": 56.6
+  },
+  {
+    "level": 120,
+    "defense": 54.49,
+    "resistance": 56.9
+  },
+  {
+    "level": 121,
+    "defense": 54.7,
+    "resistance": 57.2
+  },
+  {
+    "level": 122,
+    "defense": 54.91,
+    "resistance": 57.5
+  },
+  {
+    "level": 123,
+    "defense": 55.12,
+    "resistance": 57.8
+  },
+  {
+    "level": 124,
+    "defense": 55.33,
+    "resistance": 58.1
+  },
+  {
+    "level": 125,
+    "defense": 55.54,
+    "resistance": 58.4
+  },
+  {
+    "level": 126,
+    "defense": 55.75,
+    "resistance": 58.7
+  },
+  {
+    "level": 127,
+    "defense": 55.96,
+    "resistance": 59.0
+  },
+  {
+    "level": 128,
+    "defense": 56.17,
+    "resistance": 59.3
+  },
+  {
+    "level": 129,
+    "defense": 56.38,
+    "resistance": 59.6
+  },
+  {
+    "level": 130,
+    "defense": 56.59,
+    "resistance": 59.9
+  },
+  {
+    "level": 131,
+    "defense": 56.8,
+    "resistance": 60.2
+  },
+  {
+    "level": 132,
+    "defense": 57.01,
+    "resistance": 60.5
+  },
+  {
+    "level": 133,
+    "defense": 57.22,
+    "resistance": 60.8
+  },
+  {
+    "level": 134,
+    "defense": 57.43,
+    "resistance": 61.1
+  },
+  {
+    "level": 135,
+    "defense": 57.64,
+    "resistance": 61.4
+  },
+  {
+    "level": 136,
+    "defense": 57.85,
+    "resistance": 61.7
+  },
+  {
+    "level": 137,
+    "defense": 58.06,
+    "resistance": 62.0
+  },
+  {
+    "level": 138,
+    "defense": 58.27,
+    "resistance": 62.3
+  },
+  {
+    "level": 139,
+    "defense": 58.48,
+    "resistance": 62.6
+  },
+  {
+    "level": 140,
+    "defense": 58.69,
+    "resistance": 62.9
+  },
+  {
+    "level": 141,
+    "defense": 58.9,
+    "resistance": 63.2
+  },
+  {
+    "level": 142,
+    "defense": 59.11,
+    "resistance": 63.5
+  },
+  {
+    "level": 143,
+    "defense": 59.32,
+    "resistance": 63.8
+  },
+  {
+    "level": 144,
+    "defense": 59.53,
+    "resistance": 64.1
+  },
+  {
+    "level": 145,
+    "defense": 59.74,
+    "resistance": 64.4
+  },
+  {
+    "level": 146,
+    "defense": 59.95,
+    "resistance": 64.7
+  },
+  {
+    "level": 147,
+    "defense": 60.16,
+    "resistance": 65.0
+  },
+  {
+    "level": 148,
+    "defense": 60.37,
+    "resistance": 65.3
+  },
+  {
+    "level": 149,
+    "defense": 60.58,
+    "resistance": 65.6
+  },
+  {
+    "level": 150,
+    "defense": 60.79,
+    "resistance": 65.9
+  },
+  {
+    "level": 151,
+    "defense": 61.0,
+    "resistance": 66.2
+  },
+  {
+    "level": 152,
+    "defense": 61.21,
+    "resistance": 66.5
+  },
+  {
+    "level": 153,
+    "defense": 61.42,
+    "resistance": 66.8
+  },
+  {
+    "level": 154,
+    "defense": 61.63,
+    "resistance": 67.1
+  },
+  {
+    "level": 155,
+    "defense": 61.84,
+    "resistance": 67.4
+  },
+  {
+    "level": 156,
+    "defense": 62.05,
+    "resistance": 67.7
+  },
+  {
+    "level": 157,
+    "defense": 62.26,
+    "resistance": 68.0
+  },
+  {
+    "level": 158,
+    "defense": 62.47,
+    "resistance": 68.3
+  },
+  {
+    "level": 159,
+    "defense": 62.68,
+    "resistance": 68.6
+  },
+  {
+    "level": 160,
+    "defense": 62.89,
+    "resistance": 68.9
+  },
+  {
+    "level": 161,
+    "defense": 63.1,
+    "resistance": 69.2
+  },
+  {
+    "level": 162,
+    "defense": 63.13,
+    "resistance": 69.23
+  },
+  {
+    "level": 163,
+    "defense": 63.16,
+    "resistance": 69.26
+  },
+  {
+    "level": 164,
+    "defense": 63.19,
+    "resistance": 69.29
+  },
+  {
+    "level": 165,
+    "defense": 63.22,
+    "resistance": 69.32
+  },
+  {
+    "level": 166,
+    "defense": 63.25,
+    "resistance": 69.35
+  },
+  {
+    "level": 167,
+    "defense": 63.28,
+    "resistance": 69.38
+  },
+  {
+    "level": 168,
+    "defense": 63.31,
+    "resistance": 69.41
+  },
+  {
+    "level": 169,
+    "defense": 63.34,
+    "resistance": 69.44
+  },
+  {
+    "level": 170,
+    "defense": 63.37,
+    "resistance": 69.47
+  },
+  {
+    "level": 171,
+    "defense": 63.4,
+    "resistance": 69.5
+  },
+  {
+    "level": 172,
+    "defense": 63.43,
+    "resistance": 69.53
+  },
+  {
+    "level": 173,
+    "defense": 63.46,
+    "resistance": 69.56
+  },
+  {
+    "level": 174,
+    "defense": 63.49,
+    "resistance": 69.59
+  },
+  {
+    "level": 175,
+    "defense": 63.52,
+    "resistance": 69.62
+  },
+  {
+    "level": 176,
+    "defense": 63.55,
+    "resistance": 69.65
+  },
+  {
+    "level": 177,
+    "defense": 63.58,
+    "resistance": 69.68
+  },
+  {
+    "level": 178,
+    "defense": 63.61,
+    "resistance": 69.71
+  },
+  {
+    "level": 179,
+    "defense": 63.64,
+    "resistance": 69.74
+  },
+  {
+    "level": 180,
+    "defense": 63.67,
+    "resistance": 69.77
+  },
+  {
+    "level": 181,
+    "defense": 63.7,
+    "resistance": 69.8
+  },
+  {
+    "level": 182,
+    "defense": 63.73,
+    "resistance": 69.83
+  },
+  {
+    "level": 183,
+    "defense": 63.76,
+    "resistance": 69.86
+  },
+  {
+    "level": 184,
+    "defense": 63.79,
+    "resistance": 69.89
+  },
+  {
+    "level": 185,
+    "defense": 63.82,
+    "resistance": 69.92
+  },
+  {
+    "level": 186,
+    "defense": 63.85,
+    "resistance": 69.95
+  },
+  {
+    "level": 187,
+    "defense": 63.88,
+    "resistance": 69.98
+  },
+  {
+    "level": 188,
+    "defense": 63.91,
+    "resistance": 70.01
+  },
+  {
+    "level": 189,
+    "defense": 63.94,
+    "resistance": 70.04
+  },
+  {
+    "level": 190,
+    "defense": 63.97,
+    "resistance": 70.07
+  },
+  {
+    "level": 191,
+    "defense": 64.0,
+    "resistance": 70.1
+  },
+  {
+    "level": 192,
+    "defense": 64.03,
+    "resistance": 70.13
+  },
+  {
+    "level": 193,
+    "defense": 64.06,
+    "resistance": 70.16
+  },
+  {
+    "level": 194,
+    "defense": 64.09,
+    "resistance": 70.19
+  },
+  {
+    "level": 195,
+    "defense": 64.12,
+    "resistance": 70.22
+  },
+  {
+    "level": 196,
+    "defense": 64.15,
+    "resistance": 70.25
+  },
+  {
+    "level": 197,
+    "defense": 64.18,
+    "resistance": 70.28
+  },
+  {
+    "level": 198,
+    "defense": 64.21,
+    "resistance": 70.31
+  },
+  {
+    "level": 199,
+    "defense": 64.24,
+    "resistance": 70.34
+  },
+  {
+    "level": 200,
+    "defense": 64.27,
+    "resistance": 70.37
+  },
+  {
+    "level": 201,
+    "defense": 64.3,
+    "resistance": 70.4
+  },
+  {
+    "level": 202,
+    "defense": 64.33,
+    "resistance": 70.43
+  },
+  {
+    "level": 203,
+    "defense": 64.36,
+    "resistance": 70.46
+  },
+  {
+    "level": 204,
+    "defense": 64.39,
+    "resistance": 70.49
+  },
+  {
+    "level": 205,
+    "defense": 64.42,
+    "resistance": 70.52
+  },
+  {
+    "level": 206,
+    "defense": 64.45,
+    "resistance": 70.55
+  },
+  {
+    "level": 207,
+    "defense": 64.48,
+    "resistance": 70.58
+  },
+  {
+    "level": 208,
+    "defense": 64.51,
+    "resistance": 70.61
+  },
+  {
+    "level": 209,
+    "defense": 64.54,
+    "resistance": 70.64
+  },
+  {
+    "level": 210,
+    "defense": 64.57,
+    "resistance": 70.67
+  },
+  {
+    "level": 211,
+    "defense": 64.6,
+    "resistance": 70.7
+  },
+  {
+    "level": 212,
+    "defense": 64.63,
+    "resistance": 70.73
+  },
+  {
+    "level": 213,
+    "defense": 64.66,
+    "resistance": 70.76
+  },
+  {
+    "level": 214,
+    "defense": 64.69,
+    "resistance": 70.79
+  },
+  {
+    "level": 215,
+    "defense": 64.72,
+    "resistance": 70.82
+  },
+  {
+    "level": 216,
+    "defense": 64.75,
+    "resistance": 70.85
+  },
+  {
+    "level": 217,
+    "defense": 64.78,
+    "resistance": 70.88
+  },
+  {
+    "level": 218,
+    "defense": 64.81,
+    "resistance": 70.91
+  },
+  {
+    "level": 219,
+    "defense": 64.84,
+    "resistance": 70.94
+  },
+  {
+    "level": 220,
+    "defense": 64.87,
+    "resistance": 70.97
+  },
+  {
+    "level": 221,
+    "defense": 64.9,
+    "resistance": 71.0
+  },
+  {
+    "level": 222,
+    "defense": 64.93,
+    "resistance": 71.03
+  },
+  {
+    "level": 223,
+    "defense": 64.96,
+    "resistance": 71.06
+  },
+  {
+    "level": 224,
+    "defense": 64.99,
+    "resistance": 71.09
+  },
+  {
+    "level": 225,
+    "defense": 65.02,
+    "resistance": 71.12
+  },
+  {
+    "level": 226,
+    "defense": 65.05,
+    "resistance": 71.15
+  },
+  {
+    "level": 227,
+    "defense": 65.08,
+    "resistance": 71.18
+  },
+  {
+    "level": 228,
+    "defense": 65.11,
+    "resistance": 71.21
+  },
+  {
+    "level": 229,
+    "defense": 65.14,
+    "resistance": 71.24
+  },
+  {
+    "level": 230,
+    "defense": 65.17,
+    "resistance": 71.27
+  },
+  {
+    "level": 231,
+    "defense": 65.2,
+    "resistance": 71.3
+  },
+  {
+    "level": 232,
+    "defense": 65.23,
+    "resistance": 71.33
+  },
+  {
+    "level": 233,
+    "defense": 65.26,
+    "resistance": 71.36
+  },
+  {
+    "level": 234,
+    "defense": 65.29,
+    "resistance": 71.39
+  },
+  {
+    "level": 235,
+    "defense": 65.32,
+    "resistance": 71.42
+  },
+  {
+    "level": 236,
+    "defense": 65.35,
+    "resistance": 71.45
+  },
+  {
+    "level": 237,
+    "defense": 65.38,
+    "resistance": 71.48
+  },
+  {
+    "level": 238,
+    "defense": 65.41,
+    "resistance": 71.51
+  },
+  {
+    "level": 239,
+    "defense": 65.44,
+    "resistance": 71.54
+  },
+  {
+    "level": 240,
+    "defense": 65.47,
+    "resistance": 71.57
+  },
+  {
+    "level": 241,
+    "defense": 65.5,
+    "resistance": 71.6
+  },
+  {
+    "level": 242,
+    "defense": 65.53,
+    "resistance": 71.63
+  },
+  {
+    "level": 243,
+    "defense": 65.56,
+    "resistance": 71.66
+  },
+  {
+    "level": 244,
+    "defense": 65.6,
+    "resistance": 71.69
+  },
+  {
+    "level": 245,
+    "defense": 65.63,
+    "resistance": 71.72
+  },
+  {
+    "level": 246,
+    "defense": 65.66,
+    "resistance": 71.75
+  },
+  {
+    "level": 247,
+    "defense": 65.69,
+    "resistance": 71.78
+  },
+  {
+    "level": 248,
+    "defense": 65.72,
+    "resistance": 71.81
+  },
+  {
+    "level": 249,
+    "defense": 65.75,
+    "resistance": 71.84
+  },
+  {
+    "level": 250,
+    "defense": 65.78,
+    "resistance": 71.87
+  },
+  {
+    "level": 251,
+    "defense": 65.81,
+    "resistance": 71.9
+  },
+  {
+    "level": 252,
+    "defense": 65.84,
+    "resistance": 71.93
+  },
+  {
+    "level": 253,
+    "defense": 65.87,
+    "resistance": 71.96
+  },
+  {
+    "level": 254,
+    "defense": 65.9,
+    "resistance": 71.99
+  },
+  {
+    "level": 255,
+    "defense": 65.93,
+    "resistance": 72.02
+  },
+  {
+    "level": 256,
+    "defense": 65.96,
+    "resistance": 72.05
+  },
+  {
+    "level": 257,
+    "defense": 65.99,
+    "resistance": 72.08
+  },
+  {
+    "level": 258,
+    "defense": 66.02,
+    "resistance": 72.11
+  },
+  {
+    "level": 259,
+    "defense": 66.05,
+    "resistance": 72.14
+  },
+  {
+    "level": 260,
+    "defense": 66.08,
+    "resistance": 72.17
+  },
+  {
+    "level": 261,
+    "defense": 66.11,
+    "resistance": 72.2
+  },
+  {
+    "level": 262,
+    "defense": 66.14,
+    "resistance": 72.23
+  },
+  {
+    "level": 263,
+    "defense": 66.17,
+    "resistance": 72.26
+  },
+  {
+    "level": 264,
+    "defense": 66.2,
+    "resistance": 72.29
+  },
+  {
+    "level": 265,
+    "defense": 66.23,
+    "resistance": 72.32
+  },
+  {
+    "level": 266,
+    "defense": 66.26,
+    "resistance": 72.35
+  },
+  {
+    "level": 267,
+    "defense": 66.29,
+    "resistance": 72.38
+  },
+  {
+    "level": 268,
+    "defense": 66.32,
+    "resistance": 72.41
+  },
+  {
+    "level": 269,
+    "defense": 66.35,
+    "resistance": 72.44
+  },
+  {
+    "level": 270,
+    "defense": 66.38,
+    "resistance": 72.47
+  },
+  {
+    "level": 271,
+    "defense": 66.41,
+    "resistance": 72.5
+  },
+  {
+    "level": 272,
+    "defense": 66.44,
+    "resistance": 72.53
+  },
+  {
+    "level": 273,
+    "defense": 66.47,
+    "resistance": 72.56
+  },
+  {
+    "level": 274,
+    "defense": 66.5,
+    "resistance": 72.59
+  },
+  {
+    "level": 275,
+    "defense": 66.53,
+    "resistance": 72.62
+  },
+  {
+    "level": 276,
+    "defense": 66.56,
+    "resistance": 72.65
+  },
+  {
+    "level": 277,
+    "defense": 66.59,
+    "resistance": 72.68
+  },
+  {
+    "level": 278,
+    "defense": 66.62,
+    "resistance": 72.71
+  },
+  {
+    "level": 279,
+    "defense": 66.65,
+    "resistance": 72.74
+  },
+  {
+    "level": 280,
+    "defense": 66.68,
+    "resistance": 72.77
+  },
+  {
+    "level": 281,
+    "defense": 66.71,
+    "resistance": 72.8
+  },
+  {
+    "level": 282,
+    "defense": 66.74,
+    "resistance": 72.83
+  },
+  {
+    "level": 283,
+    "defense": 66.77,
+    "resistance": 72.86
+  },
+  {
+    "level": 284,
+    "defense": 66.8,
+    "resistance": 72.89
+  },
+  {
+    "level": 285,
+    "defense": 66.83,
+    "resistance": 72.92
+  },
+  {
+    "level": 286,
+    "defense": 66.86,
+    "resistance": 72.95
+  },
+  {
+    "level": 287,
+    "defense": 66.89,
+    "resistance": 72.98
+  },
+  {
+    "level": 288,
+    "defense": 66.92,
+    "resistance": 73.01
+  },
+  {
+    "level": 289,
+    "defense": 66.95,
+    "resistance": 73.04
+  },
+  {
+    "level": 290,
+    "defense": 66.98,
+    "resistance": 73.07
+  },
+  {
+    "level": 291,
+    "defense": 67.01,
+    "resistance": 73.1
+  },
+  {
+    "level": 292,
+    "defense": 67.04,
+    "resistance": 73.13
+  },
+  {
+    "level": 293,
+    "defense": 67.07,
+    "resistance": 73.16
+  },
+  {
+    "level": 294,
+    "defense": 67.1,
+    "resistance": 73.19
+  },
+  {
+    "level": 295,
+    "defense": 67.13,
+    "resistance": 73.22
+  },
+  {
+    "level": 296,
+    "defense": 67.16,
+    "resistance": 73.25
+  },
+  {
+    "level": 297,
+    "defense": 67.19,
+    "resistance": 73.28
+  },
+  {
+    "level": 298,
+    "defense": 67.22,
+    "resistance": 73.31
+  },
+  {
+    "level": 299,
+    "defense": 67.25,
+    "resistance": 73.34
+  },
+  {
+    "level": 300,
+    "defense": 67.28,
+    "resistance": 73.37
+  },
+  {
+    "level": 301,
+    "defense": 67.31,
+    "resistance": 73.4
+  },
+  {
+    "level": 302,
+    "defense": 67.34,
+    "resistance": 73.43
+  },
+  {
+    "level": 303,
+    "defense": 67.37,
+    "resistance": 73.46
+  },
+  {
+    "level": 304,
+    "defense": 67.4,
+    "resistance": 73.49
+  },
+  {
+    "level": 305,
+    "defense": 67.43,
+    "resistance": 73.52
+  },
+  {
+    "level": 306,
+    "defense": 67.46,
+    "resistance": 73.55
+  },
+  {
+    "level": 307,
+    "defense": 67.49,
+    "resistance": 73.58
+  },
+  {
+    "level": 308,
+    "defense": 67.52,
+    "resistance": 73.61
+  },
+  {
+    "level": 309,
+    "defense": 67.55,
+    "resistance": 73.64
+  },
+  {
+    "level": 310,
+    "defense": 67.58,
+    "resistance": 73.67
+  },
+  {
+    "level": 311,
+    "defense": 67.61,
+    "resistance": 73.7
+  },
+  {
+    "level": 312,
+    "defense": 67.64,
+    "resistance": 73.73
+  },
+  {
+    "level": 313,
+    "defense": 67.67,
+    "resistance": 73.76
+  },
+  {
+    "level": 314,
+    "defense": 67.7,
+    "resistance": 73.79
+  },
+  {
+    "level": 315,
+    "defense": 67.73,
+    "resistance": 73.82
+  },
+  {
+    "level": 316,
+    "defense": 67.76,
+    "resistance": 73.85
+  },
+  {
+    "level": 317,
+    "defense": 67.79,
+    "resistance": 73.88
+  },
+  {
+    "level": 318,
+    "defense": 67.82,
+    "resistance": 73.91
+  },
+  {
+    "level": 319,
+    "defense": 67.85,
+    "resistance": 73.94
+  },
+  {
+    "level": 320,
+    "defense": 67.88,
+    "resistance": 73.97
+  },
+  {
+    "level": 321,
+    "defense": 67.91,
+    "resistance": 74.0
+  },
+  {
+    "level": 322,
+    "defense": 67.94,
+    "resistance": 74.03
+  },
+  {
+    "level": 323,
+    "defense": 67.97,
+    "resistance": 74.06
+  },
+  {
+    "level": 324,
+    "defense": 68.0,
+    "resistance": 74.09
+  },
+  {
+    "level": 325,
+    "defense": 68.03,
+    "resistance": 74.12
+  },
+  {
+    "level": 326,
+    "defense": 68.06,
+    "resistance": 74.15
+  },
+  {
+    "level": 327,
+    "defense": 68.09,
+    "resistance": 74.18
+  },
+  {
+    "level": 328,
+    "defense": 68.12,
+    "resistance": 74.21
+  },
+  {
+    "level": 329,
+    "defense": 68.15,
+    "resistance": 74.24
+  },
+  {
+    "level": 330,
+    "defense": 68.18,
+    "resistance": 74.27
+  },
+  {
+    "level": 331,
+    "defense": 68.21,
+    "resistance": 74.3
+  },
+  {
+    "level": 332,
+    "defense": 68.24,
+    "resistance": 74.33
+  },
+  {
+    "level": 333,
+    "defense": 68.27,
+    "resistance": 74.36
+  },
+  {
+    "level": 334,
+    "defense": 68.3,
+    "resistance": 74.39
+  },
+  {
+    "level": 335,
+    "defense": 68.33,
+    "resistance": 74.42
+  },
+  {
+    "level": 336,
+    "defense": 68.36,
+    "resistance": 74.45
+  },
+  {
+    "level": 337,
+    "defense": 68.39,
+    "resistance": 74.48
+  },
+  {
+    "level": 338,
+    "defense": 68.42,
+    "resistance": 74.51
+  },
+  {
+    "level": 339,
+    "defense": 68.45,
+    "resistance": 74.54
+  },
+  {
+    "level": 340,
+    "defense": 68.48,
+    "resistance": 74.57
+  },
+  {
+    "level": 341,
+    "defense": 68.51,
+    "resistance": 74.6
+  },
+  {
+    "level": 342,
+    "defense": 68.54,
+    "resistance": 74.63
+  },
+  {
+    "level": 343,
+    "defense": 68.57,
+    "resistance": 74.66
+  },
+  {
+    "level": 344,
+    "defense": 68.6,
+    "resistance": 74.69
+  },
+  {
+    "level": 345,
+    "defense": 68.63,
+    "resistance": 74.72
+  },
+  {
+    "level": 346,
+    "defense": 68.66,
+    "resistance": 74.75
+  },
+  {
+    "level": 347,
+    "defense": 68.69,
+    "resistance": 74.78
+  },
+  {
+    "level": 348,
+    "defense": 68.72,
+    "resistance": 74.81
+  },
+  {
+    "level": 349,
+    "defense": 68.75,
+    "resistance": 74.84
+  },
+  {
+    "level": 350,
+    "defense": 68.78,
+    "resistance": 74.87
+  },
+  {
+    "level": 351,
+    "defense": 68.81,
+    "resistance": 74.9
+  },
+  {
+    "level": 352,
+    "defense": 68.84,
+    "resistance": 74.93
+  },
+  {
+    "level": 353,
+    "defense": 68.87,
+    "resistance": 74.96
+  },
+  {
+    "level": 354,
+    "defense": 68.9,
+    "resistance": 74.99
+  },
+  {
+    "level": 355,
+    "defense": 68.93,
+    "resistance": 75.02
+  },
+  {
+    "level": 356,
+    "defense": 68.96,
+    "resistance": 75.05
+  },
+  {
+    "level": 357,
+    "defense": 68.99,
+    "resistance": 75.08
+  },
+  {
+    "level": 358,
+    "defense": 69.02,
+    "resistance": 75.11
+  },
+  {
+    "level": 359,
+    "defense": 69.05,
+    "resistance": 75.14
+  },
+  {
+    "level": 360,
+    "defense": 69.08,
+    "resistance": 75.17
+  },
+  {
+    "level": 361,
+    "defense": 69.11,
+    "resistance": 75.2
+  },
+  {
+    "level": 362,
+    "defense": 69.14,
+    "resistance": 75.23
+  },
+  {
+    "level": 363,
+    "defense": 69.17,
+    "resistance": 75.26
+  },
+  {
+    "level": 364,
+    "defense": 69.2,
+    "resistance": 75.29
+  },
+  {
+    "level": 365,
+    "defense": 69.23,
+    "resistance": 75.32
+  },
+  {
+    "level": 366,
+    "defense": 69.26,
+    "resistance": 75.35
+  },
+  {
+    "level": 367,
+    "defense": 69.29,
+    "resistance": 75.38
+  },
+  {
+    "level": 368,
+    "defense": 69.32,
+    "resistance": 75.41
+  },
+  {
+    "level": 369,
+    "defense": 69.35,
+    "resistance": 75.44
+  },
+  {
+    "level": 370,
+    "defense": 69.38,
+    "resistance": 75.47
+  },
+  {
+    "level": 371,
+    "defense": 69.41,
+    "resistance": 75.5
+  },
+  {
+    "level": 372,
+    "defense": 69.44,
+    "resistance": 75.53
+  },
+  {
+    "level": 373,
+    "defense": 69.47,
+    "resistance": 75.56
+  },
+  {
+    "level": 374,
+    "defense": 69.5,
+    "resistance": 75.59
+  },
+  {
+    "level": 375,
+    "defense": 69.53,
+    "resistance": 75.62
+  },
+  {
+    "level": 376,
+    "defense": 69.56,
+    "resistance": 75.65
+  },
+  {
+    "level": 377,
+    "defense": 69.59,
+    "resistance": 75.68
+  },
+  {
+    "level": 378,
+    "defense": 69.62,
+    "resistance": 75.71
+  },
+  {
+    "level": 379,
+    "defense": 69.65,
+    "resistance": 75.74
+  },
+  {
+    "level": 380,
+    "defense": 69.68,
+    "resistance": 75.77
+  },
+  {
+    "level": 381,
+    "defense": 69.71,
+    "resistance": 75.8
+  },
+  {
+    "level": 382,
+    "defense": 69.74,
+    "resistance": 75.83
+  },
+  {
+    "level": 383,
+    "defense": 69.77,
+    "resistance": 75.86
+  },
+  {
+    "level": 384,
+    "defense": 69.8,
+    "resistance": 75.89
+  },
+  {
+    "level": 385,
+    "defense": 69.83,
+    "resistance": 75.92
+  },
+  {
+    "level": 386,
+    "defense": 69.86,
+    "resistance": 75.95
+  },
+  {
+    "level": 387,
+    "defense": 69.89,
+    "resistance": 75.98
+  },
+  {
+    "level": 388,
+    "defense": 69.92,
+    "resistance": 76.01
+  },
+  {
+    "level": 389,
+    "defense": 69.95,
+    "resistance": 76.04
+  },
+  {
+    "level": 390,
+    "defense": 69.98,
+    "resistance": 76.07
+  },
+  {
+    "level": 391,
+    "defense": 70.01,
+    "resistance": 76.1
+  },
+  {
+    "level": 392,
+    "defense": 70.04,
+    "resistance": 76.13
+  },
+  {
+    "level": 393,
+    "defense": 70.07,
+    "resistance": 76.16
+  },
+  {
+    "level": 394,
+    "defense": 70.1,
+    "resistance": 76.19
+  },
+  {
+    "level": 395,
+    "defense": 70.13,
+    "resistance": 76.22
+  },
+  {
+    "level": 396,
+    "defense": 70.16,
+    "resistance": 76.25
+  },
+  {
+    "level": 397,
+    "defense": 70.19,
+    "resistance": 76.28
+  },
+  {
+    "level": 398,
+    "defense": 70.22,
+    "resistance": 76.31
+  },
+  {
+    "level": 399,
+    "defense": 70.25,
+    "resistance": 76.34
+  },
+  {
+    "level": 400,
+    "defense": 70.28,
+    "resistance": 76.37
+  },
+  {
+    "level": 401,
+    "defense": 70.31,
+    "resistance": 76.4
+  },
+  {
+    "level": 402,
+    "defense": 70.34,
+    "resistance": 76.43
+  },
+  {
+    "level": 403,
+    "defense": 70.37,
+    "resistance": 76.46
+  },
+  {
+    "level": 404,
+    "defense": 70.4,
+    "resistance": 76.49
+  },
+  {
+    "level": 405,
+    "defense": 70.43,
+    "resistance": 76.52
+  },
+  {
+    "level": 406,
+    "defense": 70.46,
+    "resistance": 76.55
+  },
+  {
+    "level": 407,
+    "defense": 70.49,
+    "resistance": 76.58
+  },
+  {
+    "level": 408,
+    "defense": 70.52,
+    "resistance": 76.61
+  },
+  {
+    "level": 409,
+    "defense": 70.55,
+    "resistance": 76.64
+  },
+  {
+    "level": 410,
+    "defense": 70.58,
+    "resistance": 76.67
+  },
+  {
+    "level": 411,
+    "defense": 70.61,
+    "resistance": 76.7
+  },
+  {
+    "level": 412,
+    "defense": 70.64,
+    "resistance": 76.73
+  },
+  {
+    "level": 413,
+    "defense": 70.67,
+    "resistance": 76.76
+  },
+  {
+    "level": 414,
+    "defense": 70.7,
+    "resistance": 76.79
+  },
+  {
+    "level": 415,
+    "defense": 70.73,
+    "resistance": 76.82
+  },
+  {
+    "level": 416,
+    "defense": 70.76,
+    "resistance": 76.85
+  },
+  {
+    "level": 417,
+    "defense": 70.79,
+    "resistance": 76.88
+  },
+  {
+    "level": 418,
+    "defense": 70.82,
+    "resistance": 76.91
+  },
+  {
+    "level": 419,
+    "defense": 70.85,
+    "resistance": 76.94
+  },
+  {
+    "level": 420,
+    "defense": 70.88,
+    "resistance": 76.97
+  },
+  {
+    "level": 421,
+    "defense": 70.91,
+    "resistance": 77.0
+  },
+  {
+    "level": 422,
+    "defense": 70.94,
+    "resistance": 77.03
+  },
+  {
+    "level": 423,
+    "defense": 70.97,
+    "resistance": 77.06
+  },
+  {
+    "level": 424,
+    "defense": 71.0,
+    "resistance": 77.09
+  },
+  {
+    "level": 425,
+    "defense": 71.03,
+    "resistance": 77.12
+  },
+  {
+    "level": 426,
+    "defense": 71.06,
+    "resistance": 77.15
+  },
+  {
+    "level": 427,
+    "defense": 71.09,
+    "resistance": 77.18
+  },
+  {
+    "level": 428,
+    "defense": 71.12,
+    "resistance": 77.21
+  },
+  {
+    "level": 429,
+    "defense": 71.15,
+    "resistance": 77.24
+  },
+  {
+    "level": 430,
+    "defense": 71.18,
+    "resistance": 77.27
+  },
+  {
+    "level": 431,
+    "defense": 71.21,
+    "resistance": 77.3
+  },
+  {
+    "level": 432,
+    "defense": 71.24,
+    "resistance": 77.33
+  },
+  {
+    "level": 433,
+    "defense": 71.27,
+    "resistance": 77.36
+  },
+  {
+    "level": 434,
+    "defense": 71.3,
+    "resistance": 77.39
+  },
+  {
+    "level": 435,
+    "defense": 71.33,
+    "resistance": 77.42
+  },
+  {
+    "level": 436,
+    "defense": 71.36,
+    "resistance": 77.45
+  },
+  {
+    "level": 437,
+    "defense": 71.39,
+    "resistance": 77.48
+  },
+  {
+    "level": 438,
+    "defense": 71.42,
+    "resistance": 77.51
+  },
+  {
+    "level": 439,
+    "defense": 71.45,
+    "resistance": 77.54
+  },
+  {
+    "level": 440,
+    "defense": 71.48,
+    "resistance": 77.57
+  },
+  {
+    "level": 441,
+    "defense": 71.51,
+    "resistance": 77.6
+  },
+  {
+    "level": 442,
+    "defense": 71.54,
+    "resistance": 77.63
+  },
+  {
+    "level": 443,
+    "defense": 71.57,
+    "resistance": 77.66
+  },
+  {
+    "level": 444,
+    "defense": 71.6,
+    "resistance": 77.69
+  },
+  {
+    "level": 445,
+    "defense": 71.63,
+    "resistance": 77.72
+  },
+  {
+    "level": 446,
+    "defense": 71.66,
+    "resistance": 77.75
+  },
+  {
+    "level": 447,
+    "defense": 71.69,
+    "resistance": 77.78
+  },
+  {
+    "level": 448,
+    "defense": 71.72,
+    "resistance": 77.81
+  },
+  {
+    "level": 449,
+    "defense": 71.75,
+    "resistance": 77.84
+  },
+  {
+    "level": 450,
+    "defense": 71.78,
+    "resistance": 77.87
+  },
+  {
+    "level": 451,
+    "defense": 71.81,
+    "resistance": 77.9
+  },
+  {
+    "level": 452,
+    "defense": 71.84,
+    "resistance": 77.93
+  },
+  {
+    "level": 453,
+    "defense": 71.87,
+    "resistance": 77.96
+  },
+  {
+    "level": 454,
+    "defense": 71.9,
+    "resistance": 77.99
+  },
+  {
+    "level": 455,
+    "defense": 71.93,
+    "resistance": 78.02
+  },
+  {
+    "level": 456,
+    "defense": 71.96,
+    "resistance": 78.05
+  },
+  {
+    "level": 457,
+    "defense": 71.99,
+    "resistance": 78.08
+  },
+  {
+    "level": 458,
+    "defense": 72.02,
+    "resistance": 78.11
+  },
+  {
+    "level": 459,
+    "defense": 72.05,
+    "resistance": 78.14
+  },
+  {
+    "level": 460,
+    "defense": 72.08,
+    "resistance": 78.17
+  },
+  {
+    "level": 461,
+    "defense": 72.11,
+    "resistance": 78.2
+  },
+  {
+    "level": 462,
+    "defense": 72.14,
+    "resistance": 78.23
+  },
+  {
+    "level": 463,
+    "defense": 72.17,
+    "resistance": 78.26
+  },
+  {
+    "level": 464,
+    "defense": 72.2,
+    "resistance": 78.29
+  },
+  {
+    "level": 465,
+    "defense": 72.23,
+    "resistance": 78.32
+  },
+  {
+    "level": 466,
+    "defense": 72.26,
+    "resistance": 78.35
+  },
+  {
+    "level": 467,
+    "defense": 72.29,
+    "resistance": 78.38
+  },
+  {
+    "level": 468,
+    "defense": 72.32,
+    "resistance": 78.41
+  },
+  {
+    "level": 469,
+    "defense": 72.35,
+    "resistance": 78.44
+  },
+  {
+    "level": 470,
+    "defense": 72.38,
+    "resistance": 78.47
+  },
+  {
+    "level": 471,
+    "defense": 72.41,
+    "resistance": 78.5
+  },
+  {
+    "level": 472,
+    "defense": 72.44,
+    "resistance": 78.53
+  },
+  {
+    "level": 473,
+    "defense": 72.47,
+    "resistance": 78.56
+  },
+  {
+    "level": 474,
+    "defense": 72.5,
+    "resistance": 78.59
+  },
+  {
+    "level": 475,
+    "defense": 72.53,
+    "resistance": 78.62
+  },
+  {
+    "level": 476,
+    "defense": 72.56,
+    "resistance": 78.65
+  },
+  {
+    "level": 477,
+    "defense": 72.59,
+    "resistance": 78.68
+  },
+  {
+    "level": 478,
+    "defense": 72.62,
+    "resistance": 78.71
+  },
+  {
+    "level": 479,
+    "defense": 72.65,
+    "resistance": 78.74
+  },
+  {
+    "level": 480,
+    "defense": 72.68,
+    "resistance": 78.77
+  },
+  {
+    "level": 481,
+    "defense": 72.71,
+    "resistance": 78.8
+  },
+  {
+    "level": 482,
+    "defense": 72.74,
+    "resistance": 78.83
+  },
+  {
+    "level": 483,
+    "defense": 72.77,
+    "resistance": 78.86
+  },
+  {
+    "level": 484,
+    "defense": 72.8,
+    "resistance": 78.89
+  },
+  {
+    "level": 485,
+    "defense": 72.83,
+    "resistance": 78.92
+  },
+  {
+    "level": 486,
+    "defense": 72.86,
+    "resistance": 78.95
+  },
+  {
+    "level": 487,
+    "defense": 72.89,
+    "resistance": 78.98
+  },
+  {
+    "level": 488,
+    "defense": 72.92,
+    "resistance": 79.01
+  },
+  {
+    "level": 489,
+    "defense": 72.95,
+    "resistance": 79.04
+  },
+  {
+    "level": 490,
+    "defense": 72.98,
+    "resistance": 79.07
+  },
+  {
+    "level": 491,
+    "defense": 73.01,
+    "resistance": 79.1
+  },
+  {
+    "level": 492,
+    "defense": 73.04,
+    "resistance": 79.13
+  },
+  {
+    "level": 493,
+    "defense": 73.07,
+    "resistance": 79.16
+  },
+  {
+    "level": 494,
+    "defense": 73.1,
+    "resistance": 79.19
+  },
+  {
+    "level": 495,
+    "defense": 73.13,
+    "resistance": 79.22
+  },
+  {
+    "level": 496,
+    "defense": 73.16,
+    "resistance": 79.25
+  },
+  {
+    "level": 497,
+    "defense": 73.19,
+    "resistance": 79.28
+  },
+  {
+    "level": 498,
+    "defense": 73.22,
+    "resistance": 79.31
+  },
+  {
+    "level": 499,
+    "defense": 73.25,
+    "resistance": 79.34
+  },
+  {
+    "level": 500,
+    "defense": 73.28,
+    "resistance": 79.37
+  },
+  {
+    "level": 501,
+    "defense": 73.31,
+    "resistance": 79.4
+  },
+  {
+    "level": 502,
+    "defense": 73.34,
+    "resistance": 79.43
+  },
+  {
+    "level": 503,
+    "defense": 73.37,
+    "resistance": 79.46
+  },
+  {
+    "level": 504,
+    "defense": 73.4,
+    "resistance": 79.49
+  },
+  {
+    "level": 505,
+    "defense": 73.43,
+    "resistance": 79.52
+  },
+  {
+    "level": 506,
+    "defense": 73.46,
+    "resistance": 79.55
+  },
+  {
+    "level": 507,
+    "defense": 73.49,
+    "resistance": 79.58
+  },
+  {
+    "level": 508,
+    "defense": 73.52,
+    "resistance": 79.61
+  },
+  {
+    "level": 509,
+    "defense": 73.55,
+    "resistance": 79.64
+  },
+  {
+    "level": 510,
+    "defense": 73.58,
+    "resistance": 79.67
+  },
+  {
+    "level": 511,
+    "defense": 73.61,
+    "resistance": 79.7
+  },
+  {
+    "level": 512,
+    "defense": 73.64,
+    "resistance": 79.73
+  },
+  {
+    "level": 513,
+    "defense": 73.67,
+    "resistance": 79.76
+  },
+  {
+    "level": 514,
+    "defense": 73.7,
+    "resistance": 79.79
+  },
+  {
+    "level": 515,
+    "defense": 73.73,
+    "resistance": 79.82
+  },
+  {
+    "level": 516,
+    "defense": 73.76,
+    "resistance": 79.85
+  },
+  {
+    "level": 517,
+    "defense": 73.79,
+    "resistance": 79.88
+  },
+  {
+    "level": 518,
+    "defense": 73.82,
+    "resistance": 79.91
+  },
+  {
+    "level": 519,
+    "defense": 73.85,
+    "resistance": 79.94
+  },
+  {
+    "level": 520,
+    "defense": 73.88,
+    "resistance": 79.97
+  },
+  {
+    "level": 521,
+    "defense": 73.91,
+    "resistance": 80.0
+  },
+  {
+    "level": 522,
+    "defense": 73.94,
+    "resistance": 80.03
+  },
+  {
+    "level": 523,
+    "defense": 73.97,
+    "resistance": 80.06
+  },
+  {
+    "level": 524,
+    "defense": 74.0,
+    "resistance": 80.09
+  },
+  {
+    "level": 525,
+    "defense": 74.03,
+    "resistance": 80.12
+  },
+  {
+    "level": 526,
+    "defense": 74.06,
+    "resistance": 80.15
+  },
+  {
+    "level": 527,
+    "defense": 74.09,
+    "resistance": 80.18
+  },
+  {
+    "level": 528,
+    "defense": 74.12,
+    "resistance": 80.21
+  },
+  {
+    "level": 529,
+    "defense": 74.15,
+    "resistance": 80.24
+  },
+  {
+    "level": 530,
+    "defense": 74.18,
+    "resistance": 80.27
+  },
+  {
+    "level": 531,
+    "defense": 74.21,
+    "resistance": 80.3
+  },
+  {
+    "level": 532,
+    "defense": 74.24,
+    "resistance": 80.33
+  },
+  {
+    "level": 533,
+    "defense": 74.27,
+    "resistance": 80.36
+  },
+  {
+    "level": 534,
+    "defense": 74.3,
+    "resistance": 80.39
+  },
+  {
+    "level": 535,
+    "defense": 74.33,
+    "resistance": 80.42
+  },
+  {
+    "level": 536,
+    "defense": 74.36,
+    "resistance": 80.45
+  },
+  {
+    "level": 537,
+    "defense": 74.39,
+    "resistance": 80.48
+  },
+  {
+    "level": 538,
+    "defense": 74.42,
+    "resistance": 80.51
+  },
+  {
+    "level": 539,
+    "defense": 74.45,
+    "resistance": 80.54
+  },
+  {
+    "level": 540,
+    "defense": 74.48,
+    "resistance": 80.57
+  },
+  {
+    "level": 541,
+    "defense": 74.51,
+    "resistance": 80.6
+  },
+  {
+    "level": 542,
+    "defense": 74.54,
+    "resistance": 80.63
+  },
+  {
+    "level": 543,
+    "defense": 74.57,
+    "resistance": 80.66
+  },
+  {
+    "level": 544,
+    "defense": 74.6,
+    "resistance": 80.69
+  },
+  {
+    "level": 545,
+    "defense": 74.63,
+    "resistance": 80.72
+  },
+  {
+    "level": 546,
+    "defense": 74.66,
+    "resistance": 80.75
+  },
+  {
+    "level": 547,
+    "defense": 74.69,
+    "resistance": 80.78
+  },
+  {
+    "level": 548,
+    "defense": 74.72,
+    "resistance": 80.81
+  },
+  {
+    "level": 549,
+    "defense": 74.75,
+    "resistance": 80.84
+  },
+  {
+    "level": 550,
+    "defense": 74.78,
+    "resistance": 80.87
+  },
+  {
+    "level": 551,
+    "defense": 74.81,
+    "resistance": 80.9
+  },
+  {
+    "level": 552,
+    "defense": 74.84,
+    "resistance": 80.93
+  },
+  {
+    "level": 553,
+    "defense": 74.87,
+    "resistance": 80.96
+  },
+  {
+    "level": 554,
+    "defense": 74.9,
+    "resistance": 80.99
+  },
+  {
+    "level": 555,
+    "defense": 74.93,
+    "resistance": 81.02
+  },
+  {
+    "level": 556,
+    "defense": 74.96,
+    "resistance": 81.05
+  },
+  {
+    "level": 557,
+    "defense": 74.99,
+    "resistance": 81.08
+  },
+  {
+    "level": 558,
+    "defense": 75.02,
+    "resistance": 81.11
+  },
+  {
+    "level": 559,
+    "defense": 75.05,
+    "resistance": 81.14
+  },
+  {
+    "level": 560,
+    "defense": 75.08,
+    "resistance": 81.17
+  },
+  {
+    "level": 561,
+    "defense": 75.11,
+    "resistance": 81.2
+  },
+  {
+    "level": 562,
+    "defense": 75.14,
+    "resistance": 81.23
+  },
+  {
+    "level": 563,
+    "defense": 75.17,
+    "resistance": 81.26
+  },
+  {
+    "level": 564,
+    "defense": 75.2,
+    "resistance": 81.29
+  },
+  {
+    "level": 565,
+    "defense": 75.23,
+    "resistance": 81.32
+  },
+  {
+    "level": 566,
+    "defense": 75.26,
+    "resistance": 81.35
+  },
+  {
+    "level": 567,
+    "defense": 75.29,
+    "resistance": 81.38
+  },
+  {
+    "level": 568,
+    "defense": 75.32,
+    "resistance": 81.41
+  },
+  {
+    "level": 569,
+    "defense": 75.35,
+    "resistance": 81.44
+  },
+  {
+    "level": 570,
+    "defense": 75.38,
+    "resistance": 81.47
+  },
+  {
+    "level": 571,
+    "defense": 75.41,
+    "resistance": 81.5
+  },
+  {
+    "level": 572,
+    "defense": 75.44,
+    "resistance": 81.53
+  },
+  {
+    "level": 573,
+    "defense": 75.47,
+    "resistance": 81.56
+  },
+  {
+    "level": 574,
+    "defense": 75.5,
+    "resistance": 81.59
+  },
+  {
+    "level": 575,
+    "defense": 75.53,
+    "resistance": 81.62
+  },
+  {
+    "level": 576,
+    "defense": 75.56,
+    "resistance": 81.65
+  },
+  {
+    "level": 577,
+    "defense": 75.59,
+    "resistance": 81.68
+  },
+  {
+    "level": 578,
+    "defense": 75.62,
+    "resistance": 81.71
+  },
+  {
+    "level": 579,
+    "defense": 75.65,
+    "resistance": 81.74
+  },
+  {
+    "level": 580,
+    "defense": 75.68,
+    "resistance": 81.77
+  },
+  {
+    "level": 581,
+    "defense": 75.71,
+    "resistance": 81.8
+  },
+  {
+    "level": 582,
+    "defense": 75.74,
+    "resistance": 81.83
+  },
+  {
+    "level": 583,
+    "defense": 75.77,
+    "resistance": 81.86
+  },
+  {
+    "level": 584,
+    "defense": 75.8,
+    "resistance": 81.89
+  },
+  {
+    "level": 585,
+    "defense": 75.83,
+    "resistance": 81.92
+  },
+  {
+    "level": 586,
+    "defense": 75.86,
+    "resistance": 81.95
+  },
+  {
+    "level": 587,
+    "defense": 75.89,
+    "resistance": 81.98
+  },
+  {
+    "level": 588,
+    "defense": 75.92,
+    "resistance": 82.01
+  },
+  {
+    "level": 589,
+    "defense": 75.95,
+    "resistance": 82.04
+  },
+  {
+    "level": 590,
+    "defense": 75.98,
+    "resistance": 82.07
+  },
+  {
+    "level": 591,
+    "defense": 76.01,
+    "resistance": 82.1
+  },
+  {
+    "level": 592,
+    "defense": 76.04,
+    "resistance": 82.13
+  },
+  {
+    "level": 593,
+    "defense": 76.07,
+    "resistance": 82.16
+  },
+  {
+    "level": 594,
+    "defense": 76.1,
+    "resistance": 82.19
+  },
+  {
+    "level": 595,
+    "defense": 76.13,
+    "resistance": 82.22
+  },
+  {
+    "level": 596,
+    "defense": 76.16,
+    "resistance": 82.25
+  },
+  {
+    "level": 597,
+    "defense": 76.19,
+    "resistance": 82.28
+  },
+  {
+    "level": 598,
+    "defense": 76.22,
+    "resistance": 82.31
+  },
+  {
+    "level": 599,
+    "defense": 76.25,
+    "resistance": 82.34
+  },
+  {
+    "level": 600,
+    "defense": 76.28,
+    "resistance": 82.37
+  },
+  {
+    "level": 601,
+    "defense": 76.31,
+    "resistance": 82.4
+  },
+  {
+    "level": 602,
+    "defense": 76.34,
+    "resistance": 82.43
+  },
+  {
+    "level": 603,
+    "defense": 76.37,
+    "resistance": 82.46
+  },
+  {
+    "level": 604,
+    "defense": 76.4,
+    "resistance": 82.49
+  },
+  {
+    "level": 605,
+    "defense": 76.43,
+    "resistance": 82.52
+  },
+  {
+    "level": 606,
+    "defense": 76.46,
+    "resistance": 82.55
+  },
+  {
+    "level": 607,
+    "defense": 76.49,
+    "resistance": 82.58
+  },
+  {
+    "level": 608,
+    "defense": 76.52,
+    "resistance": 82.61
+  },
+  {
+    "level": 609,
+    "defense": 76.55,
+    "resistance": 82.64
+  },
+  {
+    "level": 610,
+    "defense": 76.58,
+    "resistance": 82.67
+  },
+  {
+    "level": 611,
+    "defense": 76.61,
+    "resistance": 82.7
+  },
+  {
+    "level": 612,
+    "defense": 76.64,
+    "resistance": 82.73
+  },
+  {
+    "level": 613,
+    "defense": 76.67,
+    "resistance": 82.76
+  },
+  {
+    "level": 614,
+    "defense": 76.7,
+    "resistance": 82.79
+  },
+  {
+    "level": 615,
+    "defense": 76.73,
+    "resistance": 82.82
+  },
+  {
+    "level": 616,
+    "defense": 76.76,
+    "resistance": 82.85
+  },
+  {
+    "level": 617,
+    "defense": 76.79,
+    "resistance": 82.88
+  },
+  {
+    "level": 618,
+    "defense": 76.82,
+    "resistance": 82.91
+  },
+  {
+    "level": 619,
+    "defense": 76.85,
+    "resistance": 82.94
+  },
+  {
+    "level": 620,
+    "defense": 76.88,
+    "resistance": 82.97
+  },
+  {
+    "level": 621,
+    "defense": 76.91,
+    "resistance": 83.0
+  },
+  {
+    "level": 622,
+    "defense": 76.94,
+    "resistance": 83.03
+  },
+  {
+    "level": 623,
+    "defense": 76.97,
+    "resistance": 83.06
+  },
+  {
+    "level": 624,
+    "defense": 77.0,
+    "resistance": 83.09
+  },
+  {
+    "level": 625,
+    "defense": 77.03,
+    "resistance": 83.12
+  },
+  {
+    "level": 626,
+    "defense": 77.06,
+    "resistance": 83.15
+  },
+  {
+    "level": 627,
+    "defense": 77.09,
+    "resistance": 83.18
+  },
+  {
+    "level": 628,
+    "defense": 77.12,
+    "resistance": 83.21
+  },
+  {
+    "level": 629,
+    "defense": 77.15,
+    "resistance": 83.24
+  },
+  {
+    "level": 630,
+    "defense": 77.18,
+    "resistance": 83.27
+  },
+  {
+    "level": 631,
+    "defense": 77.21,
+    "resistance": 83.3
+  },
+  {
+    "level": 632,
+    "defense": 77.24,
+    "resistance": 83.33
+  },
+  {
+    "level": 633,
+    "defense": 77.27,
+    "resistance": 83.36
+  },
+  {
+    "level": 634,
+    "defense": 77.3,
+    "resistance": 83.39
+  },
+  {
+    "level": 635,
+    "defense": 77.33,
+    "resistance": 83.42
+  },
+  {
+    "level": 636,
+    "defense": 77.36,
+    "resistance": 83.45
+  },
+  {
+    "level": 637,
+    "defense": 77.39,
+    "resistance": 83.48
+  },
+  {
+    "level": 638,
+    "defense": 77.42,
+    "resistance": 83.51
+  },
+  {
+    "level": 639,
+    "defense": 77.45,
+    "resistance": 83.54
+  },
+  {
+    "level": 640,
+    "defense": 77.48,
+    "resistance": 83.57
+  },
+  {
+    "level": 641,
+    "defense": 77.51,
+    "resistance": 83.6
+  },
+  {
+    "level": 642,
+    "defense": 77.54,
+    "resistance": 83.63
+  },
+  {
+    "level": 643,
+    "defense": 77.57,
+    "resistance": 83.66
+  },
+  {
+    "level": 644,
+    "defense": 77.6,
+    "resistance": 83.69
+  },
+  {
+    "level": 645,
+    "defense": 77.63,
+    "resistance": 83.72
+  },
+  {
+    "level": 646,
+    "defense": 77.66,
+    "resistance": 83.75
+  },
+  {
+    "level": 647,
+    "defense": 77.69,
+    "resistance": 83.78
+  },
+  {
+    "level": 648,
+    "defense": 77.72,
+    "resistance": 83.81
+  },
+  {
+    "level": 649,
+    "defense": 77.75,
+    "resistance": 83.84
+  },
+  {
+    "level": 650,
+    "defense": 77.78,
+    "resistance": 83.87
+  },
+  {
+    "level": 651,
+    "defense": 77.81,
+    "resistance": 83.9
+  },
+  {
+    "level": 652,
+    "defense": 77.84,
+    "resistance": 83.93
+  },
+  {
+    "level": 653,
+    "defense": 77.87,
+    "resistance": 83.96
+  },
+  {
+    "level": 654,
+    "defense": 77.9,
+    "resistance": 83.99
+  },
+  {
+    "level": 655,
+    "defense": 77.93,
+    "resistance": 84.02
+  },
+  {
+    "level": 656,
+    "defense": 77.96,
+    "resistance": 84.05
+  },
+  {
+    "level": 657,
+    "defense": 77.99,
+    "resistance": 84.08
+  },
+  {
+    "level": 658,
+    "defense": 78.02,
+    "resistance": 84.11
+  },
+  {
+    "level": 659,
+    "defense": 78.05,
+    "resistance": 84.14
+  },
+  {
+    "level": 660,
+    "defense": 78.08,
+    "resistance": 84.17
+  },
+  {
+    "level": 661,
+    "defense": 78.11,
+    "resistance": 84.2
+  },
+  {
+    "level": 662,
+    "defense": 78.14,
+    "resistance": 84.23
+  },
+  {
+    "level": 663,
+    "defense": 78.17,
+    "resistance": 84.26
+  },
+  {
+    "level": 664,
+    "defense": 78.2,
+    "resistance": 84.29
+  },
+  {
+    "level": 665,
+    "defense": 78.23,
+    "resistance": 84.32
+  },
+  {
+    "level": 666,
+    "defense": 78.26,
+    "resistance": 84.35
+  },
+  {
+    "level": 667,
+    "defense": 78.29,
+    "resistance": 84.38
+  },
+  {
+    "level": 668,
+    "defense": 78.32,
+    "resistance": 84.41
+  },
+  {
+    "level": 669,
+    "defense": 78.35,
+    "resistance": 84.44
+  },
+  {
+    "level": 670,
+    "defense": 78.38,
+    "resistance": 84.47
+  },
+  {
+    "level": 671,
+    "defense": 78.41,
+    "resistance": 84.5
+  },
+  {
+    "level": 672,
+    "defense": 78.44,
+    "resistance": 84.53
+  },
+  {
+    "level": 673,
+    "defense": 78.47,
+    "resistance": 84.56
+  },
+  {
+    "level": 674,
+    "defense": 78.5,
+    "resistance": 84.59
+  },
+  {
+    "level": 675,
+    "defense": 78.53,
+    "resistance": 84.62
+  },
+  {
+    "level": 676,
+    "defense": 78.56,
+    "resistance": 84.65
+  },
+  {
+    "level": 677,
+    "defense": 78.59,
+    "resistance": 84.68
+  },
+  {
+    "level": 678,
+    "defense": 78.62,
+    "resistance": 84.71
+  },
+  {
+    "level": 679,
+    "defense": 78.65,
+    "resistance": 84.74
+  },
+  {
+    "level": 680,
+    "defense": 78.68,
+    "resistance": 84.77
+  },
+  {
+    "level": 681,
+    "defense": 78.71,
+    "resistance": 84.8
+  },
+  {
+    "level": 682,
+    "defense": 78.74,
+    "resistance": 84.83
+  },
+  {
+    "level": 683,
+    "defense": 78.77,
+    "resistance": 84.86
+  },
+  {
+    "level": 684,
+    "defense": 78.8,
+    "resistance": 84.89
+  },
+  {
+    "level": 685,
+    "defense": 78.83,
+    "resistance": 84.92
+  },
+  {
+    "level": 686,
+    "defense": 78.86,
+    "resistance": 84.95
+  },
+  {
+    "level": 687,
+    "defense": 78.89,
+    "resistance": 84.98
+  },
+  {
+    "level": 688,
+    "defense": 78.92,
+    "resistance": 85.01
+  },
+  {
+    "level": 689,
+    "defense": 78.95,
+    "resistance": 85.04
+  },
+  {
+    "level": 690,
+    "defense": 78.98,
+    "resistance": 85.07
+  },
+  {
+    "level": 691,
+    "defense": 79.01,
+    "resistance": 85.1
+  },
+  {
+    "level": 692,
+    "defense": 79.04,
+    "resistance": 85.13
+  },
+  {
+    "level": 693,
+    "defense": 79.07,
+    "resistance": 85.16
+  },
+  {
+    "level": 694,
+    "defense": 79.1,
+    "resistance": 85.19
+  },
+  {
+    "level": 695,
+    "defense": 79.13,
+    "resistance": 85.22
+  },
+  {
+    "level": 696,
+    "defense": 79.16,
+    "resistance": 85.25
+  },
+  {
+    "level": 697,
+    "defense": 79.19,
+    "resistance": 85.28
+  },
+  {
+    "level": 698,
+    "defense": 79.22,
+    "resistance": 85.31
+  },
+  {
+    "level": 699,
+    "defense": 79.25,
+    "resistance": 85.34
+  },
+  {
+    "level": 700,
+    "defense": 79.28,
+    "resistance": 85.37
+  },
+  {
+    "level": 701,
+    "defense": 79.31,
+    "resistance": 85.4
+  },
+  {
+    "level": 702,
+    "defense": 79.34,
+    "resistance": 85.43
+  },
+  {
+    "level": 703,
+    "defense": 79.37,
+    "resistance": 85.46
+  },
+  {
+    "level": 704,
+    "defense": 79.4,
+    "resistance": 85.49
+  },
+  {
+    "level": 705,
+    "defense": 79.43,
+    "resistance": 85.52
+  },
+  {
+    "level": 706,
+    "defense": 79.46,
+    "resistance": 85.55
+  },
+  {
+    "level": 707,
+    "defense": 79.49,
+    "resistance": 85.58
+  },
+  {
+    "level": 708,
+    "defense": 79.52,
+    "resistance": 85.61
+  },
+  {
+    "level": 709,
+    "defense": 79.55,
+    "resistance": 85.64
+  },
+  {
+    "level": 710,
+    "defense": 79.58,
+    "resistance": 85.67
+  },
+  {
+    "level": 711,
+    "defense": 79.61,
+    "resistance": 85.7
+  },
+  {
+    "level": 712,
+    "defense": 79.64,
+    "resistance": 85.73
+  },
+  {
+    "level": 713,
+    "defense": 79.67,
+    "resistance": 85.76
+  }
+]

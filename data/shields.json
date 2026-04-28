@@ -64,10 +64,6 @@
                 "amount": 8
             }
         ],
-        "attacks": {
-            "lightDmg": 142,
-            "heavyDmg": 210
-        },
         "category": "Medium",
         "atktype": "Strike",
         "passives": [
@@ -145,10 +141,6 @@
                 "amount": 8
             }
         ],
-        "attacks": {
-            "lightDmg": 142,
-            "heavyDmg": 210
-        },
         "category": "Medium",
         "atktype": "Strike",
         "passives": [
