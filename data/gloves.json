@@ -38,6 +38,28 @@
                 "amount": 2.4
             }
         ],
+        "resistance": [
+            {
+                "name": "Immunity",
+                "amount": 18
+            },
+            {
+                "name": "Robustness",
+                "amount": 13
+            },
+            {
+                "name": "Focus",
+                "amount": 15
+            },
+            {
+                "name": "Vitality",
+                "amount": 17
+            },
+            {
+                "name": "Poise",
+                "amount": 3
+            }
+        ],
         "passives": [],
         "weight": 2.3,
         "consumable": 0,
@@ -85,6 +107,28 @@
                 "amount": 2.3
             }
         ],
+        "resistance": [
+            {
+                "name": "Immunity",
+                "amount": 17
+            },
+            {
+                "name": "Robustness",
+                "amount": 11
+            },
+            {
+                "name": "Focus",
+                "amount": 14
+            },
+            {
+                "name": "Vitality",
+                "amount": 13
+            },
+            {
+                "name": "Poise",
+                "amount": 3
+            }
+        ],
         "passives": [],
         "weight": 2.1,
         "consumable": 0,
@@ -130,6 +174,28 @@
             {
                 "name": "Holy",
                 "amount": 2.3
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Immunity",
+                "amount": 21
+            },
+            {
+                "name": "Robustness",
+                "amount": 14
+            },
+            {
+                "name": "Focus",
+                "amount": 17
+            },
+            {
+                "name": "Vitality",
+                "amount": 17
+            },
+            {
+                "name": "Poise",
+                "amount": 3
             }
         ],
         "passives": [],

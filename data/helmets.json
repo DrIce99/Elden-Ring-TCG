@@ -38,6 +38,28 @@
                 "amount": 3.7
             }
         ],
+        "resistance": [
+            {
+                "name": "Immunity",
+                "amount": 23
+            },
+            {
+                "name": "Robustness",
+                "amount": 18
+            },
+            {
+                "name": "Focus",
+                "amount": 21
+            },
+            {
+                "name": "Vitality",
+                "amount": 22
+            },
+            {
+                "name": "Poise",
+                "amount": 5
+            }
+        ],
         "passives": [
             {
                 "type": "Blood Loss atk up",
@@ -91,6 +113,28 @@
                 "amount": 3.4
             }
         ],
+        "resistance": [
+            {
+                "name": "Immunity",
+                "amount": 22
+            },
+            {
+                "name": "Robustness",
+                "amount": 14
+            },
+            {
+                "name": "Focus",
+                "amount": 18
+            },
+            {
+                "name": "Vitality",
+                "amount": 16
+            },
+            {
+                "name": "Poise",
+                "amount": 5
+            }
+        ],
         "passives": [
         ],
         "weight": 2.7,
@@ -137,6 +181,28 @@
             {
                 "name": "Holy",
                 "amount": 2.8
+            }
+        ],
+        "resistance": [
+            {
+                "name": "Immunity",
+                "amount": 24
+            },
+            {
+                "name": "Robustness",
+                "amount": 15
+            },
+            {
+                "name": "Focus",
+                "amount": 18
+            },
+            {
+                "name": "Vitality",
+                "amount": 18
+            },
+            {
+                "name": "Poise",
+                "amount": 4
             }
         ],
         "passives": [
