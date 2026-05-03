@@ -236,15 +236,13 @@ function _opponentDeploy() {
 
                 const allSlots = [...document.querySelectorAll('.player-area.opponent .slot.battle')];
                 const slotIdx  = allSlots.indexOf(emptySlot);
-                const stateKey = 'opponent_' + slotIdx;
-
-                gs.unitStates[stateKey] = {
-                    hp:             card.hp || 8,
-                    maxHp:          card.hp || 8,
-                    charges:        0,
-                    dodgedLastTurn: false
-                };
-                window._showHPBadge(emptySlot, gs.unitStates[stateKey].hp);
+                if (window.initUnitStats) {
+                    window.initUnitStats('opponent', slotIdx, card, []);
+                } else {
+                    const stateKey = 'opponent_' + slotIdx;
+                    gs.unitStates[stateKey] = { hp: card.hp || 8, maxHp: card.hp || 8, charges: 0, dodgedLastTurn: false };
+                    window._showHPBadge?.(emptySlot, gs.unitStates[stateKey].hp);
+                }
 
                 gs.hasOpponentSummonedThisTurn = true;
                 window.renderHand('opponent');
@@ -356,34 +354,53 @@ window.resolvePhase5 = function () {
             window._updateChargeBadge(key);
         }
 
-        const baseAtk = card.atk || card.attack || 2;
-        const dmg     = action.type === 'heavy' ? Math.round(baseAtk * 1.5)
-                      : action.type === 'magic'  ? (card.fpcost || baseAtk)
-                      :                             baseAtk;
-
-        // Bersagli: 3 caselle frontali (posizione speculare ±1)
+        // 1. Find target: 3 front cells (mirror position ±1)
         const enemySlots = [...document.querySelectorAll(`.player-area.${enemy} .slot.battle`)];
         let targetIdx    = null;
         for (const t of [idx, idx - 1, idx + 1]) {
             if (t >= 0 && t < 5 && enemySlots[t]?.dataset.card) { targetIdx = t; break; }
         }
 
+        // 2. Check dodge before calculating damage
         if (targetIdx !== null) {
-            const targetKey   = enemy + '_' + targetIdx;
-            const targetState = gs.unitStates[targetKey] || {};
-
-            if (targetState.dodging && !targetState.dodgedLastTurn) {
-                targetState.dodgedLastTurn = true;
-                console.log(`💨 ${targetKey} schiva l'attacco di ${key}!`);
+            const dodgeKey   = enemy + '_' + targetIdx;
+            const dodgeState = gs.unitStates[dodgeKey] || {};
+            if (dodgeState.dodging && !dodgeState.dodgedLastTurn) {
+                dodgeState.dodgedLastTurn = true;
+                console.log(`💨 ${dodgeKey} dodges attack from ${key}!`);
                 return;
             }
+        }
 
-            damageMap[targetKey] = (damageMap[targetKey] || 0) + dmg;
-            console.log(`⚔️ ${key}(${card.name}) → ${targetKey}: ${dmg} danno`);
+        // 3. Calculate damage via stats-engine (with ER formula) or fallback
+        const isHeavy = action.type === 'heavy';
+        let dmg;
+
+        if (window.resolveAttack && gs.unitStates[key]?.attackPower) {
+            const atkStats = gs.unitStates[key];
+            if (targetIdx !== null) {
+                const defStats   = gs.unitStates[enemy + '_' + targetIdx] || {};
+                const atkTypeStr = (atkStats.atkType || 'physical').toLowerCase();
+                dmg = isHeavy
+                    ? calcFinalDamageLocal(atkStats.heavyAtk, defStats.defense?.physical || 10, defStats.negation?.phy || 0)
+                    : window.resolveAttack(atkStats, defStats, atkTypeStr).damage;
+            } else {
+                // Direct hit on player: no armor in the way
+                dmg = isHeavy ? atkStats.heavyAtk : atkStats.lightAtk;
+            }
         } else {
-            // Danno diretto — nessuna unità nel raggio
+            const baseAtk = card.atk || card.attack || 2;
+            dmg = isHeavy ? Math.round(baseAtk * 1.5) : baseAtk;
+        }
+
+        // 4. Apply damage to target or runes directly
+        if (targetIdx !== null) {
+            const targetKey = enemy + '_' + targetIdx;
+            damageMap[targetKey] = (damageMap[targetKey] || 0) + dmg;
+            console.log(`⚔️ ${key}(${card.name}) → ${targetKey}: ${dmg} dmg`);
+        } else {
             directDamage[enemy] += dmg;
-            console.log(`💥 ${key}(${card.name}) → ${enemy} DIRETTO: ${dmg} rune`);
+            console.log(`💥 ${key}(${card.name}) → ${enemy} DIRECT: ${dmg} runes`);
         }
     });
 
@@ -612,6 +629,16 @@ function getCardTypeFromId(cardId) {
         '17':'talismans','18':'weapons'
     };
     return typeMap[idNum] || 'unknown';
+}
+
+// ----------------------------------------
+// LOCAL DAMAGE CALC (mirrors stats-engine, used as fallback)
+// ----------------------------------------
+function calcFinalDamageLocal(atk, def, negPct) {
+    if (atk <= 0) return 0;
+    const raw     = (atk * atk) / (atk + Math.max(1, def));
+    const afterNeg = raw * (1 - Math.max(0, Math.min(negPct, 99.9)) / 100);
+    return Math.max(1, Math.round(afterNeg));
 }
 
 // ----------------------------------------

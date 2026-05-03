@@ -94,7 +94,8 @@
         "dupl": 1,
         "find": 1,
         "rarity": "Com",
-        "banner": "22 Mohgwyn's Dynasty"
+        "banner": "22 Mohgwyn's Dynasty",
+        "upgrade": "Special"
     },
     {
         "id": 218,
@@ -179,7 +180,8 @@
         "dupl": 1,
         "find": 1,
         "rarity": "Com",
-        "banner": "0 Base Classes"
+        "banner": "0 Base Classes",
+        "upgrade": "Normal"
     },
     {
         "id": 318,
@@ -264,7 +266,8 @@
         "dupl": 1,
         "find": 1,
         "rarity": "Unc",
-        "banner": "0 Base Classes"
+        "banner": "0 Base Classes",
+        "upgrade": "Normal"
     },
     {
         "id": 418,
@@ -349,6 +352,7 @@
         "dupl": 1,
         "find": 1,
         "rarity": "Com",
-        "banner": "1 West Limgrave"
+        "banner": "1 West Limgrave",
+        "upgrade": "Normal"
     }
 ]
