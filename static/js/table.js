@@ -375,3 +375,30 @@ window.animateDestroyCard = function(cardEl, callback) {
 
 // Esponi renderHand globalmente
 window.renderHand = window.renderHand || function () { };
+
+window.openCardPicker = function(cards, onSelect) {
+    // Crea un overlay temporaneo per scegliere la carta
+    const overlay = document.createElement('div');
+    overlay.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:10000; display:flex; flex-wrap:wrap; gap:10px; padding:50px; overflow-y:auto; justify-content:center;";
+    
+    cards.forEach((card, index) => {
+        const img = document.createElement('img');
+        img.src = `static/src/cards/front/${card.id}.png`;
+        img.style.cssText = "width:150px; cursor:pointer; border:2px solid transparent; transition:0.2s;";
+        img.onmouseover = () => img.style.borderColor = "#edd7ab";
+        img.onmouseout = () => img.style.borderColor = "transparent";
+        img.onclick = () => {
+            onSelect(card, index);
+            document.body.removeChild(overlay);
+        };
+        overlay.appendChild(img);
+    });
+
+    const closeBtn = document.createElement('button');
+    closeBtn.innerText = "Chiudi";
+    closeBtn.style.cssText = "position:absolute; top:10px; right:10px; padding:10px 20px;";
+    closeBtn.onclick = () => document.body.removeChild(overlay);
+    overlay.appendChild(closeBtn);
+
+    document.body.appendChild(overlay);
+};

@@ -141,6 +141,8 @@ window.advanceToNextPhase = function () {
         console.log(`🔄 ===== TURNO ${gs.turnNumber} =====`);
     }
 
+    emitPhaseEvents(gs.currentPhase);
+
     updatePhaseDisplay();
     const phaseBtn = document.querySelector('.phase-button');
 
@@ -159,7 +161,6 @@ window.advanceToNextPhase = function () {
             break;
 
         case 3:
-            // Pianificazione — attiva UI azioni
             if (phaseBtn) {
                 phaseBtn.classList.remove('hidden');
                 phaseBtn.textContent = 'Conferma Azioni →';
@@ -661,6 +662,75 @@ window.createCardImage = function (cardData, showBack = false) {
                 </div>
             </div>
         </div>`;
+};
+
+// 1. Aggiungi questa funzione all'inizio o alla fine del file turn-manager.js
+function emitPhaseEvents(phaseId) {
+    const gs = window.GameState;
+    const context = { gameState: gs, phase: phaseId };
+
+    switch(phaseId) {
+        case 1: 
+            window.EffectBus.emit(window.EVENTS.TURN_START, context); 
+            break;
+        case 3: 
+            document.querySelectorAll('.slot.battle').forEach(slot => {
+                if (slot.dataset.card) {
+                    window.EffectBus.emit(window.EVENTS.BEFORE_ACTION, {
+                        ...context,
+                        slotEl: slot,
+                        card: JSON.parse(slot.dataset.card)
+                    });
+                }
+            });
+            break;
+        case 5: 
+            window.EffectBus.emit(window.EVENTS.AFTER_ACTION, context); 
+            break;
+    }
+}
+
+// 2. Correggi la funzione advanceToNextPhase (riga 130 circa)
+window.advanceToNextPhase = function () {
+    const gs = window.GameState;
+    gs.currentPhase++;
+
+    if (gs.currentPhase > 5) {
+        gs.currentPhase = 1;
+        gs.turnNumber++;
+        gs.hasSummonedThisTurn = false;
+        gs.hasOpponentSummonedThisTurn = false;
+        gs.plannedActions = {};
+        window.drawnThisTurn = 0;
+    }
+
+    // Chiamata alla funzione che abbiamo appena aggiunto
+    emitPhaseEvents(gs.currentPhase);
+
+    updatePhaseDisplay();
+    const phaseBtn = document.querySelector('.phase-button');
+    const context = { gameState: gs, phase: gs.currentPhase }; // Definiamo context qui per lo switch sotto
+
+    switch (gs.currentPhase) {
+        case 1:
+            if (phaseBtn) { phaseBtn.classList.add('hidden'); phaseBtn.textContent = 'Next Phase'; }
+            break;
+        case 2:
+            if (phaseBtn) { phaseBtn.classList.remove('hidden'); phaseBtn.textContent = 'Fine Schieramento →'; }
+            break;
+        case 3:
+            if (phaseBtn) { phaseBtn.classList.remove('hidden'); phaseBtn.textContent = 'Conferma Azioni →'; }
+            if (window.initPlanningPhase) window.initPlanningPhase();
+            break;
+        case 4:
+            if (phaseBtn) phaseBtn.classList.add('hidden');
+            setTimeout(_runOpponentTurn, 600);
+            break;
+        case 5:
+            if (phaseBtn) phaseBtn.classList.add('hidden');
+            setTimeout(window.resolvePhase5, 800);
+            break;
+    }
 };
 
 // ----------------------------------------

@@ -16,20 +16,20 @@
 // EVENTI DEL GIOCO
 // ----------------------------------------
 window.EVENTS = Object.freeze({
-    TURN_START       : 'turn_start',        // Inizio turno (dopo cambio proprietario)
-    DRAW             : 'draw',              // Una carta è stata pescata
-    SUMMON           : 'summon',            // Un'unità è stata schierata
-    BEFORE_ACTION    : 'before_action',     // Prima delle azioni (fase 3)
-    AFTER_ACTION     : 'after_action',      // Dopo le azioni (fase 4)
-    DAMAGE           : 'damage',            // Un'unità riceve danno
-    UNIT_DEATH       : 'unit_death',        // Un'unità muore
-    DIRECT_DAMAGE    : 'direct_damage',     // Danno diretto alle rune
-    TURN_END         : 'turn_end',          // Fine turno (fase 5)
-    RESOLUTION_START : 'resolution_start',  // Inizio resa dei conti
-    RESOLUTION_END   : 'resolution_end',    // Fine resa dei conti
-    EQUIP            : 'equip',             // Equipaggiamento applicato
-    SUPPORT_ENTER    : 'support_enter',     // NPC supporto entra in campo
-    RUNE_CHANGE      : 'rune_change',       // Le rune cambiano (cura o danno)
+    TURN_START: 'turn_start',        // Inizio turno (dopo cambio proprietario)
+    DRAW: 'draw',              // Una carta è stata pescata
+    SUMMON: 'summon',            // Un'unità è stata schierata
+    BEFORE_ACTION: 'before_action',     // Prima delle azioni (fase 3)
+    AFTER_ACTION: 'after_action',      // Dopo le azioni (fase 4)
+    DAMAGE: 'damage',            // Un'unità riceve danno
+    UNIT_DEATH: 'unit_death',        // Un'unità muore
+    DIRECT_DAMAGE: 'direct_damage',     // Danno diretto alle rune
+    TURN_END: 'turn_end',          // Fine turno (fase 5)
+    RESOLUTION_START: 'resolution_start',  // Inizio resa dei conti
+    RESOLUTION_END: 'resolution_end',    // Fine resa dei conti
+    EQUIP: 'equip',             // Equipaggiamento applicato
+    SUPPORT_ENTER: 'support_enter',     // NPC supporto entra in campo
+    RUNE_CHANGE: 'rune_change',       // Le rune cambiano (cura o danno)
 });
 
 // ----------------------------------------
@@ -216,7 +216,7 @@ class CardEffectBus {
                 if (card?.effects?.length) {
                     this.registerCard(card, slotEl);
                 }
-            } catch (_) {}
+            } catch (_) { }
         });
     }
 }
@@ -266,6 +266,59 @@ window.EffectBus = new CardEffectBus();
     document.head.appendChild(style);
 })();
 
+// Libreria che collega l'ID della carta alla logica di gioco
+const CARD_EFFECT_LIBRARY = {
+    // MERCHANT KALE (ID: 213)
+    "213": {
+        event: window.EVENTS.BEFORE_ACTION, // Fase 3: Pianificazione
+        action: (context) => {
+            if (context.gameState.currentPhase === 3) {
+                alert("Effetto Merchant Kale: Scegli una carta dal mazzo!");
+                // Qui chiameresti una funzione window.openCardPicker(context.gameState.playerDeck)
+                // che abbiamo definito sotto.
+                if (window.openCardPicker) {
+                    window.openCardPicker(context.gameState.playerDeck, (chosenCard, index) => {
+                        context.gameState.playerHand.push(chosenCard);
+                        context.gameState.playerDeck.splice(index, 1);
+                        window.renderHand('player');
+                        console.log("Kale ha aggiunto:", chosenCard.name);
+                    });
+                }
+            }
+        }
+    },
+    // WHITE MASK VARRÉ (ID: 113)
+    "113": {
+        event: window.EVENTS.BEFORE_ACTION,
+        action: (context) => {
+            // Filtra il mazzo per unità tipo "Mohgwyn" (o un criterio simile)
+            const mohgUnits = context.gameState.playerDeck.filter(c =>
+                c.desc && c.desc.includes("Mohgwyn")
+            );
+            if (mohgUnits.length > 0 && window.openCardPicker) {
+                window.openCardPicker(mohgUnits, (chosenCard) => {
+                    const idx = context.gameState.playerDeck.indexOf(chosenCard);
+                    context.gameState.playerHand.push(chosenCard);
+                    context.gameState.playerDeck.splice(idx, 1);
+                    window.renderHand('player');
+                });
+            }
+        }
+    },
+    // CATCH FLAME (ID: 109 - Incantamento)
+    "109": {
+        event: window.EVENTS.BEFORE_ACTION,
+        action: (context) => {
+            console.log("🔥 Catch Flame pronto: questa unità può agire senza consumare stamina.");
+            // Logica: aggiungi un flag temporaneo allo stato dell'unità
+            const unitKey = context.slotEl.id; // es: 'player_0'
+            if (context.gameState.unitStates[unitKey]) {
+                context.gameState.unitStates[unitKey].freeAction = true;
+            }
+        }
+    }
+};
+
 // ----------------------------------------
 // UTILITY INTERNE (usate da buildContext)
 // ----------------------------------------
@@ -291,7 +344,7 @@ function applyStatusToCard(cardId, status) {
             cardData.statuses.push(status);
             slot.dataset.card = JSON.stringify(cardData);
         }
-    } catch (_) {}
+    } catch (_) { }
 
     // Aggiunge badge visuale
     let badge = slot.querySelector(`.status-badge[data-status="${status}"]`);
@@ -348,7 +401,7 @@ function findSlotByCardId(cardId) {
         try {
             const d = JSON.parse(slot.dataset.card);
             if (String(d.id) === String(cardId)) return slot;
-        } catch (_) {}
+        } catch (_) { }
     }
     return null;
 }
@@ -357,27 +410,27 @@ function findSlotByCardId(cardId) {
 // ICONE E COLORI STATUS
 // ----------------------------------------
 const STATUS_ICONS = {
-    bleed   : '🩸',
-    stun    : '💫',
-    burn    : '🔥',
-    freeze  : '❄️',
-    poison  : '☠️',
-    shield  : '🛡️',
-    regen   : '💚',
-    cursed  : '💀',
+    bleed: '🩸',
+    stun: '💫',
+    burn: '🔥',
+    freeze: '❄️',
+    poison: '☠️',
+    shield: '🛡️',
+    regen: '💚',
+    cursed: '💀',
     empowered: '⚡',
 };
 
 const STATUS_COLORS = {
-    bleed   : '#b03030',
-    stun    : '#8060d0',
-    burn    : '#c06010',
-    freeze  : '#4090c0',
-    poison  : '#508040',
-    shield  : '#4070a0',
-    regen   : '#30a060',
-    cursed  : '#601060',
-    empowered:'#c0a020',
+    bleed: '#b03030',
+    stun: '#8060d0',
+    burn: '#c06010',
+    freeze: '#4090c0',
+    poison: '#508040',
+    shield: '#4070a0',
+    regen: '#30a060',
+    cursed: '#601060',
+    empowered: '#c0a020',
 };
 
 // ----------------------------------------
@@ -403,17 +456,25 @@ const STATUS_COLORS = {
                     if (!slot.dataset.card) return;
                     try {
                         const card = JSON.parse(slot.dataset.card);
-                        if (card?.effects?.length) {
-                            window.EffectBus.registerCard(card, slot);
+                        const effectData = CARD_EFFECT_LIBRARY[String(card.id)];
 
-                            // Emetti SUMMON
-                            window.EffectBus.emit(window.EVENTS.SUMMON, {
-                                card,
-                                slotEl: slot,
-                                gameState: window.GameState
+                        if (effectData) {
+                            // Usa .register invece di .on per rispettare la tua classe CardEffectBus
+                            window.EffectBus.register(card.id, slot, {
+                                trigger: effectData.event,
+                                condition: (ctx) => {
+                                    // Eseguiamo l'effetto solo se l'evento riguarda questo specifico slot
+                                    return ctx.slotEl === slot;
+                                },
+                                effect: (ctx) => {
+                                    effectData.action(ctx);
+                                }
                             });
+
+                            slot.classList.add('effect-ready');
+                            console.log(`[EffectBus] ✅ Effetto registrato per: ${card.name}`);
                         }
-                    } catch (_) {}
+                    } catch (e) { console.error("Errore registrazione effetto:", e); }
                 }, 50);
             });
         });
@@ -428,66 +489,5 @@ const STATUS_COLORS = {
         }
     });
 })();
-
-// ----------------------------------------
-// ESEMPIO CARTA CON EFFETTI
-// ----------------------------------------
-// Questo blocco mostra come definire effetti su una carta.
-// Rimuovilo o spostalo nel tuo catalogo carte.
-/*
-const exampleCard = {
-    id: "blood_sword",
-    name: "Spada del Sangue",
-    type: "weapons",
-    effects: [
-        {
-            trigger: EVENTS.DAMAGE,
-            condition: (ctx) => ctx.source === ctx.cardId,   // solo se questa carta ha inferto il danno
-            effect: (ctx) => {
-                if (Math.random() < 0.3) {
-                    ctx.applyStatus(ctx.target, 'bleed');
-                }
-            }
-        }
-    ]
-};
-
-const exampleCard2 = {
-    id: "flame_talisman",
-    name: "Talismano della Fiamma",
-    type: "talismans",
-    effects: [
-        {
-            trigger: EVENTS.TURN_START,
-            condition: (ctx) => ctx.turnOwner === 'player',
-            effect: (ctx) => {
-                // Brucia il primo nemico ogni turno
-                const firstEnemySlot = document.querySelector('.player-area.opponent .slot.battle[data-card]');
-                if (firstEnemySlot) {
-                    const enemy = JSON.parse(firstEnemySlot.dataset.card);
-                    ctx.applyStatus(enemy.id, 'burn');
-                }
-            }
-        }
-    ]
-};
-
-const exampleCard3 = {
-    id: "regen_npc",
-    name: "Guaritore",
-    type: "npcs",
-    support: 1,
-    effects: [
-        {
-            trigger: EVENTS.TURN_END,
-            condition: null,   // si attiva sempre
-            effect: (ctx) => {
-                ctx.changeRunes('player', 2);   // recupera 2 rune ogni fine turno
-                console.log('💚 Guaritore: +2 rune al giocatore');
-            }
-        }
-    ]
-};
-*/
 
 console.log('[EffectBus] ✅ Sistema effetti carte caricato');
