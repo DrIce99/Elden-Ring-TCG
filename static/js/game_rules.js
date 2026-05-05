@@ -168,18 +168,19 @@ function placeUnit(card, handIndex, slot, type) {
     slot.dataset.card     = JSON.stringify(card);
     slot.dataset.cardType = type;
 
-    // Compute full Elden Ring stats via stats-engine.js
+    let equips = [];
+    if (card.items && Array.isArray(card.items)) {
+        // Mappiamo gli oggetti base per assicurarci che abbiano l'id necessario per getCardType
+        equips = card.items.map(item => ({ ...item, isBase: true }));
+    }
+    slot.dataset.equip = JSON.stringify(equips);
+
     const allSlots = [...document.querySelectorAll('.player-area.player .slot.battle')];
     const slotIdx  = allSlots.indexOf(slot);
-
-    // Gather already-equipped items on this slot (none yet on fresh deploy)
-    let equips = [];
-    try { equips = slot.dataset.equip ? JSON.parse(slot.dataset.equip) : []; } catch {}
 
     if (window.initUnitStats) {
         window.initUnitStats('player', slotIdx, card, equips);
     } else {
-        // Fallback if stats-engine not loaded
         const stateKey = 'player_' + slotIdx;
         gs.unitStates[stateKey] = { hp: card.hp || 10, maxHp: card.hp || 10, charges: 0, dodgedLastTurn: false };
         window._showHPBadge?.(slot, gs.unitStates[stateKey].hp);
@@ -189,9 +190,85 @@ function placeUnit(card, handIndex, slot, type) {
         gs.hasSummonedThisTurn = true;
     }
 
+    window.renderEquipments(slot);
+
     window.renderHand('player');
-    console.log(`✅ ${card.name} (${type}) — slot ${slotIdx}, HP: ${gs.unitStates[stateKey].hp}`);
+    console.log(`✅ ${card.name} (${type}) — slot ${slotIdx}`);
 }
+
+window.initUnitStats = function(owner, slotIdx, card, equips = []) {
+    const gs = window.GameState;
+    const stateKey = owner + '_' + slotIdx;
+
+    // Calcolo base dalle stats del personaggio
+    let baseHp = parseInt(card.hp) || (card.stats ? parseInt(card.stats.vigor) * 10 : 10);
+    let baseFp = parseInt(card.mp) || (card.stats ? parseInt(card.stats.mind) * 5 : 0);
+    let baseStamina = card.stats ? parseInt(card.stats.endurance) * 10 : 0;
+
+    let totalAtk = 0;
+    let totalDef = 0;
+    let totalNeg = 0;
+
+    // Aggiungiamo i valori degli equipaggiamenti (armi, armature)
+    equips.forEach(eq => {
+        if (eq.attack && Array.isArray(eq.attack)) {
+            const phy = eq.attack.find(a => a.name === 'Phy');
+            if (phy) totalAtk += parseInt(phy.amount || 0);
+        }
+        if (eq.dmgNegation && Array.isArray(eq.dmgNegation)) {
+            const phyDef = eq.dmgNegation.find(d => d.name === 'Phy');
+            if (phyDef) totalNeg += parseFloat(phyDef.amount || 0);
+        }
+    });
+
+    // Se non ha armi o armature predefinite, scaliamo sulle caratteristiche (Str/Dex/End)
+    if (totalAtk === 0 && card.stats) totalAtk = parseInt(card.stats.strength || 0) * 2 + parseInt(card.stats.dexterity || 0);
+    if (totalDef === 0 && card.stats) totalDef = parseInt(card.stats.endurance || 0) * 1.5;
+
+    let atkBase = totalAtk > 0 ? totalAtk : parseInt(card.atk || card.attack || 0);
+
+    // Salviamo tutto in liveStats
+    gs.unitStates[stateKey] = {
+        hp: baseHp,
+        maxHp: baseHp,
+        fp: baseFp,
+        stamina: baseStamina,
+        lightAtk: atkBase,
+        heavyAtk: Math.floor(atkBase * 1.5),
+        defense: { 
+            physical: totalDef, 
+            magic: totalDef * 0.8 
+        },
+        negation: { 
+            phy: totalNeg, 
+            magic: totalNeg * 0.8 
+        },
+        charges: 0,
+        dodgedLastTurn: false
+    };
+
+    // Mostriamo l'HP Badge aggiornato
+    const slot = document.querySelectorAll(`.player-area.${owner} .slot.battle`)[slotIdx];
+    if (slot && window._showHPBadge) window._showHPBadge(slot, baseHp);
+};
+
+// Funzione da chiamare quando EQUIPAGGI o DISQUIPAGGI una carta sull'unità
+window.recalculateUnitStats = function(slot, owner, slotIdx) {
+    const card = JSON.parse(slot.dataset.card);
+    const equips = JSON.parse(slot.dataset.equip || '[]');
+    const gs = window.GameState;
+    const stateKey = owner + '_' + slotIdx;
+    
+    // Salviamo gli HP attuali per non "curare" accidentalmente l'unità quando cambia arma
+    const currentHp = gs.unitStates[stateKey].hp;
+    
+    // Ricalcoliamo i massimali
+    window.initUnitStats(owner, slotIdx, card, equips);
+    
+    // Ripristiniamo gli HP, ma bloccandoli al nuovo Max HP nel caso in cui un buff vita sia stato rimosso
+    gs.unitStates[stateKey].hp = Math.min(currentHp, gs.unitStates[stateKey].maxHp);
+    if (window._showHPBadge) window._showHPBadge(slot, gs.unitStates[stateKey].hp);
+};
 
 // ----------------------------------------
 // POSIZIONA EQUIPAGGIAMENTO
@@ -199,20 +276,33 @@ function placeUnit(card, handIndex, slot, type) {
 function placeEquipment(itemCard, handIndex, classSlot) {
     const gs = window.GameState;
 
+    // Gestione scarto equipaggiamento precedente dello stesso tipo
     const existingEquipStr = classSlot.dataset.equip;
     if (existingEquipStr) {
         const existing = JSON.parse(existingEquipStr);
+        // Se stiamo sovrascrivendo un oggetto dello stesso tipo (es. arma con arma)
         if (window.getCardType(existing) === window.getCardType(itemCard)) {
-            sendToMotherTree(existing);
+            window.discardCard(existing, 'player'); // Manda all'Erdtree
         }
     }
 
+    // Aggiornamento array equipaggiamenti
     let equips = [];
     if (classSlot.dataset.equip) equips = JSON.parse(classSlot.dataset.equip);
+    
+    // Rimuoviamo eventuali vecchi oggetti dello stesso tipo prima di aggiungere il nuovo
     equips = equips.filter(e => window.getCardType(e) !== window.getCardType(itemCard));
     equips.push(itemCard);
     classSlot.dataset.equip = JSON.stringify(equips);
 
+    // CALCOLO INDICE E AGGIORNAMENTO STATS (Risolve l'errore "slot is not defined")
+    const allSlots = [...document.querySelectorAll('.player-area.player .slot.battle')];
+    const slotIdx = allSlots.indexOf(classSlot);
+    
+    // Ricalcola le statistiche live
+    window.recalculateUnitStats(classSlot, 'player', slotIdx);
+
+    // Gestione visuale Overlay (opzionale se usi renderEquipments)
     let equipOverlay = classSlot.querySelector('.equip-overlay');
     if (!equipOverlay) {
         equipOverlay = document.createElement('div');
@@ -224,15 +314,13 @@ function placeEquipment(itemCard, handIndex, classSlot) {
              style="width:60%;height:auto;opacity:0.85;border-radius:4px;border:1px solid #edd7ab"
              onerror="this.style.display='none'">`;
 
+    // Rimuovi dalla mano e aggiorna UI
     gs.playerHand.splice(handIndex, 1);
     window.renderHand('player');
 
-    // Recalculate unit stats with new equipment
-    const allSlots2 = [...document.querySelectorAll('.player-area.player .slot.battle')];
-    const slotIdx2  = allSlots2.indexOf(classSlot);
-    if (window.updateUnitStatsOnEquip) {
-        window.updateUnitStatsOnEquip('player', slotIdx2);
-    }
+    // Mostra le icone degli oggetti (se hai aggiunto la funzione renderEquipments)
+    if (window.renderEquipments) window.renderEquipments(classSlot);
+    
     console.log(`🗡️ ${itemCard.name} equipped on ${JSON.parse(classSlot.dataset.card).name}`);
 }
 
@@ -484,11 +572,13 @@ document.addEventListener('mouseout', (e) => {
     hideCardInfo();
 });
 
+// ----------------------------------------
+// HOVER PREVIEW - PANNELLO LATERALE
+// ----------------------------------------
 function showSidePanel(card, element) {
     const panel = document.getElementById('card-hover-panel');
     panel.classList.add('hiddenn');
 
-    // Try to get live unit stats from GameState
     const slotEl   = element.closest?.('.slot.battle');
     const allPlayer = [...document.querySelectorAll('.player-area.player .slot.battle')];
     const allEnemy  = [...document.querySelectorAll('.player-area.opponent .slot.battle')];
@@ -503,14 +593,22 @@ function showSidePanel(card, element) {
     const type = window.getCardType?.(card) || '';
     const isUnit = ['classes','npcs','creatures','bosses','spirits'].includes(type);
 
+    // Recupera l'equipaggiamento: dal DOM se sul campo, oppure dalla carta se in mano
+    let equips = [];
+    if (slotEl && slotEl.dataset.equip) {
+        try { equips = JSON.parse(slotEl.dataset.equip); } catch {}
+    } else if (card.items) {
+        equips = card.items;
+    }
+
+    let html = '';
+
     if (liveStats && isUnit) {
-        // Rich stats from stats-engine
+        // --- STATISTICHE LIVE (UNITÀ SUL CAMPO) ---
         const d  = liveStats.defense   || {};
         const n  = liveStats.negation  || {};
-        const ap = liveStats.attackPower || {};
-        const r  = liveStats.resistances || {};
 
-        panel.innerHTML = `
+        html = `
             <h3 style="margin:0 0 6px;color:#edd7ab;font-size:1em;">${card.name}</h3>
             <div style="font-size:0.75em;color:#bbb;margin-bottom:8px;">${type.toUpperCase()}</div>
             <hr style="border-color:#edd7ab33;margin:0 0 8px;">
@@ -518,54 +616,87 @@ function showSidePanel(card, element) {
             <div class="stat-section-title">Vitals</div>
             <div class="stat-row"><span>HP</span><span>${liveStats.hp} / ${liveStats.maxHp}</span></div>
             ${liveStats.fp > 0 ? `<div class="stat-row"><span>FP</span><span>${liveStats.fp}</span></div>` : ''}
-            <div class="stat-row"><span>Stamina</span><span>${liveStats.stamina}</span></div>
-            ${liveStats.poise ? `<div class="stat-row"><span>Poise</span><span>${liveStats.poise}</span></div>` : ''}
+            <div class="stat-row"><span>Stamina</span><span>${liveStats.stamina || '—'}</span></div>
 
             <div class="stat-section-title" style="margin-top:8px;">Attack Power</div>
-            <div class="stat-row"><span>⚔ Light</span><span>${liveStats.lightAtk}</span></div>
-            <div class="stat-row"><span>⚒ Heavy</span><span>${liveStats.heavyAtk}</span></div>
-            ${liveStats.charges > 0 ? `<div class="stat-row"><span>⚡ Charges</span><span>${liveStats.charges}</span></div>` : ''}
+            <div class="stat-row"><span>⚔ Light</span><span>${liveStats.lightAtk || '—'}</span></div>
+            <div class="stat-row"><span>⚒ Heavy</span><span>${liveStats.heavyAtk || '—'}</span></div>
 
-            <div class="stat-section-title" style="margin-top:8px;">Defense</div>
-            <div class="stat-row"><span>Physical</span><span>${d.physical ?? '—'}</span></div>
-            <div class="stat-row"><span>Magic</span><span>${d.magic ?? '—'}</span></div>
-            <div class="stat-row"><span>Fire</span><span>${d.fire ?? '—'}</span></div>
-            <div class="stat-row"><span>Lightning</span><span>${d.lightning ?? '—'}</span></div>
-            <div class="stat-row"><span>Holy</span><span>${d.holy ?? '—'}</span></div>
-
-            <div class="stat-section-title" style="margin-top:8px;">Negation</div>
-            <div class="stat-row"><span>Physical</span><span>${(n.phy||0).toFixed(1)}%</span></div>
-            <div class="stat-row"><span>Magic</span><span>${(n.magic||0).toFixed(1)}%</span></div>
-            <div class="stat-row"><span>Fire</span><span>${(n.fire||0).toFixed(1)}%</span></div>
-            <div class="stat-row"><span>Lightning</span><span>${(n.lightning||0).toFixed(1)}%</span></div>
-            <div class="stat-row"><span>Holy</span><span>${(n.holy||0).toFixed(1)}%</span></div>
-
-            ${liveStats.rollType ? `
-            <div class="stat-section-title" style="margin-top:8px;">Equip Load</div>
-            <div class="stat-row"><span>${liveStats.currentLoad} / ${liveStats.equipLoad}</span><span>${liveStats.rollType}</span></div>` : ''}
+            <div class="stat-section-title" style="margin-top:8px;">Defense & Negation</div>
+            <div class="stat-row"><span>Physical</span><span>${d.physical ?? '—'} | ${Number(n.phy||0).toFixed(1)}%</span></div>
+            <div class="stat-row"><span>Magic</span><span>${d.magic ?? '—'} | ${(n.magic||0).toFixed(1)}%</span></div>
         `;
+
+        if (equips.length > 0) {
+            html += `<div class="stat-section-title" style="margin-top:8px;">Equipaggiamento Attivo</div>`;
+            equips.forEach(eq => {
+                const eqTypeStr = window.getCardType(eq).replace('_', ' ');
+                const tag = eq.isBase ? '(Base)' : '(Equipped)';
+                html += `<div class="stat-row" style="color:#aaa;"><span>${eqTypeStr}</span><span>${eq.name} <span style="font-size:0.8em;opacity:0.7;">${tag}</span></span></div>`;
+            });
+        }
     } else {
-        // Fallback for cards not on field (hand, deck)
-        const computed = computeCardStats(card, element);
-        panel.innerHTML = `
-            <h3 style="margin:0 0 6px;color:#edd7ab;">${card.name}</h3>
+        // --- STATISTICHE CALCOLATE (IN MANO / MAZZO / OGGETTI) ---
+        const computed = computeCardStats(card, equips);
+        html = `
+            <h3 style="margin:0 0 6px;color:#edd7ab;font-size:1em;">${card.name}</h3>
+            <div style="font-size:0.75em;color:#bbb;margin-bottom:8px;">${type.toUpperCase()}</div>
             <hr style="border-color:#edd7ab33;margin:0 0 8px;">
-            ${computed.hp       ? `<div class="stat-row"><span>HP</span><span>${computed.hp}</span></div>` : ''}
-            ${computed.mana     ? `<div class="stat-row"><span>FP</span><span>${computed.mana}</span></div>` : ''}
-            ${computed.stamina  ? `<div class="stat-row"><span>Stamina</span><span>${computed.stamina}</span></div>` : ''}
-            ${computed.lightAtk ? `<div class="stat-row"><span>Attack</span><span>${computed.lightAtk}</span></div>` : ''}
         `;
+
+        if (isUnit) {
+            html += `${computed.hp ? `<div class="stat-row"><span>HP Base</span><span>${computed.hp}</span></div>` : ''}`;
+            html += `${computed.fp ? `<div class="stat-row"><span>FP Base</span><span>${computed.fp}</span></div>` : ''}`;
+            html += `${computed.atk ? `<div class="stat-row"><span>Attacco Stimato</span><span>${computed.atk}</span></div>` : ''}`;
+            html += `${computed.def ? `<div class="stat-row"><span>Difesa Stimata</span><span>${computed.def}</span></div>` : ''}`;
+
+            if (equips.length > 0) {
+                html += `<div class="stat-section-title" style="margin-top:8px;">Equipaggiamento Base</div>`;
+                equips.forEach(eq => {
+                    html += `<div class="stat-row" style="color:#aaa;"><span>- ${eq.name}</span></div>`;
+                });
+            }
+        } else if (type === 'weapons') {
+            if (computed.attack && computed.attack.length > 0) {
+                html += `<div class="stat-section-title">Attack Power</div>`;
+                computed.attack.forEach(a => {
+                    if (a.amount > 0) html += `<div class="stat-row"><span>${a.name}</span><span>${a.amount}</span></div>`;
+                });
+            }
+            if (computed.scalesWith && computed.scalesWith.length > 0) {
+                html += `<div class="stat-section-title" style="margin-top:8px;">Attribute Scaling</div>`;
+                computed.scalesWith.forEach(s => {
+                    html += `<div class="stat-row"><span>${s.name}</span><span>${s.scaling}</span></div>`;
+                });
+            }
+        } else if (['armors', 'helmets', 'gloves', 'leg_armors', 'shields'].includes(type)) {
+            if (computed.dmgNegation && computed.dmgNegation.length > 0) {
+                html += `<div class="stat-section-title">Damage Negation</div>`;
+                computed.dmgNegation.forEach(d => {
+                    html += `<div class="stat-row"><span>${d.name}</span><span>${d.amount}</span></div>`;
+                });
+            }
+            if (computed.resistance && computed.resistance.length > 0) {
+                html += `<div class="stat-section-title" style="margin-top:8px;">Resistances</div>`;
+                computed.resistance.forEach(r => {
+                    html += `<div class="stat-row"><span>${r.name}</span><span>${r.amount}</span></div>`;
+                });
+            }
+            html += `<div class="stat-section-title" style="margin-top:8px;">Weight: ${computed.weight || '-'}</div>`;
+        } else {
+            html += `${computed.fpCost ? `<div class="stat-row"><span>FP Cost</span><span>${computed.fpCost}</span></div>` : ''}`;
+            html += `${computed.atk ? `<div class="stat-row"><span>Damage</span><span>${computed.atk}</span></div>` : ''}`;
+        }
     }
 
-    // Inject style once
+    panel.innerHTML = html;
+
     if (!document.getElementById('stat-panel-style')) {
         const style = document.createElement('style');
         style.id = 'stat-panel-style';
         style.textContent = `
-            .stat-section-title { color:#edd7ab88; font-size:0.68em; text-transform:uppercase;
-                letter-spacing:.08em; margin:4px 0 2px; }
-            .stat-row { display:flex; justify-content:space-between; gap:12px;
-                font-size:0.78em; color:#ddd; padding:1px 0; }
+            .stat-section-title { color:#edd7ab88; font-size:0.68em; text-transform:uppercase; letter-spacing:.08em; margin:4px 0 2px; }
+            .stat-row { display:flex; justify-content:space-between; gap:12px; font-size:0.78em; color:#ddd; padding:1px 0; }
             .stat-row span:last-child { color:#edd7ab; font-weight:bold; }
         `;
         document.head.appendChild(style);
@@ -605,19 +736,52 @@ function hideSidePanel() {
     if (panel) panel.classList.add('hiddenn');
 }
 
-function computeCardStats(card, element) {
+function computeCardStats(card, equips = []) {
     const type  = window.getCardType(card);
     const stats = {};
-    if (type === 'classes') {
-        stats.hp = card.hp || '—'; stats.mana = '—'; stats.stamina = '—';
-        stats.lightAtk = '—'; stats.heavyAtk = '—';
-    } else if (['bosses', 'npcs', 'creatures', 'spirits'].includes(type)) {
-        stats.hp = card.hp;
+
+    if (['classes', 'bosses', 'npcs', 'creatures', 'spirits'].includes(type)) {
+        stats.hp = card.hp || (card.stats ? card.stats.vigor * 10 : '—');
+        stats.fp = card.mp || (card.stats ? card.stats.mind * 5 : '—');
+
+        let totalAtk = 0;
+        let totalDef = 0;
+
+        // Se l'arma bindata ha i dati completi nell'oggetto, calcoliamo i danni, 
+        // altrimenti fallback sulle statistiche (Str/Dex)
+        equips.forEach(eq => {
+            if (eq.attack && Array.isArray(eq.attack)) {
+                const phy = eq.attack.find(a => a.name === 'Phy');
+                if (phy) totalAtk += phy.amount;
+            }
+            if (eq.dmgNegation && Array.isArray(eq.dmgNegation)) {
+                const phyDef = eq.dmgNegation.find(d => d.name === 'Phy');
+                if (phyDef) totalDef += phyDef.amount;
+            }
+        });
+
+        if (totalAtk === 0 && card.stats) {
+            totalAtk = parseInt(card.stats.strength || 0) * 2 + parseInt(card.stats.dexterity || 0);
+        }
+        if (totalDef === 0 && card.stats) {
+            totalDef = parseInt(card.stats.endurance || 0) * 1.5;
+        }
+
+        stats.atk = totalAtk > 0 ? totalAtk : (card.atk || card.attack || '—');
+        stats.def = totalDef > 0 ? totalDef.toFixed(1) : '—';
+
     } else if (type === 'weapons') {
-        stats.lightAtk = card.atk || card.attack || '—';
+        stats.attack = card.attack || [];
+        stats.scalesWith = card.scalesWith || [];
+    } else if (['armors', 'helmets', 'gloves', 'leg_armors', 'shields'].includes(type)) {
+        stats.dmgNegation = card.dmgNegation || [];
+        stats.resistance = card.resistance || [];
+        stats.weight = card.weight;
     } else if (['sorceries', 'incantations'].includes(type)) {
-        stats.mana = card.fpcost; stats.lightAtk = card.attack;
+        stats.fpCost = card.fpcost;
+        stats.atk = card.attack;
     }
+
     return stats;
 }
 
@@ -739,3 +903,52 @@ function createCardImage(cardData, showBack = false) {
             </div>
         </div>`;
 }
+
+window.renderEquipments = function(slot) {
+    let eqContainer = slot.querySelector('.equip-container');
+    if (!eqContainer) {
+        eqContainer = document.createElement('div');
+        eqContainer.className = 'equip-container';
+        // Le mini icone appariranno nell'angolo in basso a sinistra della carta
+        eqContainer.style.cssText = 'position:absolute; bottom:4px; left:4px; display:flex; gap:4px; z-index:10; pointer-events:none;';
+        slot.appendChild(eqContainer);
+    }
+    eqContainer.innerHTML = '';
+    
+    let equips = [];
+    try { equips = JSON.parse(slot.dataset.equip || '[]'); } catch(e){}
+
+    equips.forEach(eq => {
+        if (!eq.image) return;
+        const img = document.createElement('img');
+        img.src = eq.image;
+        // Icone rotonde con un bordo dorato per richiamare lo stile del gioco
+        img.style.cssText = 'width:22px; height:22px; border-radius:50%; border:1px solid #edd7ab; object-fit:cover; background:#000; box-shadow: 0 0 4px #000;';
+        img.title = eq.name; // Il nome appare se ci passi sopra col mouse
+        eqContainer.appendChild(img);
+    });
+};
+
+window.discardCard = function(card, owner = 'player') {
+    const gs = window.GameState;
+    if (!gs.discardPile) gs.discardPile = { player: [], opponent: [] };
+    
+    // Aggiungi la carta alla lista
+    gs.discardPile[owner].push(card);
+
+    // Cerca l'elemento grafico dell'Erdtree (assicurati che l'ID corrisponda a quello nel tuo HTML, es. 'erdtree')
+    const erdtreeEl = document.getElementById('erdtree') || document.querySelector('.discard-pile');
+    
+    if (erdtreeEl) {
+        // Applica l'immagine della carta come sfondo dell'Erdtree
+        erdtreeEl.style.backgroundImage = `url(${card.image})`;
+        erdtreeEl.style.backgroundSize = 'cover';
+        erdtreeEl.style.backgroundPosition = 'center';
+        erdtreeEl.style.border = '2px solid #edd7ab';
+        erdtreeEl.style.position = 'relative';
+        erdtreeEl.title = `In cima agli scarti: ${card.name}`;
+        
+        // Aggiungi un piccolo contatore per far capire quante carte ci sono dentro
+        erdtreeEl.innerHTML = `<div style="position:absolute; bottom:2px; right:4px; background:rgba(0,0,0,0.8); color:#fff; font-size:12px; padding:2px 5px; border-radius:4px;">${gs.discardPile[owner].length}</div>`;
+    }
+};
