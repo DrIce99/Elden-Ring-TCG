@@ -430,6 +430,18 @@ window.resolvePhase5 = function () {
         _destroyUnit(owner, parseInt(idxStr));
     });
 
+    // 6b. Resolve free Catch Flame attacks (before dodge reset)
+    if (window.resolveCatchFlame) {
+        [...document.querySelectorAll('.player-area.player .slot.battle')].forEach((slot, i) => {
+            const key = 'player_' + i;
+            if (gs.unitStates[key]?.catchFlameActive) window.resolveCatchFlame('player', i);
+        });
+        [...document.querySelectorAll('.player-area.opponent .slot.battle')].forEach((slot, i) => {
+            const key = 'opponent_' + i;
+            if (gs.unitStates[key]?.catchFlameActive) window.resolveCatchFlame('opponent', i);
+        });
+    }
+
     // 7. Reset stato schivata per il prossimo turno
     Object.values(gs.unitStates).forEach(state => {
         if (!state.dodging) state.dodgedLastTurn = false;

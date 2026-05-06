@@ -191,8 +191,12 @@ function placeUnit(card, handIndex, slot, type) {
     }
 
     window.renderEquipments(slot);
-
     window.renderHand('player');
+
+    // Register passive & phase3 effects from the card and its equipment
+    if (window.EffectEngine?.registerFieldEffects) {
+        window.EffectEngine.registerFieldEffects(card, slot, 'player_' + slotIdx);
+    }
     console.log(`✅ ${card.name} (${type}) — slot ${slotIdx}`);
 }
 
@@ -410,13 +414,17 @@ function showActionMenu(slotEl, unitKey, slotIndex) {
 
     const card = (() => { try { return JSON.parse(slotEl.dataset.card); } catch { return {}; } })();
 
+    // Catch Flame free action (from equipped incantation)
+    const catchFlame = window.getCatchFlameAction?.(unitKey);
+
     const actionDefs = [
-        { id: 'move_left',  label: '← Muovi Sinistra',     available: slotIndex > 0,            icon: '←' },
-        { id: 'move_right', label: 'Muovi Destra →',        available: slotIndex < 4,            icon: '→' },
-        { id: 'dodge',      label: '💨 Schivata',           available: canDodge,                 icon: '💨', note: !canDodge ? '(già schivato)' : '' },
-        { id: 'charge',     label: '⚡ Carica',             available: true,                     icon: '⚡' },
-        { id: 'light',      label: '⚔️ Attacco Leggero',   available: !isFirstTurn,             icon: '⚔️', note: isFirstTurn ? '(primo turno)' : inRange ? '(nemico in range)' : '' },
-        { id: 'heavy',      label: '💥 Attacco Pesante',   available: !isFirstTurn && canHeavy, icon: '💥', note: !canHeavy ? '(carica necessaria)' : isFirstTurn ? '(primo turno)' : '' },
+        { id: 'move_left',  label: '← Move Left',           available: slotIndex > 0,            icon: '←' },
+        { id: 'move_right', label: 'Move Right →',           available: slotIndex < 4,            icon: '→' },
+        { id: 'dodge',      label: '💨 Dodge',               available: canDodge,                 icon: '💨', note: !canDodge ? '(used last turn)' : '' },
+        { id: 'charge',     label: '⚡ Charge',              available: true,                     icon: '⚡' },
+        { id: 'light',      label: '⚔️ Light Attack',        available: !isFirstTurn,             icon: '⚔️', note: isFirstTurn ? '(first turn)' : inRange ? '(enemy in range)' : '' },
+        { id: 'heavy',      label: '💥 Heavy Attack',        available: !isFirstTurn && canHeavy, icon: '💥', note: !canHeavy ? '(charge required)' : isFirstTurn ? '(first turn)' : '' },
+        ...(catchFlame ? [{ ...catchFlame, isFree: true }] : []),
     ];
 
     const menu = document.createElement('div');
@@ -459,6 +467,15 @@ function showActionMenu(slotEl, unitKey, slotIndex) {
             btn.addEventListener('mouseleave', () => { btn.style.background = isSelected ? 'rgba(237,215,171,0.22)' : 'rgba(237,215,171,0.04)'; });
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                if (a.isFree) {
+                    // Free action: mark catch flame as active, don't consume planned action
+                    const st = window.GameState.unitStates[unitKey] || {};
+                    st.catchFlameActive = true;
+                    st.catchFlameReady  = false;
+                    _showActionBadge(slotEl, '🔥 Catch Flame (Free)', '#ff8833');
+                    // Don't close menu — player still picks a regular action
+                    return;
+                }
                 gs.plannedActions[unitKey] = { type: a.id };
                 _showActionBadge(slotEl, a.label);
                 _closeActionMenu();
